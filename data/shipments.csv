@@ -1,0 +1,101 @@
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,None,2024-10-12
+4,Route A,WH2,5.0,0,None,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+6,Route A,WH1,5.0,41,Mechanical Issue,2024-10-15
+7,Route A,WH2,5.2,14,Mechanical Issue,2024-10-16
+8,Route B,WH2,5.7,32,Minor Breakdown,2024-10-17
+9,Route C,WH1,5.4,34,Customs Delay,2024-10-18
+10,Route C,WH2,6.5,15,Customs Delay,2024-10-19
+11,Route D,WH3,6.4,5,Minor Breakdown,2024-10-20
+12,Route A,WH2,6.3,5,Driver Rest,2024-10-21
+13,Route D,WH2,6.0,9,Driver Rest,2024-10-22
+14,Route C,WH2,5.1,19,Customs Delay,2024-10-23
+15,Route B,WH3,6.3,56,Minor Breakdown,2024-10-24
+16,Route A,WH3,5.1,51,Mechanical Issue,2024-10-25
+17,Route C,WH2,5.6,17,Driver Rest,2024-10-26
+18,Route C,WH3,6.3,53,Mechanical Issue,2024-10-27
+19,Route C,WH1,6.4,54,Traffic,2024-10-28
+20,Route B,WH2,5.0,52,Mechanical Issue,2024-10-29
+21,Route C,WH3,4.5,24,Traffic,2024-10-30
+22,Route B,WH1,4.9,13,Traffic,2024-10-31
+23,Route D,WH2,5.0,0,None,2024-11-01
+24,Route B,WH1,5.5,42,Traffic,2024-11-02
+25,Route A,WH3,5.3,10,Weather,2024-11-03
+26,Route C,WH1,5.2,32,Driver Rest,2024-11-04
+27,Route D,WH2,5.1,0,None,2024-11-05
+28,Route C,WH2,6.2,5,Mechanical Issue,2024-11-06
+29,Route C,WH3,5.8,36,Weather,2024-11-07
+30,Route D,WH1,5.3,13,Traffic,2024-11-08
+31,Route A,WH1,6.3,43,Mechanical Issue,2024-11-09
+32,Route B,WH3,5.1,39,Traffic,2024-11-10
+33,Route C,WH2,5.8,0,None,2024-11-11
+34,Route A,WH2,5.1,38,Mechanical Issue,2024-11-12
+35,Route D,WH1,6.1,48,Driver Rest,2024-11-13
+36,Route B,WH3,4.6,0,None,2024-11-14
+37,Route B,WH1,5.7,49,Minor Breakdown,2024-11-15
+38,Route A,WH2,4.9,0,None,2024-11-16
+39,Route D,WH1,6.5,20,Traffic,2024-11-17
+40,Route D,WH3,4.7,48,Weather,2024-11-18
+41,Route A,WH2,6.5,54,Weather,2024-11-19
+42,Route D,WH3,5.8,35,Traffic,2024-11-20
+43,Route A,WH2,6.0,42,Customs Delay,2024-11-21
+44,Route A,WH1,4.6,26,Weather,2024-11-22
+45,Route B,WH1,6.6,8,Driver Rest,2024-11-23
+46,Route B,WH1,5.1,33,Mechanical Issue,2024-11-24
+47,Route A,WH3,5.9,9,Minor Breakdown,2024-11-25
+48,Route B,WH2,6.4,52,Minor Breakdown,2024-11-26
+49,Route C,WH2,5.2,21,Mechanical Issue,2024-11-27
+50,Route D,WH1,6.1,21,Customs Delay,2024-11-28
+51,Route D,WH2,4.6,28,Minor Breakdown,2024-11-29
+52,Route A,WH2,5.7,22,Minor Breakdown,2024-11-30
+53,Route A,WH2,6.5,31,Traffic,2024-12-01
+54,Route D,WH1,5.4,52,Driver Rest,2024-12-02
+55,Route B,WH1,4.8,7,Traffic,2024-12-03
+56,Route A,WH3,6.2,8,Driver Rest,2024-12-04
+57,Route C,WH3,5.1,31,Driver Rest,2024-12-05
+58,Route A,WH1,5.9,46,Minor Breakdown,2024-12-06
+59,Route D,WH2,5.1,49,Driver Rest,2024-12-07
+60,Route B,WH1,5.0,56,Mechanical Issue,2024-12-08
+61,Route B,WH2,5.9,20,Customs Delay,2024-12-09
+62,Route A,WH2,5.1,36,Customs Delay,2024-12-10
+63,Route A,WH2,4.7,43,Mechanical Issue,2024-12-11
+64,Route C,WH2,6.2,28,Mechanical Issue,2024-12-12
+65,Route A,WH2,4.8,0,None,2024-12-13
+66,Route D,WH3,6.1,42,Weather,2024-12-14
+67,Route C,WH3,5.9,37,Traffic,2024-12-15
+68,Route A,WH1,6.5,31,Minor Breakdown,2024-12-16
+69,Route D,WH1,6.1,7,Traffic,2024-12-17
+70,Route B,WH2,6.2,51,Weather,2024-12-18
+71,Route B,WH2,6.0,46,Minor Breakdown,2024-12-19
+72,Route B,WH1,5.0,25,Weather,2024-12-20
+73,Route A,WH2,4.6,34,Driver Rest,2024-12-21
+74,Route D,WH3,4.7,59,Weather,2024-12-22
+75,Route B,WH1,5.6,7,Driver Rest,2024-12-23
+76,Route A,WH2,5.6,59,Driver Rest,2024-12-24
+77,Route D,WH1,4.9,31,Minor Breakdown,2024-12-25
+78,Route A,WH3,6.4,0,None,2024-12-26
+79,Route B,WH2,4.9,44,Minor Breakdown,2024-12-27
+80,Route D,WH1,6.0,51,Mechanical Issue,2024-12-28
+81,Route A,WH3,5.0,54,Minor Breakdown,2024-12-29
+82,Route D,WH3,6.3,24,Weather,2024-12-30
+83,Route B,WH3,4.6,6,Weather,2024-12-31
+84,Route C,WH1,5.7,18,Weather,2025-01-01
+85,Route A,WH1,5.0,41,Weather,2025-01-02
+86,Route A,WH1,6.1,55,Weather,2025-01-03
+87,Route C,WH1,6.3,35,Traffic,2025-01-04
+88,Route D,WH3,4.8,28,Mechanical Issue,2025-01-05
+89,Route A,WH3,5.2,16,Traffic,2025-01-06
+90,Route A,WH1,5.7,0,None,2025-01-07
+91,Route C,WH2,6.4,53,Driver Rest,2025-01-08
+92,Route B,WH2,4.9,0,None,2025-01-09
+93,Route D,WH1,5.7,0,None,2025-01-10
+94,Route B,WH3,6.2,47,Mechanical Issue,2025-01-11
+95,Route B,WH2,4.8,38,Weather,2025-01-12
+96,Route C,WH3,5.4,43,Customs Delay,2025-01-13
+97,Route B,WH3,5.5,15,Traffic,2025-01-14
+98,Route A,WH3,6.4,10,Driver Rest,2025-01-15
+99,Route B,WH3,5.0,8,Traffic,2025-01-16
+100,Route A,WH3,5.6,5,Weather,2025-01-17

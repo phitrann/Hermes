@@ -1,0 +1,1192 @@
+id,question,code_concise,code_verbose
+1,How many total shipments are in the dataset?,result = len(df),"df['date']=pd.to_datetime(df['date'])
+# total number of shipments
+result = df.shape[0]
+"
+2,What is the earliest shipment date recorded?,df['date']=pd.to_datetime(df['date']); result = df['date'].min(),"df['date']=pd.to_datetime(df['date'])
+# earliest shipment date
+result = df['date'].min()
+"
+3,What is the most recent shipment date?,df['date']=pd.to_datetime(df['date']); result = df['date'].max(),"df['date']=pd.to_datetime(df['date'])
+# most recent shipment date
+result = df['date'].max()
+"
+4,How many unique routes are there?,result = df['route'].nunique(),"# number of unique routes
+result = df['route'].nunique()
+"
+5,How many warehouses are involved?,result = df['warehouse'].nunique(),"# number of unique warehouses
+result = df['warehouse'].nunique()
+"
+6,Which warehouse handled the most shipments overall?,result = df['warehouse'].value_counts().idxmax(),"# warehouse with most shipments
+result = df['warehouse'].value_counts().idxmax()
+"
+7,Which route had the fewest shipments?,result = df['route'].value_counts().idxmin(),"# route with fewest shipments
+result = df['route'].value_counts().idxmin()
+"
+8,How many shipments had zero delay?,result = (df['delay_minutes']==0).sum(),"# count shipments with zero delay
+result = df[df['delay_minutes']==0].shape[0]
+"
+9,What percentage of all shipments were delayed?,result = (df['delay_minutes']>0).mean()*100,"# percentage of shipments delayed
+result = (df['delay_minutes']>0).mean() * 100
+"
+10,What is the total delay time across all shipments?,result = df['delay_minutes'].sum(),"# total delay minutes across dataset
+result = df['delay_minutes'].sum()
+"
+11,Which route has the highest average delivery time?,result = df.groupby('route')['delivery_time'].mean().idxmax(),"# route with highest average delivery time
+result = df.groupby('route')['delivery_time'].mean().idxmax()
+"
+12,Which route has the lowest average delivery time?,result = df.groupby('route')['delivery_time'].mean().idxmin(),"# route with lowest average delivery time
+result = df.groupby('route')['delivery_time'].mean().idxmin()
+"
+13,Which route experienced the most total delay minutes?,result = df['delay_minutes'].sum(),"# total delay minutes across dataset
+result = df['delay_minutes'].sum()
+"
+14,On which route were delays most frequent?,result = df[df['delay_minutes']>0]['route'].value_counts().idxmax(),"# route with most frequent delays
+result = df[df['delay_minutes']>0]['route'].value_counts().idxmax()
+"
+15,What is the average delivery time per route?,result = df.groupby('route')['delivery_time'].mean(),"# average delivery time per route
+result = df.groupby('route')['delivery_time'].mean().reset_index()
+"
+16,Show the route-wise breakdown of delay reasons.,"result = df[df['delay_minutes']>0].groupby(['route','delay_reason'])['id'].count()","# breakdown of delay reasons by route
+result = df[df['delay_minutes']>0].groupby(['route','delay_reason'])['id'].count().reset_index(name='count')
+"
+17,Which routes had no delays at all?,"result = [r for r,g in df.groupby('route') if (g['delay_minutes']>0).sum()==0]","groups = df.groupby('route')
+# routes with zero delays
+result = [route for route, g in groups if (g['delay_minutes']>0).sum() == 0]
+"
+18,Rank all routes by reliability (fewest delays to most).,result = df.groupby('route').apply(lambda g:(g['delay_minutes']==0).mean()).sort_values(ascending=False),"# rank routes by on-time rate
+result = df.groupby('route').apply(lambda g: (g['delay_minutes']==0).mean()).sort_values(ascending=False).reset_index(name='on_time_rate')
+"
+19,What is the median delivery time by route?,result = df.groupby('route')['delivery_time'].median(),"# median delivery time by route
+result = df.groupby('route')['delivery_time'].median().reset_index()
+"
+20,Which warehouse has the longest average delay?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+21,Which warehouse shows the shortest delivery time overall?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+22,Which warehouse had the highest number of delayed shipments?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+23,What is the average delay time per warehouse?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+24,Which warehouse had the most weather-related delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+25,Which warehouse had the least total delay minutes?,result = df['delay_minutes'].sum(),"# total delay minutes across dataset
+result = df['delay_minutes'].sum()
+"
+26,Which warehouse served the most different routes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+27,Which warehouse has the most consistent delivery times?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+28,How many shipments were sent from each warehouse?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+29,What is the average delay time across all shipments?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+30,What is the most common delay reason?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+31,Which delay reason caused the most total delay minutes?,result = df['delay_minutes'].sum(),"# total delay minutes across dataset
+result = df['delay_minutes'].sum()
+"
+32,What is the maximum recorded delay time?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+33,Which route had the longest single delay event?,"idx = df['delay_minutes'].idxmax(); result = df.loc[idx, ['route','delay_minutes','date']].to_dict()","idx = df['delay_minutes'].idxmax()
+result = df.loc[idx, ['route', 'delay_minutes', 'date']].to_dict()
+"
+34,How many shipments occurred per month?,df['date']=pd.to_datetime(df['date']); result = df.groupby(df['date'].dt.month)['id'].count(),"df['date']=pd.to_datetime(df['date'])
+# shipments per month
+result = df.groupby(df['date'].dt.month)['id'].count().reset_index(name='count')
+"
+35,Which month had the highest delay rate?,df['date']=pd.to_datetime(df['date']); result = df.groupby(df['date'].dt.month).apply(lambda g:(g['delay_minutes']>0).mean()).idxmax(),"df['date']=pd.to_datetime(df['date'])
+# month with highest delay rate
+result = df.groupby(df['date'].dt.month).apply(lambda g: (g['delay_minutes']>0).mean()).idxmax()
+"
+36,Which week had the most deliveries?,df['date']=pd.to_datetime(df['date']); result = df.groupby(df['date'].dt.isocalendar().week)['id'].count().idxmax(),"df['date']=pd.to_datetime(df['date'])
+# week number with most deliveries
+result = df.groupby(df['date'].dt.isocalendar().week)['id'].count().idxmax()
+"
+37,What day of the week has the most shipments?,df['date']=pd.to_datetime(df['date']); result = df.groupby(df['date'].dt.day_name())['id'].count().idxmax(),"df['date']=pd.to_datetime(df['date'])
+# day of week with most shipments
+result = df.groupby(df['date'].dt.day_name())['id'].count().idxmax()
+"
+38,What is the on-time delivery rate?,result = (df['delay_minutes']==0).mean(),"# on-time delivery rate
+result = (df['delay_minutes'] == 0).mean()
+"
+39,What is the 95th percentile of delivery time?,result = df['delivery_time'].quantile(0.95),"# 95th percentile of delivery_time
+result = df['delivery_time'].quantile(0.95)
+"
+40,How many shipments took more than 6 days?,result = (df['delivery_time']>6).sum(),"# shipments with delivery_time more than 6
+result = df[df['delivery_time'] > 6].shape[0]
+"
+41,How many shipments took less than 3 days?,result = (df['delivery_time']<3).sum(),"# shipments with delivery_time less than 3
+result = df[df['delivery_time'] < 3].shape[0]
+"
+42,What is the correlation between delivery_time and delay_minutes?,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+43,Show all shipments delayed last week.,df['date']=pd.to_datetime(df['date']); maxd=df['date'].max(); last_week=df[(df['date']>maxd-pd.Timedelta(days=7))]; result = last_week[last_week['delay_minutes']>0],"df['date']=pd.to_datetime(df['date'])
+max_date = df['date'].max()
+last_week = df[(df['date'] > max_date - pd.Timedelta(days=7))]
+result = last_week[last_week['delay_minutes'] > 0].reset_index(drop=True)
+"
+44,Show total delayed shipments last month.,df['date']=pd.to_datetime(df['date']); m=df['date'].max().month; y=df['date'].max().year; result = df[(df['date'].dt.month==m)&(df['date'].dt.year==y)&(df['delay_minutes']>0)].shape[0],"df['date']=pd.to_datetime(df['date'])
+max_date = df['date'].max()
+month = max_date.month; year = max_date.year
+result = df[(df['date'].dt.month==month) & (df['date'].dt.year==year) & (df['delay_minutes']>0)].shape[0]
+"
+45,List all shipments in October with delay above 20 minutes.,df['date']=pd.to_datetime(df['date']); result = df[(df['date'].dt.month==10)&(df['delay_minutes']>20)],"df['date']=pd.to_datetime(df['date'])
+result = df[(df['date'].dt.month == 10) & (df['delay_minutes'] > 20)].reset_index(drop=True)
+"
+46,Show average delay per route in the last two weeks.,df['date']=pd.to_datetime(df['date']); maxd=df['date'].max(); window=df[(df['date']>maxd-pd.Timedelta(days=13))]; result = window.groupby('route')['delay_minutes'].mean(),"df['date']=pd.to_datetime(df['date'])
+max_date = df['date'].max()
+window = df[(df['date'] > max_date - pd.Timedelta(days=13))]
+result = window.groupby('route')['delay_minutes'].mean().reset_index()
+"
+47,List top 5 routes with longest delays this quarter.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+48,Predict next week's delay rate using historical averages.,df['date']=pd.to_datetime(df['date']); last_28=df[df['date']>df['date'].max()-pd.Timedelta(days=27)]; result = (last_28['delay_minutes']>0).mean(),"df['date']=pd.to_datetime(df['date'])
+max_date = df['date'].max()
+last_28 = df[df['date'] > max_date - pd.Timedelta(days=27)]
+result = (last_28['delay_minutes'] > 0).mean()
+"
+49,Find routes where delivery time is rising but delay minutes are decreasing.,"df['date']=pd.to_datetime(df['date']); result = []
+# compute monthly trend per route
+monthly_dt = df.set_index(pd.to_datetime(df['date'])).groupby('route')['delivery_time'].resample('M').mean().unstack(0)
+monthly_delay = df.set_index(pd.to_datetime(df['date'])).groupby('route')['delay_minutes'].resample('M').mean().unstack(0)
+for col in monthly_dt.columns:
+    if monthly_dt[col].iloc[-1] > monthly_dt[col].iloc[0] and monthly_delay[col].iloc[-1] < monthly_delay[col].iloc[0]:
+        result.append(col)","df['date']=pd.to_datetime(df['date'])
+monthly_dt = df.set_index('date').groupby('route')['delivery_time'].resample('M').mean().unstack(0)
+monthly_delay = df.set_index('date').groupby('route')['delay_minutes'].resample('M').mean().unstack(0)
+trend_dt = (monthly_dt.iloc[-1] - monthly_dt.iloc[0]) > 0
+trend_delay = (monthly_delay.iloc[-1] - monthly_delay.iloc[0]) < 0
+result = list(monthly_dt.columns[trend_dt & trend_delay])
+"
+50,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+51,Which route had the most Driver Rest delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+52,What is the average delivery_time for Route A?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+53,Which route had the most Weather delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+54,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+55,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+56,List shipments in June with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+57,What is the average delivery_time for Route A?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+58,List shipments in February with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+59,What is the average delivery_time for Route E?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+60,Which route had the most Driver Rest delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+61,List shipments in February with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+62,List shipments in June with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+63,Which route had the most Customs Delay delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+64,Which route had the longest average delay in July?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+65,Show correlation between delivery_time and delay_minutes for Route C.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+66,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+67,Which route had the most Driver Rest delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+68,Show correlation between delivery_time and delay_minutes for Route B.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+69,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+70,What was the average delay in August?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+71,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+72,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+73,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+74,How many shipments from WH1 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+75,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+76,Which warehouse had the most shipments in March?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+77,Show correlation between delivery_time and delay_minutes for Route C.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+78,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+79,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+80,What is the average delivery_time for Route C?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+81,Show correlation between delivery_time and delay_minutes for Route A.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+82,What is the average delivery_time for Route B?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+83,Show delay reason counts for WH3.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+84,Which route had the most Mechanical Issue delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+85,What was the average delay in February?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+86,Which route had the most None delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+87,Which route had the most None delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+88,How many shipments from WH2 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+89,Which route had the longest average delay in August?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+90,Which route had the longest average delay in August?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+91,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+92,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+93,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+94,What was the average delay in April?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+95,Which warehouse had the most shipments in May?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+96,Which route had the most Minor Breakdown delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+97,How many shipments from WH1 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+98,How many shipments occurred on Mondays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+99,Show delay reason counts for WH4.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+100,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+101,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+102,How many shipments from WH1 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+103,Which warehouse had the most shipments in February?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+104,Show delay reason counts for WH1.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+105,Which route had the most Customs Delay delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+106,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+107,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+108,What was the average delay in March?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+109,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+110,Which warehouse had the most shipments in April?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+111,List shipments in April with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+112,List shipments in September with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+113,List shipments in November with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+114,Show correlation between delivery_time and delay_minutes for Route C.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+115,Which route had the longest average delay in October?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+116,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+117,List shipments in January with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+118,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+119,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+120,Which route had the longest average delay in February?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+121,Show correlation between delivery_time and delay_minutes for Route E.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+122,Which route had the longest average delay in January?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+123,What was the average delay in November?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+124,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+125,How many shipments occurred on Sundays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+126,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+127,Show correlation between delivery_time and delay_minutes for Route D.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+128,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+129,How many shipments occurred on Sundays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+130,Show correlation between delivery_time and delay_minutes for Route C.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+131,How many shipments from WH2 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+132,What is the average delivery_time for Route C?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+133,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+134,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+135,What was the average delay in September?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+136,How many shipments occurred on Thursdays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+137,How many shipments from WH2 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+138,Show correlation between delivery_time and delay_minutes for Route E.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+139,What is the average delivery_time for Route E?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+140,What was the average delay in March?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+141,How many shipments occurred on Wednesdays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+142,How many shipments occurred on Thursdays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+143,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+144,Which route had the most Driver Rest delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+145,Which route had the longest average delay in April?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+146,List shipments in January with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+147,Which route had the most Minor Breakdown delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+148,How many shipments occurred on Tuesdays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+149,Show delay reason counts for WH1.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+150,Show delay reason counts for WH4.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+151,What is the average delivery_time for Route B?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+152,Which route had the longest average delay in December?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+153,How many shipments occurred on Thursdays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+154,List shipments in September with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+155,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+156,List shipments in June with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+157,What is the average delivery_time for Route B?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+158,Show delay reason counts for WH2.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+159,Which route had the longest average delay in April?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+160,How many shipments occurred on Sundays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+161,Show correlation between delivery_time and delay_minutes for Route D.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+162,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+163,Which route had the longest average delay in May?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+164,Which warehouse had the most shipments in November?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+165,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+166,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+167,How many shipments from WH1 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+168,How many shipments from WH3 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+169,What was the average delay in July?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+170,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+171,How many shipments from WH3 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+172,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+173,How many shipments from WH2 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+174,What is the average delivery_time for Route D?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+175,What was the average delay in December?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+176,What is the average delivery_time for Route C?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+177,Show correlation between delivery_time and delay_minutes for Route E.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+178,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+179,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+180,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+181,Which route had the longest average delay in September?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+182,What was the average delay in August?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+183,How many shipments occurred on Thursdays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+184,Show delay reason counts for WH3.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+185,Which warehouse had the most shipments in December?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+186,List shipments in February with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+187,Show correlation between delivery_time and delay_minutes for Route B.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+188,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+189,What was the average delay in June?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+190,List shipments in December with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+191,Which route had the longest average delay in February?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+192,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+193,Which warehouse had the most shipments in January?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+194,List shipments in April with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+195,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+196,How many shipments occurred on Wednesdays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+197,List shipments in December with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+198,What was the average delay in December?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+199,Which route had the most Traffic delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+200,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+201,Which route had the most Traffic delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+202,Which route had the longest average delay in January?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+203,List shipments in January with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+204,List shipments in June with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+205,How many shipments from WH3 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+206,Which warehouse had the most shipments in November?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+207,Show delay reason counts for WH2.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+208,What is the average delivery_time for Route E?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+209,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+210,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+211,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+212,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+213,What is the average delivery_time for Route A?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+214,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+215,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+216,Show correlation between delivery_time and delay_minutes for Route E.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+217,What is the average delivery_time for Route B?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+218,How many shipments from WH2 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+219,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+220,List shipments in September with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+221,Which warehouse had the most shipments in July?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+222,What was the average delay in April?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+223,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+224,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+225,Show correlation between delivery_time and delay_minutes for Route B.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+226,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+227,What was the average delay in March?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+228,How many shipments occurred on Sundays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+229,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+230,What was the average delay in September?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+231,How many shipments from WH4 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+232,What was the average delay in January?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+233,List shipments in December with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+234,What is the average delivery_time for Route E?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+235,Show delay reason counts for WH3.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+236,What is the average delivery_time for Route A?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+237,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+238,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+239,Which route had the most Weather delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+240,Show correlation between delivery_time and delay_minutes for Route A.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+241,Show correlation between delivery_time and delay_minutes for Route A.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+242,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+243,What was the average delay in September?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+244,Which warehouse had the most shipments in April?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+245,How many shipments occurred on Saturdays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+246,Which warehouse had the most shipments in November?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+247,Which warehouse had the most shipments in October?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+248,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+249,How many shipments from WH2 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+250,What is the average delivery_time for Route C?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+251,How many shipments occurred on Sundays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+252,Which route had the longest average delay in December?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+253,Which warehouse had the most shipments in April?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+254,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+255,What is the average delivery_time for Route D?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+256,Show correlation between delivery_time and delay_minutes for Route A.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+257,What was the average delay in April?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+258,How many shipments occurred on Fridays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+259,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+260,Show correlation between delivery_time and delay_minutes for Route B.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+261,Which warehouse had the most shipments in August?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+262,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+263,List shipments in May with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+264,How many shipments occurred on Fridays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+265,What was the average delay in November?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+266,List shipments in November with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+267,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+268,Show correlation between delivery_time and delay_minutes for Route B.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+269,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+270,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+271,List shipments in June with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+272,Show delay reason counts for WH1.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+273,Show delay reason counts for WH2.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+274,Which route had the longest average delay in August?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+275,List shipments in February with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+276,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+277,What is the average delivery_time for Route A?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+278,Which warehouse had the most shipments in July?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+279,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+280,How many shipments from WH3 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+281,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+282,Show delay reason counts for WH1.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+283,What is the average delivery_time for Route E?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+284,What was the average delay in December?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+285,Show correlation between delivery_time and delay_minutes for Route A.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+286,How many shipments occurred on Tuesdays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+287,Which warehouse had the most shipments in June?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+288,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+289,How many shipments occurred on Mondays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+290,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+291,What was the average delay in October?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+292,What is the average delivery_time for Route E?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+293,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+294,Show delay reason counts for WH2.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+295,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+296,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+297,List shipments in July with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+298,What is the average delivery_time for Route D?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+299,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+300,How many shipments from WH3 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+301,Which warehouse had the most shipments in February?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+302,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+303,Show delay reason counts for WH1.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+304,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+305,Which warehouse had the most shipments in December?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+306,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+307,What was the average delay in December?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+308,What was the average delay in May?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+309,Show delay reason counts for WH4.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+310,How many shipments occurred on Fridays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+311,How many shipments from WH3 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+312,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+313,What was the average delay in April?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+314,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+315,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+316,Which route had the most Minor Breakdown delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+317,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+318,How many shipments from WH2 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+319,What was the average delay in March?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+320,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+321,How many shipments from WH1 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+322,Which warehouse had the most shipments in May?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+323,What was the average delay in March?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+324,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+325,How many shipments occurred on Wednesdays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+326,Which route had the most Mechanical Issue delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+327,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+328,Which route had the most None delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+329,List shipments in May with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+330,What was the average delay in December?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+331,Show delay reason counts for WH2.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+332,Which route had the longest average delay in December?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+333,How many shipments occurred on Fridays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+334,How many shipments occurred on Thursdays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+335,How many shipments from WH3 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+336,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+337,How many shipments occurred on Sundays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+338,List shipments in March with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+339,Which route had the longest average delay in April?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+340,What was the average delay in February?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+341,List shipments in March with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+342,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+343,Which warehouse had the most shipments in November?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+344,What was the average delay in February?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+345,Which warehouse had the most shipments in January?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+346,Which route had the longest average delay in August?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+347,How many shipments from WH3 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+348,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+349,Which warehouse had the most shipments in October?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+350,Which route had the most Mechanical Issue delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+351,How many shipments from WH4 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+352,What is the average delivery_time for Route A?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+353,Which warehouse had the most shipments in May?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+354,How many shipments occurred on Saturdays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+355,What was the average delay in September?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+356,How many shipments occurred on Fridays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+357,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+358,Show delay reason counts for WH3.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+359,How many shipments occurred on Wednesdays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+360,Which route had the longest average delay in March?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+361,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+362,What was the average delay in June?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+363,Which warehouse had the most shipments in March?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+364,List shipments in September with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+365,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+366,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+367,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+368,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+369,What is the daily delay rate for the last 14 days?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+370,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+371,Which warehouse had the most shipments in July?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+372,Which route had the longest average delay in April?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+373,Show the top 3 routes by total delay_minutes.,result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(3),"result = df.groupby('route')['delay_minutes'].sum().sort_values(ascending=False).head(5).reset_index(name='total_delay')
+"
+374,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+375,Which route had the longest average delay in March?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+376,Which warehouse had the most shipments in April?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+377,Which warehouse had the most shipments in January?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+378,Which route had the longest average delay in February?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+379,Which route had the most None delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+380,What was the average delay in May?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+381,Which warehouse had the most shipments in October?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+382,Show correlation between delivery_time and delay_minutes for Route A.,result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+383,Show delay reason counts for WH4.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+384,List shipments in July with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+385,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+386,Which route had the longest average delay in April?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+387,Show delay reason counts for WH3.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+388,Which route had the most Driver Rest delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+389,Which route had the longest average delay in September?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+390,What is the rolling 7-day average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+391,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+392,What was the average delay in December?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+393,Show the bottom 3 warehouses by average delivery_time.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+394,How many shipments from WH3 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+395,Which day of week has highest average delay_minutes?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+396,Show delay reason counts for WH1.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+397,How many shipments from WH2 had delays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+398,How many shipments occurred on Tuesdays?,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+399,List shipments in November with delay_minutes > 30.,"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+400,Rank all routes by reliability (fewest delays to most). (count only),result = df.groupby('route').apply(lambda g:(g['delay_minutes']==0).mean()).sort_values(ascending=False),"# rank routes by on-time rate
+result = df.groupby('route').apply(lambda g: (g['delay_minutes']==0).mean()).sort_values(ascending=False).reset_index(name='on_time_rate')
+"
+401,How many shipments had zero delay? (count only),result = (df['delay_minutes']==0).sum(),"# count shipments with zero delay
+result = df[df['delay_minutes']==0].shape[0]
+"
+402,Which warehouse had the most weather-related delays? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+403,How many shipments were sent from each warehouse? (detailed),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+404,Which warehouse served the most different routes? (detailed),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+405,Predict next week's delay rate using historical averages. (count only),df['date']=pd.to_datetime(df['date']); last_28=df[df['date']>df['date'].max()-pd.Timedelta(days=27)]; result = (last_28['delay_minutes']>0).mean(),"df['date']=pd.to_datetime(df['date'])
+max_date = df['date'].max()
+last_28 = df[df['date'] > max_date - pd.Timedelta(days=27)]
+result = (last_28['delay_minutes'] > 0).mean()
+"
+406,What is the average delay time across all shipments? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+407,Which warehouse had the least total delay minutes? (count only),result = df['delay_minutes'].sum(),"# total delay minutes across dataset
+result = df['delay_minutes'].sum()
+"
+408,Which warehouse had the highest number of delayed shipments? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+409,Which route has the lowest average delivery time? (detailed),result = df.groupby('route')['delivery_time'].mean().idxmin(),"# route with lowest average delivery time
+result = df.groupby('route')['delivery_time'].mean().idxmin()
+"
+410,What is the maximum recorded delay time? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+411,List all shipments in October with delay above 20 minutes. (count only),df['date']=pd.to_datetime(df['date']); result = df[(df['date'].dt.month==10)&(df['delay_minutes']>20)],"df['date']=pd.to_datetime(df['date'])
+result = df[(df['date'].dt.month == 10) & (df['delay_minutes'] > 20)].reset_index(drop=True)
+"
+412,What is the maximum recorded delay time? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+413,Which warehouse had the most weather-related delays? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+414,How many shipments occurred per month? (detailed),df['date']=pd.to_datetime(df['date']); result = df.groupby(df['date'].dt.month)['id'].count(),"df['date']=pd.to_datetime(df['date'])
+# shipments per month
+result = df.groupby(df['date'].dt.month)['id'].count().reset_index(name='count')
+"
+415,Rank all routes by reliability (fewest delays to most). (count only),result = df.groupby('route').apply(lambda g:(g['delay_minutes']==0).mean()).sort_values(ascending=False),"# rank routes by on-time rate
+result = df.groupby('route').apply(lambda g: (g['delay_minutes']==0).mean()).sort_values(ascending=False).reset_index(name='on_time_rate')
+"
+416,Which warehouse handled the most shipments overall? (detailed),result = df['warehouse'].value_counts().idxmax(),"# warehouse with most shipments
+result = df['warehouse'].value_counts().idxmax()
+"
+417,List top 5 routes with longest delays this quarter. (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+418,How many shipments were sent from each warehouse? (detailed),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+419,Which warehouse handled the most shipments overall? (detailed),result = df['warehouse'].value_counts().idxmax(),"# warehouse with most shipments
+result = df['warehouse'].value_counts().idxmax()
+"
+420,How many shipments were sent from each warehouse? (detailed),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+421,What is the 95th percentile of delivery time? (detailed),result = df['delivery_time'].quantile(0.95),"# 95th percentile of delivery_time
+result = df['delivery_time'].quantile(0.95)
+"
+422,Which route has the lowest average delivery time? (detailed),result = df.groupby('route')['delivery_time'].mean().idxmin(),"# route with lowest average delivery time
+result = df.groupby('route')['delivery_time'].mean().idxmin()
+"
+423,Which month had the highest delay rate? (count only),df['date']=pd.to_datetime(df['date']); result = df.groupby(df['date'].dt.month).apply(lambda g:(g['delay_minutes']>0).mean()).idxmax(),"df['date']=pd.to_datetime(df['date'])
+# month with highest delay rate
+result = df.groupby(df['date'].dt.month).apply(lambda g: (g['delay_minutes']>0).mean()).idxmax()
+"
+424,What is the median delivery time by route? (detailed),result = df.groupby('route')['delivery_time'].median(),"# median delivery time by route
+result = df.groupby('route')['delivery_time'].median().reset_index()
+"
+425,Which warehouse shows the shortest delivery time overall? (detailed),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+426,Which route had the fewest shipments? (detailed),result = df['route'].value_counts().idxmin(),"# route with fewest shipments
+result = df['route'].value_counts().idxmin()
+"
+427,Which warehouse handled the most shipments overall? (detailed),result = df['warehouse'].value_counts().idxmax(),"# warehouse with most shipments
+result = df['warehouse'].value_counts().idxmax()
+"
+428,Which warehouse shows the shortest delivery time overall? (detailed),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+429,Show all shipments delayed last week. (count only),df['date']=pd.to_datetime(df['date']); maxd=df['date'].max(); last_week=df[(df['date']>maxd-pd.Timedelta(days=7))]; result = last_week[last_week['delay_minutes']>0],"df['date']=pd.to_datetime(df['date'])
+max_date = df['date'].max()
+last_week = df[(df['date'] > max_date - pd.Timedelta(days=7))]
+result = last_week[last_week['delay_minutes'] > 0].reset_index(drop=True)
+"
+430,What is the median delivery time by route? (detailed),result = df.groupby('route')['delivery_time'].median(),"# median delivery time by route
+result = df.groupby('route')['delivery_time'].median().reset_index()
+"
+431,Which warehouse has the longest average delay? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+432,What is the average delay time across all shipments? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+433,What is the 95th percentile of delivery time? (detailed),result = df['delivery_time'].quantile(0.95),"# 95th percentile of delivery_time
+result = df['delivery_time'].quantile(0.95)
+"
+434,Show average delay per route in the last two weeks. (count only),df['date']=pd.to_datetime(df['date']); maxd=df['date'].max(); window=df[(df['date']>maxd-pd.Timedelta(days=13))]; result = window.groupby('route')['delay_minutes'].mean(),"df['date']=pd.to_datetime(df['date'])
+max_date = df['date'].max()
+window = df[(df['date'] > max_date - pd.Timedelta(days=13))]
+result = window.groupby('route')['delay_minutes'].mean().reset_index()
+"
+435,How many shipments were sent from each warehouse? (detailed),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+436,Which route has the highest average delivery time? (detailed),result = df.groupby('route')['delivery_time'].mean().idxmax(),"# route with highest average delivery time
+result = df.groupby('route')['delivery_time'].mean().idxmax()
+"
+437,List all shipments in October with delay above 20 minutes. (count only),df['date']=pd.to_datetime(df['date']); result = df[(df['date'].dt.month==10)&(df['delay_minutes']>20)],"df['date']=pd.to_datetime(df['date'])
+result = df[(df['date'].dt.month == 10) & (df['delay_minutes'] > 20)].reset_index(drop=True)
+"
+438,What is the average delay time across all shipments? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+439,What is the average delay time per warehouse? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+440,What is the average delay time across all shipments? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+441,What is the most recent shipment date? (detailed),df['date']=pd.to_datetime(df['date']); result = df['date'].max(),"df['date']=pd.to_datetime(df['date'])
+# most recent shipment date
+result = df['date'].max()
+"
+442,List top 5 routes with longest delays this quarter. (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+443,What is the average delay time per warehouse? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+444,How many shipments took more than 6 days? (detailed),result = (df['delivery_time']>6).sum(),"# shipments with delivery_time more than 6
+result = df[df['delivery_time'] > 6].shape[0]
+"
+445,How many shipments were sent from each warehouse? (detailed),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+446,Rank all routes by reliability (fewest delays to most). (count only),result = df.groupby('route').apply(lambda g:(g['delay_minutes']==0).mean()).sort_values(ascending=False),"# rank routes by on-time rate
+result = df.groupby('route').apply(lambda g: (g['delay_minutes']==0).mean()).sort_values(ascending=False).reset_index(name='on_time_rate')
+"
+447,How many shipments took less than 3 days? (detailed),result = (df['delivery_time']<3).sum(),"# shipments with delivery_time less than 3
+result = df[df['delivery_time'] < 3].shape[0]
+"
+448,How many unique routes are there? (detailed),result = df['route'].nunique(),"# number of unique routes
+result = df['route'].nunique()
+"
+449,How many warehouses are involved? (detailed),result = df['warehouse'].nunique(),"# number of unique warehouses
+result = df['warehouse'].nunique()
+"
+450,Show all shipments delayed last week. (count only),df['date']=pd.to_datetime(df['date']); maxd=df['date'].max(); last_week=df[(df['date']>maxd-pd.Timedelta(days=7))]; result = last_week[last_week['delay_minutes']>0],"df['date']=pd.to_datetime(df['date'])
+max_date = df['date'].max()
+last_week = df[(df['date'] > max_date - pd.Timedelta(days=7))]
+result = last_week[last_week['delay_minutes'] > 0].reset_index(drop=True)
+"
+451,How many shipments took less than 3 days? (detailed),result = (df['delivery_time']<3).sum(),"# shipments with delivery_time less than 3
+result = df[df['delivery_time'] < 3].shape[0]
+"
+452,Which warehouse served the most different routes? (detailed),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+453,Which warehouse had the most weather-related delays? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+454,Which route had the longest single delay event? (count only),"idx = df['delay_minutes'].idxmax(); result = df.loc[idx, ['route','delay_minutes','date']].to_dict()","idx = df['delay_minutes'].idxmax()
+result = df.loc[idx, ['route', 'delay_minutes', 'date']].to_dict()
+"
+455,Predict next week's delay rate using historical averages. (count only),df['date']=pd.to_datetime(df['date']); last_28=df[df['date']>df['date'].max()-pd.Timedelta(days=27)]; result = (last_28['delay_minutes']>0).mean(),"df['date']=pd.to_datetime(df['date'])
+max_date = df['date'].max()
+last_28 = df[df['date'] > max_date - pd.Timedelta(days=27)]
+result = (last_28['delay_minutes'] > 0).mean()
+"
+456,Show total delayed shipments last month. (count only),df['date']=pd.to_datetime(df['date']); m=df['date'].max().month; y=df['date'].max().year; result = df[(df['date'].dt.month==m)&(df['date'].dt.year==y)&(df['delay_minutes']>0)].shape[0],"df['date']=pd.to_datetime(df['date'])
+max_date = df['date'].max()
+month = max_date.month; year = max_date.year
+result = df[(df['date'].dt.month==month) & (df['date'].dt.year==year) & (df['delay_minutes']>0)].shape[0]
+"
+457,Which route has the highest average delivery time? (detailed),result = df.groupby('route')['delivery_time'].mean().idxmax(),"# route with highest average delivery time
+result = df.groupby('route')['delivery_time'].mean().idxmax()
+"
+458,What is the earliest shipment date recorded? (detailed),df['date']=pd.to_datetime(df['date']); result = df['date'].min(),"df['date']=pd.to_datetime(df['date'])
+# earliest shipment date
+result = df['date'].min()
+"
+459,What is the total delay time across all shipments? (count only),result = df['delay_minutes'].sum(),"# total delay minutes across dataset
+result = df['delay_minutes'].sum()
+"
+460,What is the 95th percentile of delivery time? (detailed),result = df['delivery_time'].quantile(0.95),"# 95th percentile of delivery_time
+result = df['delivery_time'].quantile(0.95)
+"
+461,Show total delayed shipments last month. (count only),df['date']=pd.to_datetime(df['date']); m=df['date'].max().month; y=df['date'].max().year; result = df[(df['date'].dt.month==m)&(df['date'].dt.year==y)&(df['delay_minutes']>0)].shape[0],"df['date']=pd.to_datetime(df['date'])
+max_date = df['date'].max()
+month = max_date.month; year = max_date.year
+result = df[(df['date'].dt.month==month) & (df['date'].dt.year==year) & (df['delay_minutes']>0)].shape[0]
+"
+462,What is the average delay time across all shipments? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+463,What is the most recent shipment date? (detailed),df['date']=pd.to_datetime(df['date']); result = df['date'].max(),"df['date']=pd.to_datetime(df['date'])
+# most recent shipment date
+result = df['date'].max()
+"
+464,What percentage of all shipments were delayed? (count only),result = (df['delay_minutes']>0).mean()*100,"# percentage of shipments delayed
+result = (df['delay_minutes']>0).mean() * 100
+"
+465,How many warehouses are involved? (detailed),result = df['warehouse'].nunique(),"# number of unique warehouses
+result = df['warehouse'].nunique()
+"
+466,Show the route-wise breakdown of delay reasons. (count only),"result = df[df['delay_minutes']>0].groupby(['route','delay_reason'])['id'].count()","# breakdown of delay reasons by route
+result = df[df['delay_minutes']>0].groupby(['route','delay_reason'])['id'].count().reset_index(name='count')
+"
+467,What is the correlation between delivery_time and delay_minutes? (count only),result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+468,Which warehouse had the most weather-related delays? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+469,Which warehouse had the most weather-related delays? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+470,Which warehouse had the least total delay minutes? (count only),result = df['delay_minutes'].sum(),"# total delay minutes across dataset
+result = df['delay_minutes'].sum()
+"
+471,What day of the week has the most shipments? (detailed),df['date']=pd.to_datetime(df['date']); result = df.groupby(df['date'].dt.day_name())['id'].count().idxmax(),"df['date']=pd.to_datetime(df['date'])
+# day of week with most shipments
+result = df.groupby(df['date'].dt.day_name())['id'].count().idxmax()
+"
+472,What is the most recent shipment date? (detailed),df['date']=pd.to_datetime(df['date']); result = df['date'].max(),"df['date']=pd.to_datetime(df['date'])
+# most recent shipment date
+result = df['date'].max()
+"
+473,What is the 95th percentile of delivery time? (detailed),result = df['delivery_time'].quantile(0.95),"# 95th percentile of delivery_time
+result = df['delivery_time'].quantile(0.95)
+"
+474,What is the total delay time across all shipments? (count only),result = df['delay_minutes'].sum(),"# total delay minutes across dataset
+result = df['delay_minutes'].sum()
+"
+475,Show total delayed shipments last month. (count only),df['date']=pd.to_datetime(df['date']); m=df['date'].max().month; y=df['date'].max().year; result = df[(df['date'].dt.month==m)&(df['date'].dt.year==y)&(df['delay_minutes']>0)].shape[0],"df['date']=pd.to_datetime(df['date'])
+max_date = df['date'].max()
+month = max_date.month; year = max_date.year
+result = df[(df['date'].dt.month==month) & (df['date'].dt.year==year) & (df['delay_minutes']>0)].shape[0]
+"
+476,What is the average delay time across all shipments? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+477,Which warehouse had the most weather-related delays? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+478,Which warehouse had the most weather-related delays? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+479,What is the average delay time across all shipments? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+480,Find routes where delivery time is rising but delay minutes are decreasing. (count only),"df['date']=pd.to_datetime(df['date']); result = []
+# compute monthly trend per route
+monthly_dt = df.set_index(pd.to_datetime(df['date'])).groupby('route')['delivery_time'].resample('M').mean().unstack(0)
+monthly_delay = df.set_index(pd.to_datetime(df['date'])).groupby('route')['delay_minutes'].resample('M').mean().unstack(0)
+for col in monthly_dt.columns:
+    if monthly_dt[col].iloc[-1] > monthly_dt[col].iloc[0] and monthly_delay[col].iloc[-1] < monthly_delay[col].iloc[0]:
+        result.append(col)","df['date']=pd.to_datetime(df['date'])
+monthly_dt = df.set_index('date').groupby('route')['delivery_time'].resample('M').mean().unstack(0)
+monthly_delay = df.set_index('date').groupby('route')['delay_minutes'].resample('M').mean().unstack(0)
+trend_dt = (monthly_dt.iloc[-1] - monthly_dt.iloc[0]) > 0
+trend_delay = (monthly_delay.iloc[-1] - monthly_delay.iloc[0]) < 0
+result = list(monthly_dt.columns[trend_dt & trend_delay])
+"
+481,How many warehouses are involved? (detailed),result = df['warehouse'].nunique(),"# number of unique warehouses
+result = df['warehouse'].nunique()
+"
+482,What day of the week has the most shipments? (detailed),df['date']=pd.to_datetime(df['date']); result = df.groupby(df['date'].dt.day_name())['id'].count().idxmax(),"df['date']=pd.to_datetime(df['date'])
+# day of week with most shipments
+result = df.groupby(df['date'].dt.day_name())['id'].count().idxmax()
+"
+483,What percentage of all shipments were delayed? (count only),result = (df['delay_minutes']>0).mean()*100,"# percentage of shipments delayed
+result = (df['delay_minutes']>0).mean() * 100
+"
+484,How many shipments occurred per month? (detailed),df['date']=pd.to_datetime(df['date']); result = df.groupby(df['date'].dt.month)['id'].count(),"df['date']=pd.to_datetime(df['date'])
+# shipments per month
+result = df.groupby(df['date'].dt.month)['id'].count().reset_index(name='count')
+"
+485,Which warehouse had the most weather-related delays? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+486,Which warehouse served the most different routes? (detailed),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+487,Which warehouse shows the shortest delivery time overall? (detailed),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+488,What is the correlation between delivery_time and delay_minutes? (count only),result = df['delivery_time'].corr(df['delay_minutes']),"# correlation between delivery_time and delay_minutes
+result = df['delivery_time'].corr(df['delay_minutes'])
+"
+489,Rank all routes by reliability (fewest delays to most). (count only),result = df.groupby('route').apply(lambda g:(g['delay_minutes']==0).mean()).sort_values(ascending=False),"# rank routes by on-time rate
+result = df.groupby('route').apply(lambda g: (g['delay_minutes']==0).mean()).sort_values(ascending=False).reset_index(name='on_time_rate')
+"
+490,Show the route-wise breakdown of delay reasons. (count only),"result = df[df['delay_minutes']>0].groupby(['route','delay_reason'])['id'].count()","# breakdown of delay reasons by route
+result = df[df['delay_minutes']>0].groupby(['route','delay_reason'])['id'].count().reset_index(name='count')
+"
+491,How many shipments had zero delay? (count only),result = (df['delay_minutes']==0).sum(),"# count shipments with zero delay
+result = df[df['delay_minutes']==0].shape[0]
+"
+492,What is the earliest shipment date recorded? (detailed),df['date']=pd.to_datetime(df['date']); result = df['date'].min(),"df['date']=pd.to_datetime(df['date'])
+# earliest shipment date
+result = df['date'].min()
+"
+493,Predict next week's delay rate using historical averages. (count only),df['date']=pd.to_datetime(df['date']); last_28=df[df['date']>df['date'].max()-pd.Timedelta(days=27)]; result = (last_28['delay_minutes']>0).mean(),"df['date']=pd.to_datetime(df['date'])
+max_date = df['date'].max()
+last_28 = df[df['date'] > max_date - pd.Timedelta(days=27)]
+result = (last_28['delay_minutes'] > 0).mean()
+"
+494,Which route has the lowest average delivery time? (detailed),result = df.groupby('route')['delivery_time'].mean().idxmin(),"# route with lowest average delivery time
+result = df.groupby('route')['delivery_time'].mean().idxmin()
+"
+495,What is the maximum recorded delay time? (count only),"result = {'shape': df.shape, 'columns': list(df.columns)}","result = {'shape': df.shape, 'columns': list(df.columns), 'sample': df.head(3).to_dict(orient='records')}
+"
+496,How many shipments occurred per month? (detailed),df['date']=pd.to_datetime(df['date']); result = df.groupby(df['date'].dt.month)['id'].count(),"df['date']=pd.to_datetime(df['date'])
+# shipments per month
+result = df.groupby(df['date'].dt.month)['id'].count().reset_index(name='count')
+"
+497,Which warehouse had the least total delay minutes? (count only),result = df['delay_minutes'].sum(),"# total delay minutes across dataset
+result = df['delay_minutes'].sum()
+"
+498,Which week had the most deliveries? (detailed),df['date']=pd.to_datetime(df['date']); result = df.groupby(df['date'].dt.isocalendar().week)['id'].count().idxmax(),"df['date']=pd.to_datetime(df['date'])
+# week number with most deliveries
+result = df.groupby(df['date'].dt.isocalendar().week)['id'].count().idxmax()
+"
+499,How many shipments had zero delay? (count only),result = (df['delay_minutes']==0).sum(),"# count shipments with zero delay
+result = df[df['delay_minutes']==0].shape[0]
+"
+500,Which routes had no delays at all? (count only),"result = [r for r,g in df.groupby('route') if (g['delay_minutes']>0).sum()==0]","groups = df.groupby('route')
+# routes with zero delays
+result = [route for route, g in groups if (g['delay_minutes']>0).sum() == 0]
+"

@@ -1,0 +1,46 @@
+"""
+Configuration for Hermes AI - paths and PandasAI / LLM config
+"""
+from pathlib import Path
+import os
+from pandasai.helpers.logger import Logger
+from pandasai_litellm.litellm import LiteLLM
+import pandasai as pai
+
+# Directories
+ROOT_DIR = Path(__file__).resolve().parents[2]
+
+DATA_DIR = os.path.join(ROOT_DIR, "data")
+LOGS_DIR = os.path.join(ROOT_DIR, "logs")
+CACHE_DIR = os.path.join(ROOT_DIR, ".cache")
+CHARTS_DIR = os.path.join(ROOT_DIR, "charts")
+
+SHIPMENTS_FILE = os.path.join(DATA_DIR, "shipments.csv")
+QUESTIONS_FILE = os.path.join(DATA_DIR, "shipment_questions_500.csv")
+SEMANTIC_DATASET_PATH = "hermes/shipments"
+
+for d in (LOGS_DIR, CACHE_DIR, CHARTS_DIR):
+    os.makedirs(d, exist_ok=True)
+
+# PandasAI + LLM configuration
+pandasai_logger = Logger(save_logs=True, verbose=False)
+
+# LiteLLM config - adjust model, base_url, api_key to your environment
+llm = LiteLLM(
+    model="openai/Qwen/Qwen3-14B-AWQ",
+    base_url="http://localhost:8001/v1",
+    api_key="EMPTY",
+    temperature=0.1,
+    max_tokens=2000
+)
+
+pai.config.set({
+    "llm": llm,
+    "logger": pandasai_logger,
+    "enable_cache": True,
+    "save_charts": True,
+    "save_charts_path": CHARTS_DIR,
+    "verbose": False,
+    "enforce_privacy": True,
+    "max_retries": 3
+})

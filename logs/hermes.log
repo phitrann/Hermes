@@ -1,0 +1,1756 @@
+2025-11-04 01:33:16,356 - __main__ - INFO - Starting Hermes AI Logistics Assistant...
+2025-11-04 01:34:45,513 - __main__ - INFO - Loaded 100 records from ./data/shipments.csv
+2025-11-04 01:34:45,514 - __main__ - INFO - Processing query: What is the earliest shipment date recorded?
+2025-11-04 01:34:45,514 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+What is the earliest shipment date recorded?
+2025-11-04 01:34:45,828 - __main__ - ERROR - Query processing error: '__main__'
+2025-11-04 01:35:15,511 - __main__ - INFO - Starting Hermes AI Logistics Assistant...
+2025-11-04 01:36:21,308 - __main__ - INFO - Loaded 100 records from ./data/shipments.csv
+2025-11-04 01:36:21,309 - __main__ - INFO - Processing query: How many total shipments are in the dataset?
+2025-11-04 01:36:21,310 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset?
+2025-11-04 01:36:21,634 - __main__ - ERROR - Query processing error: '__main__'
+2025-11-04 01:36:35,962 - __main__ - INFO - Starting Hermes AI Logistics Assistant...
+2025-11-04 01:36:40,646 - __main__ - INFO - Loaded 100 records from ./data/shipments.csv
+2025-11-04 01:36:40,652 - __main__ - INFO - Processing query: How many total shipments are in the dataset?
+2025-11-04 01:36:40,652 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset?/no_think
+2025-11-04 01:36:40,978 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 01:36:40,978 - pandasai.helpers.logger - INFO - Prompt ID: 15f9f038-4669-4e1c-992b-947b48c59d46
+2025-11-04 01:36:40,979 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 01:36:40,989 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset?/no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 01:36:43,056 - pandasai.helpers.logger - INFO - Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = "SELECT COUNT(*) AS total_shipments FROM table_59b7f3ed4ed7cd77df01e47e99243e95;"
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "number",
+    "value": int(result_df.iloc[0]["total_shipments"])
+}
+2025-11-04 01:36:43,058 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 01:36:43,059 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 01:36:43,059 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 01:36:43,061 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = 'SELECT COUNT(*) AS total_shipments FROM table_59b7f3ed4ed7cd77df01e47e99243e95'
+result_df = execute_sql_query(sql_query)
+result = {'type': 'number', 'value': int(result_df.iloc[0]['total_shipments'])}
+2025-11-04 01:36:43,085 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 01:36:43,086 - __main__ - ERROR - Query processing error: 'cost'
+2025-11-04 01:41:14,088 - __main__ - INFO - Processing query: How many total shipments are in the dataset?
+2025-11-04 01:41:14,088 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset?/no_think
+2025-11-04 01:41:14,089 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 01:41:14,090 - pandasai.helpers.logger - INFO - Prompt ID: c5a59730-a4e9-457c-af70-b0587146c48d
+2025-11-04 01:41:14,091 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 01:41:14,108 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset?/no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 01:41:15,809 - pandasai.helpers.logger - INFO - Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = "SELECT COUNT(*) AS total_shipments FROM table_59b7f3ed4ed7cd77df01e47e99243e95;"
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "number",
+    "value": int(result_df.iloc[0]["total_shipments"])
+}
+2025-11-04 01:41:15,813 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 01:41:15,814 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 01:41:15,815 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 01:41:15,817 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = 'SELECT COUNT(*) AS total_shipments FROM table_59b7f3ed4ed7cd77df01e47e99243e95'
+result_df = execute_sql_query(sql_query)
+result = {'type': 'number', 'value': int(result_df.iloc[0]['total_shipments'])}
+2025-11-04 01:41:15,867 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 01:41:15,869 - __main__ - ERROR - Query processing error: 'cost'
+2025-11-04 01:41:44,392 - __main__ - INFO - Starting Hermes AI Logistics Assistant...
+2025-11-04 01:41:59,489 - __main__ - INFO - Loaded 100 records from ./data/shipments.csv
+2025-11-04 01:41:59,490 - __main__ - INFO - Processing query: How many total shipments are in the dataset?
+2025-11-04 01:41:59,491 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset?/no_think
+2025-11-04 01:41:59,806 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 01:41:59,806 - pandasai.helpers.logger - INFO - Prompt ID: 3a82e7cd-d4e5-433d-bf70-fb093499dd57
+2025-11-04 01:41:59,807 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 01:41:59,817 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset?/no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 01:42:01,615 - pandasai.helpers.logger - INFO - Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = "SELECT COUNT(*) AS total_shipments FROM table_59b7f3ed4ed7cd77df01e47e99243e95;"
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "number",
+    "value": int(result_df.iloc[0]["total_shipments"])
+}
+2025-11-04 01:42:01,618 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 01:42:01,619 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 01:42:01,620 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 01:42:01,622 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = 'SELECT COUNT(*) AS total_shipments FROM table_59b7f3ed4ed7cd77df01e47e99243e95'
+result_df = execute_sql_query(sql_query)
+result = {'type': 'number', 'value': int(result_df.iloc[0]['total_shipments'])}
+2025-11-04 01:42:01,650 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 01:42:24,367 - __main__ - INFO - Processing query: How many unique routes are there?
+2025-11-04 01:42:24,367 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many unique routes are there?/no_think
+2025-11-04 01:42:24,369 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 01:42:24,370 - pandasai.helpers.logger - INFO - Prompt ID: a42a6ec6-5836-4f81-b319-0e0e83bf6314
+2025-11-04 01:42:24,372 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 01:42:24,409 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many unique routes are there?/no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 01:42:26,251 - pandasai.helpers.logger - INFO - Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+    SELECT COUNT(DISTINCT route) AS unique_routes_count
+    FROM table_59b7f3ed4ed7cd77df01e47e99243e95;
+"""
+
+# Execute the SQL query
+result_df = execute_sql_query(sql_query)
+
+# Declare result var:
+result = {
+    "type": "number",
+    "value": result_df.iloc[0, 0]
+}
+2025-11-04 01:42:26,256 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 01:42:26,258 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 01:42:26,259 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 01:42:26,265 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = """
+    SELECT COUNT(DISTINCT route) AS unique_routes_count
+    FROM table_59b7f3ed4ed7cd77df01e47e99243e95;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'number', 'value': result_df.iloc[0, 0]}
+2025-11-04 01:42:26,322 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 01:46:53,817 - __main__ - INFO - Processing query: How many total shipments are in the dataset?
+2025-11-04 01:46:53,817 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset?/no_think
+2025-11-04 01:46:53,819 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 01:46:53,821 - pandasai.helpers.logger - INFO - Prompt ID: c67d1a23-4d6c-422a-bf80-74dd66b95d51
+2025-11-04 01:46:53,823 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 01:46:53,862 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset?/no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 01:46:55,588 - pandasai.helpers.logger - INFO - Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = "SELECT COUNT(*) AS total_shipments FROM table_59b7f3ed4ed7cd77df01e47e99243e95;"
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "number",
+    "value": int(result_df.iloc[0]["total_shipments"])
+}
+2025-11-04 01:46:55,592 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 01:46:55,594 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 01:46:55,595 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 01:46:55,600 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = 'SELECT COUNT(*) AS total_shipments FROM table_59b7f3ed4ed7cd77df01e47e99243e95'
+result_df = execute_sql_query(sql_query)
+result = {'type': 'number', 'value': int(result_df.iloc[0]['total_shipments'])}
+2025-11-04 01:46:55,652 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 01:47:35,629 - __main__ - INFO - Model trained: R²=0.0353, RMSE=18.18
+2025-11-04 01:47:43,771 - __main__ - INFO - Processing query: Which route had the fewest shipments?
+2025-11-04 01:47:43,771 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+Which route had the fewest shipments?/no_think
+2025-11-04 01:47:43,773 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 01:47:43,777 - pandasai.helpers.logger - INFO - Prompt ID: 88eecfb8-2be7-4881-9a77-b1470630be76
+2025-11-04 01:47:43,779 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 01:47:43,813 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+Which route had the fewest shipments?/no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 01:47:46,104 - pandasai.helpers.logger - INFO - Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT route, COUNT(*) AS num_shipments
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+GROUP BY route
+ORDER BY num_shipments ASC
+LIMIT 1;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "string",
+    "value": f"The route with the fewest shipments is {result_df.iloc[0]['route']} with {result_df.iloc[0]['num_shipments']} shipments."
+}
+2025-11-04 01:47:46,108 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 01:47:46,111 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 01:47:46,112 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 01:47:46,118 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = """
+SELECT route, COUNT(*) AS num_shipments
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+GROUP BY route
+ORDER BY num_shipments ASC
+LIMIT 1;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'string', 'value': f"The route with the fewest shipments is {result_df.iloc[0]['route']} with {result_df.iloc[0]['num_shipments']} shipments."}
+2025-11-04 01:47:46,176 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 13:31:48,619 - __main__ - INFO - Starting Hermes AI Logistics Assistant...
+2025-11-04 13:32:34,316 - __main__ - INFO - Loaded 100 records from ./data/shipments.csv
+2025-11-04 13:32:34,317 - __main__ - INFO - Processing query: How many total shipments are in the dataset?
+2025-11-04 13:32:34,317 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset?
+2025-11-04 13:32:34,625 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 13:32:34,626 - pandasai.helpers.logger - INFO - Prompt ID: 71d96e21-5bb5-43fd-9879-b5420209d187
+2025-11-04 13:32:34,626 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 13:32:34,636 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset?
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 13:32:45,473 - pandasai.helpers.logger - INFO - Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = "SELECT COUNT(*) AS total_shipments FROM table_59b7f3ed4ed7cd77df01e47e99243e95;"
+result_df = execute_sql_query(sql_query)
+total_shipments = int(result_df.iloc[0, 0])
+
+# Declare result var: 
+result = { "type": "number", "value": total_shipments }
+2025-11-04 13:32:45,475 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 13:32:45,476 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 13:32:45,476 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 13:32:45,477 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = 'SELECT COUNT(*) AS total_shipments FROM table_59b7f3ed4ed7cd77df01e47e99243e95'
+result_df = execute_sql_query(sql_query)
+total_shipments = int(result_df.iloc[0, 0])
+result = {'type': 'number', 'value': total_shipments}
+2025-11-04 13:32:45,501 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 13:33:06,117 - __main__ - INFO - Processing query: What is the rolling 7-day average delay_minutes?
+2025-11-04 13:33:06,117 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+What is the rolling 7-day average delay_minutes?
+2025-11-04 13:33:06,118 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 13:33:06,119 - pandasai.helpers.logger - INFO - Prompt ID: 23738cad-737f-434f-800f-1c6d148cad1d
+2025-11-04 13:33:06,120 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 13:33:06,154 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+What is the rolling 7-day average delay_minutes?
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 13:33:21,947 - pandasai.helpers.logger - INFO - Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT 
+    date,
+    delay_minutes,
+    AVG(delay_minutes) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS rolling_avg
+FROM 
+    table_59b7f3ed4ed7cd77df01e47e99243e95
+ORDER BY 
+    date;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "dataframe",
+    "value": result_df
+}
+2025-11-04 13:33:21,950 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 13:33:21,952 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 13:33:21,954 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 13:33:21,960 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = """
+SELECT 
+    date,
+    delay_minutes,
+    AVG(delay_minutes) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS rolling_avg
+FROM 
+    table_59b7f3ed4ed7cd77df01e47e99243e95
+ORDER BY 
+    date;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'dataframe', 'value': result_df}
+2025-11-04 13:33:22,021 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 13:34:30,085 - __main__ - INFO - Processing query: Show delay reason counts for WH4.
+2025-11-04 13:34:30,085 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+Show delay reason counts for WH4.
+2025-11-04 13:34:30,087 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 13:34:30,088 - pandasai.helpers.logger - INFO - Prompt ID: 239bb31e-7148-4777-afa4-9f37baa062a7
+2025-11-04 13:34:30,089 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 13:34:30,118 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+Show delay reason counts for WH4.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 13:34:40,784 - pandasai.helpers.logger - INFO - Code Generated:
+import pandas as pd
+
+# Execute SQL query to count delay reasons for WH4
+sql_query = """
+    SELECT delay_reason, COUNT(*) as count
+    FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+    WHERE warehouse = 'WH4'
+    GROUP BY delay_reason
+    ORDER BY count DESC;
+"""
+result_df = execute_sql_query(sql_query)
+
+# Declare result variable
+result = {
+    "type": "dataframe",
+    "value": result_df
+}
+2025-11-04 13:34:40,789 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 13:34:40,791 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 13:34:40,793 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 13:34:40,799 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = """
+    SELECT delay_reason, COUNT(*) as count
+    FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+    WHERE warehouse = 'WH4'
+    GROUP BY delay_reason
+    ORDER BY count DESC;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'dataframe', 'value': result_df}
+2025-11-04 13:34:40,860 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 13:35:28,019 - __main__ - INFO - Processing query: Show delay reason counts for WH4.
+2025-11-04 13:35:28,019 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+Show delay reason counts for WH4.
+2025-11-04 13:35:28,021 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 13:35:28,022 - pandasai.helpers.logger - INFO - Prompt ID: 4e54e245-1d94-4f79-bd7d-71ef8f64826a
+2025-11-04 13:35:28,024 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 13:35:28,058 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+Show delay reason counts for WH4.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 13:35:40,356 - pandasai.helpers.logger - INFO - Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT delay_reason, COUNT(*) as count
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+WHERE warehouse = 'WH4'
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "dataframe",
+    "value": result_df
+}
+2025-11-04 13:35:40,362 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 13:35:40,364 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 13:35:40,365 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 13:35:40,371 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = """
+SELECT delay_reason, COUNT(*) as count
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+WHERE warehouse = 'WH4'
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'dataframe', 'value': result_df}
+2025-11-04 13:35:40,427 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 13:39:09,545 - __main__ - INFO - Processing query: List top 5 routes with longest delays this quarter. (count only)
+2025-11-04 13:39:09,546 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+List top 5 routes with longest delays this quarter. (count only)
+2025-11-04 13:39:09,547 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 13:39:09,549 - pandasai.helpers.logger - INFO - Prompt ID: 9dc5223c-d6a2-460d-b5c8-343d9043b058
+2025-11-04 13:39:09,551 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 13:39:09,586 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+List top 5 routes with longest delays this quarter. (count only)
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 13:39:38,933 - pandasai.helpers.logger - INFO - Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT route, SUM(delay_minutes) AS total_delay
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+WHERE date >= '2025-01-01' AND date <= '2025-03-31'
+GROUP BY route
+ORDER BY total_delay DESC
+LIMIT 5;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "dataframe",
+    "value": result_df
+}
+2025-11-04 13:39:38,939 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 13:39:38,941 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 13:39:38,943 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 13:39:38,949 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = """
+SELECT route, SUM(delay_minutes) AS total_delay
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+WHERE date >= '2025-01-01' AND date <= '2025-03-31'
+GROUP BY route
+ORDER BY total_delay DESC
+LIMIT 5;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'dataframe', 'value': result_df}
+2025-11-04 13:39:39,010 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 13:39:41,691 - __main__ - INFO - Processing query: How many total shipments are in the dataset?
+2025-11-04 13:39:41,692 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset?
+2025-11-04 13:39:41,694 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 13:39:41,696 - pandasai.helpers.logger - INFO - Prompt ID: 4ccb4075-f431-4245-a942-7b1191bc99ed
+2025-11-04 13:39:41,697 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 13:39:41,731 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset?
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 13:39:47,661 - pandasai.helpers.logger - INFO - Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Execute SQL query to count total shipments
+sql_query = "SELECT COUNT(*) AS total_shipments FROM table_59b7f3ed4ed7cd77df01e47e99243e95;"
+result_df = execute_sql_query(sql_query)
+
+# Extract the value from the resulting DataFrame
+total_shipments = int(result_df.iloc[0]['total_shipments'])
+
+# Declare result var
+result = {
+    "type": "number",
+    "value": total_shipments
+}
+2025-11-04 13:39:47,666 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 13:39:47,669 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 13:39:47,671 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 13:39:47,677 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = 'SELECT COUNT(*) AS total_shipments FROM table_59b7f3ed4ed7cd77df01e47e99243e95'
+result_df = execute_sql_query(sql_query)
+total_shipments = int(result_df.iloc[0]['total_shipments'])
+result = {'type': 'number', 'value': total_shipments}
+2025-11-04 13:39:47,730 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 13:40:01,239 - __main__ - INFO - Processing query: What is the most recent shipment date?
+2025-11-04 13:40:01,240 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+What is the most recent shipment date?
+2025-11-04 13:40:01,242 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 13:40:01,243 - pandasai.helpers.logger - INFO - Prompt ID: 1dba3994-357b-403a-8f68-b548b38079c9
+2025-11-04 13:40:01,245 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 13:40:01,279 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+What is the most recent shipment date?
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 13:40:11,500 - pandasai.helpers.logger - INFO - Code Generated:
+import pandas as pd
+
+# Execute SQL query to find the most recent shipment date
+sql_query = "SELECT MAX(date) AS most_recent_date FROM table_59b7f3ed4ed7cd77df01e47e99243e95"
+result_df = execute_sql_query(sql_query)
+
+# Convert the result to a string in 'YYYY-MM-DD' format
+most_recent_date_str = result_df.iloc[0]['most_recent_date'].strftime('%Y-%m-%d')
+
+# Declare result variable
+result = {
+    "type": "string",
+    "value": f"The most recent shipment date is {most_recent_date_str}."
+}
+2025-11-04 13:40:11,506 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 13:40:11,508 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 13:40:11,510 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 13:40:11,515 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = 'SELECT MAX(date) AS most_recent_date FROM table_59b7f3ed4ed7cd77df01e47e99243e95'
+result_df = execute_sql_query(sql_query)
+most_recent_date_str = result_df.iloc[0]['most_recent_date'].strftime('%Y-%m-%d')
+result = {'type': 'string', 'value': f'The most recent shipment date is {most_recent_date_str}.'}
+2025-11-04 13:40:11,573 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 13:40:23,638 - __main__ - INFO - Processing query: Which warehouse handled the most shipments overall?
+2025-11-04 13:40:23,639 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+Which warehouse handled the most shipments overall?
+2025-11-04 13:40:23,640 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 13:40:23,641 - pandasai.helpers.logger - INFO - Prompt ID: 8ca275c0-cc65-4b01-ac1f-3a5771465dde
+2025-11-04 13:40:23,643 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 13:40:23,675 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+Which warehouse handled the most shipments overall?
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 13:40:48,821 - pandasai.helpers.logger - INFO - Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+    SELECT warehouse, COUNT(id) as num_shipments
+    FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+    GROUP BY warehouse
+    ORDER BY num_shipments DESC
+    LIMIT 1
+"""
+
+result_df = execute_sql_query(sql_query)
+most_shipments_warehouse = result_df.iloc[0]['warehouse']
+
+# Declare result var: 
+result = {
+    "type": "string",
+    "value": f"The warehouse that handled the most shipments is {most_shipments_warehouse}."
+}
+2025-11-04 13:40:48,826 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 13:40:48,829 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 13:40:48,831 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 13:40:48,837 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = """
+    SELECT warehouse, COUNT(id) as num_shipments
+    FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+    GROUP BY warehouse
+    ORDER BY num_shipments DESC
+    LIMIT 1
+"""
+result_df = execute_sql_query(sql_query)
+most_shipments_warehouse = result_df.iloc[0]['warehouse']
+result = {'type': 'string', 'value': f'The warehouse that handled the most shipments is {most_shipments_warehouse}.'}
+2025-11-04 13:40:48,888 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 13:43:44,731 - __main__ - INFO - Processing query: On which route were delays most frequent?
+2025-11-04 13:43:44,731 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+On which route were delays most frequent?
+2025-11-04 13:43:44,732 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 13:43:44,732 - pandasai.helpers.logger - INFO - Prompt ID: fe9e79bc-ef09-4f88-8c0f-a91da76aa7ac
+2025-11-04 13:43:44,733 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 13:43:44,757 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+On which route were delays most frequent?
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 13:44:11,239 - pandasai.helpers.logger - INFO - Code Generated:
+import pandas as pd
+
+sql_query = """
+SELECT route, COUNT(*) as delay_count
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY delay_count DESC
+LIMIT 1;
+"""
+
+result_df = execute_sql_query(sql_query)
+most_frequent_route = result_df.iloc[0]['route']
+
+result = {
+    "type": "string",
+    "value": most_frequent_route
+}
+2025-11-04 13:44:11,244 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 13:44:11,247 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 13:44:11,249 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 13:44:11,254 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query = """
+SELECT route, COUNT(*) as delay_count
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY delay_count DESC
+LIMIT 1;
+"""
+result_df = execute_sql_query(sql_query)
+most_frequent_route = result_df.iloc[0]['route']
+result = {'type': 'string', 'value': most_frequent_route}
+2025-11-04 13:44:11,312 - pandasai.helpers.logger - INFO - Response generated successfully.
+2025-11-04 13:45:22,551 - __main__ - INFO - Processing query: On which route were delays most frequent?
+Visualize the average delivery time for each route
+
+2025-11-04 13:45:22,552 - pandasai.helpers.logger - INFO - Question: <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+On which route were delays most frequent?
+Visualize the average delivery time for each route
+
+2025-11-04 13:45:22,553 - pandasai.helpers.logger - INFO - Running PandasAI with litellm LLM...
+2025-11-04 13:45:22,554 - pandasai.helpers.logger - INFO - Prompt ID: 21cbbb23-e388-48ca-a403-1a44cafe82d8
+2025-11-04 13:45:22,556 - pandasai.helpers.logger - INFO - Generating new code...
+2025-11-04 13:45:22,588 - pandasai.helpers.logger - INFO - Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+On which route were delays most frequent?
+Visualize the average delivery time for each route
+
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-04 13:45:52,405 - pandasai.helpers.logger - INFO - An error occurred during code generation: No code found in the response
+2025-11-04 13:45:52,407 - pandasai.helpers.logger - INFO - Stack Trace:
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+2025-11-04 13:45:52,409 - pandasai.helpers.logger - INFO - Execution failed with error: Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 165, in generate_code_with_retries
+    return self.generate_code(query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 110, in generate_code
+    code = self._code_generator.generate_code(prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 47, in generate_code
+    raise e
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+2025-11-04 13:45:52,424 - pandasai.helpers.logger - INFO - Using Prompt: <table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+The user asked the following question:
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+On which route were delays most frequent?
+Visualize the average delivery time for each route
+
+
+You generated the following Python code:
+import pandas as pd
+
+sql_query = """
+SELECT route, COUNT(*) as delay_count
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY delay_count DESC
+LIMIT 1;
+"""
+
+result_df = execute_sql_query(sql_query)
+most_frequent_route = result_df.iloc[0]['route']
+
+result = {
+    "type": "string",
+    "value": most_frequent_route
+}
+
+However, it resulted in the following error:
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 165, in generate_code_with_retries
+    return self.generate_code(query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 110, in generate_code
+    code = self._code_generator.generate_code(prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 47, in generate_code
+    raise e
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+
+Fix the python code above and return the new python code but the code generated should use execute_sql_query function
+2025-11-04 13:46:22,972 - pandasai.helpers.logger - INFO - An error occurred during code generation: No code found in the response
+2025-11-04 13:46:22,974 - pandasai.helpers.logger - INFO - Stack Trace:
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 165, in generate_code_with_retries
+    return self.generate_code(query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 110, in generate_code
+    code = self._code_generator.generate_code(prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 47, in generate_code
+    raise e
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+2025-11-04 13:46:22,976 - pandasai.helpers.logger - INFO - Retrying Code Generation (1/3)...
+2025-11-04 13:46:22,979 - pandasai.helpers.logger - INFO - Execution failed with error: Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 165, in generate_code_with_retries
+    return self.generate_code(query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 110, in generate_code
+    code = self._code_generator.generate_code(prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 47, in generate_code
+    raise e
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+2025-11-04 13:46:22,993 - pandasai.helpers.logger - INFO - Using Prompt: <table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+The user asked the following question:
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+On which route were delays most frequent?
+Visualize the average delivery time for each route
+
+
+You generated the following Python code:
+import pandas as pd
+
+sql_query = """
+SELECT route, COUNT(*) as delay_count
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY delay_count DESC
+LIMIT 1;
+"""
+
+result_df = execute_sql_query(sql_query)
+most_frequent_route = result_df.iloc[0]['route']
+
+result = {
+    "type": "string",
+    "value": most_frequent_route
+}
+
+However, it resulted in the following error:
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 165, in generate_code_with_retries
+    return self.generate_code(query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 110, in generate_code
+    code = self._code_generator.generate_code(prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 47, in generate_code
+    raise e
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+
+Fix the python code above and return the new python code but the code generated should use execute_sql_query function
+2025-11-04 13:46:53,246 - pandasai.helpers.logger - INFO - An error occurred during code generation: No code found in the response
+2025-11-04 13:46:53,248 - pandasai.helpers.logger - INFO - Stack Trace:
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 165, in generate_code_with_retries
+    return self.generate_code(query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 110, in generate_code
+    code = self._code_generator.generate_code(prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 47, in generate_code
+    raise e
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+2025-11-04 13:46:53,250 - pandasai.helpers.logger - INFO - Retrying Code Generation (2/3)...
+2025-11-04 13:46:53,252 - pandasai.helpers.logger - INFO - Execution failed with error: Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 165, in generate_code_with_retries
+    return self.generate_code(query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 110, in generate_code
+    code = self._code_generator.generate_code(prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 47, in generate_code
+    raise e
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+2025-11-04 13:46:53,267 - pandasai.helpers.logger - INFO - Using Prompt: <table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+The user asked the following question:
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+On which route were delays most frequent?
+Visualize the average delivery time for each route
+
+
+You generated the following Python code:
+import pandas as pd
+
+sql_query = """
+SELECT route, COUNT(*) as delay_count
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY delay_count DESC
+LIMIT 1;
+"""
+
+result_df = execute_sql_query(sql_query)
+most_frequent_route = result_df.iloc[0]['route']
+
+result = {
+    "type": "string",
+    "value": most_frequent_route
+}
+
+However, it resulted in the following error:
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 165, in generate_code_with_retries
+    return self.generate_code(query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 110, in generate_code
+    code = self._code_generator.generate_code(prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 47, in generate_code
+    raise e
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+
+Fix the python code above and return the new python code but the code generated should use execute_sql_query function
+2025-11-04 13:47:23,586 - pandasai.helpers.logger - INFO - An error occurred during code generation: No code found in the response
+2025-11-04 13:47:23,590 - pandasai.helpers.logger - INFO - Stack Trace:
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 165, in generate_code_with_retries
+    return self.generate_code(query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 110, in generate_code
+    code = self._code_generator.generate_code(prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 47, in generate_code
+    raise e
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+2025-11-04 13:47:23,592 - pandasai.helpers.logger - INFO - Retrying Code Generation (3/3)...
+2025-11-04 13:47:23,595 - pandasai.helpers.logger - INFO - Execution failed with error: Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 165, in generate_code_with_retries
+    return self.generate_code(query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 110, in generate_code
+    code = self._code_generator.generate_code(prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 47, in generate_code
+    raise e
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+2025-11-04 13:47:23,609 - pandasai.helpers.logger - INFO - Using Prompt: <table dialect="duckdb" table_name="table_59b7f3ed4ed7cd77df01e47e99243e95" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}]" dimensions="100x7">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11
+3,Route C,WH2,4.8,0,,2024-10-12
+4,Route A,WH2,5.0,0,,2024-10-13
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14
+</table>
+
+
+The user asked the following question:
+### QUERY
+ <TIME_CONTEXT>Current date in dataset: 2025-01-17</TIME_CONTEXT>
+On which route were delays most frequent?
+Visualize the average delivery time for each route
+
+
+You generated the following Python code:
+import pandas as pd
+
+sql_query = """
+SELECT route, COUNT(*) as delay_count
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY delay_count DESC
+LIMIT 1;
+"""
+
+result_df = execute_sql_query(sql_query)
+most_frequent_route = result_df.iloc[0]['route']
+
+result = {
+    "type": "string",
+    "value": most_frequent_route
+}
+
+However, it resulted in the following error:
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 165, in generate_code_with_retries
+    return self.generate_code(query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 110, in generate_code
+    code = self._code_generator.generate_code(prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 47, in generate_code
+    raise e
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_generation/base.py", line 34, in generate_code
+    code = self._context.config.llm.generate_code(prompt, self._context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 173, in generate_code
+    return self._extract_code(response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/llm/base.py", line 118, in _extract_code
+    raise NoCodeFoundError("No code found in the response")
+pandasai.exceptions.NoCodeFoundError: No code found in the response
+
+
+Fix the python code above and return the new python code but the code generated should use execute_sql_query function
+2025-11-04 13:47:53,899 - pandasai.helpers.logger - INFO - Code Generated:
+import pandas as pd
+
+# Query to find the route with the most frequent delays
+sql_query1 = """
+SELECT route, COUNT(*) as delay_count
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY delay_count DESC
+LIMIT 1;
+"""
+
+# Execute the first query
+result_df1 = execute_sql_query(sql_query1)
+most_frequent_route = result_df1.iloc[0]['route']
+
+# Query to calculate the average delivery time per route
+sql_query2 = """
+SELECT route, AVG(delivery_time) as avg_delivery_time
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+GROUP BY route;
+"""
+
+# Execute the second query for visualization
+result_df2 = execute_sql_query(sql_query2)
+
+# Return the route with the most frequent delays
+result = {
+    "type": "string",
+    "value": most_frequent_route
+}
+2025-11-04 13:47:53,903 - pandasai.helpers.logger - INFO - Validating code requirements...
+2025-11-04 13:47:53,904 - pandasai.helpers.logger - INFO - Code validation successful.
+2025-11-04 13:47:53,905 - pandasai.helpers.logger - INFO - Cleaning the generated code...
+2025-11-04 13:47:53,906 - pandasai.helpers.logger - INFO - Executing code: import pandas as pd
+sql_query1 = """
+SELECT route, COUNT(*) as delay_count
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY delay_count DESC
+LIMIT 1;
+"""
+result_df1 = execute_sql_query(sql_query1)
+most_frequent_route = result_df1.iloc[0]['route']
+sql_query2 = """
+SELECT route, AVG(delivery_time) as avg_delivery_time
+FROM table_59b7f3ed4ed7cd77df01e47e99243e95
+GROUP BY route;
+"""
+result_df2 = execute_sql_query(sql_query2)
+result = {'type': 'string', 'value': most_frequent_route}
+2025-11-04 13:47:53,951 - pandasai.helpers.logger - INFO - Response generated successfully.
