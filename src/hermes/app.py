@@ -322,7 +322,7 @@ Based on historical data analysis, here's what I forecast:<br><br>
             return html
         except Exception as e:
             logger.exception("Prediction error")
-            return f"❌ I encountered an error generating predictions: {e}"
+            return "❌ I encountered an error generating predictions. Please ensure your data has the required columns (route, warehouse, delay_minutes) and try again."
 
     def get_recommendations(self) -> str:
         """Generate and return HTML recommendations."""
@@ -340,7 +340,7 @@ Based on historical data analysis, here's what I forecast:<br><br>
             return html
         except Exception as e:
             logger.exception("Recommendations error")
-            return f"❌ I encountered an error generating recommendations: {e}"
+            return "❌ I encountered an error generating recommendations. Please make sure your data is properly loaded and try again."
 
     def export_chat_history(self) -> Optional[str]:
         """Export chat history to JSON file and return path."""

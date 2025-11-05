@@ -91,7 +91,9 @@ def create_gradio_app():
             # Build the assistant's response with embedded chart if available
             response = formatted_html
             if chart is not None:
-                # Chart will be embedded in the message - Gradio Chatbot supports tuples (text, image)
+                # Chart will be embedded in the message
+                # Gradio Chatbot supports tuples (text, image) for inline images (requires Gradio >= 3.x)
+                # chart is a PIL Image object returned from app.process_query
                 history.append([message, (response, chart)])
             else:
                 history.append([message, response])
