@@ -117,7 +117,16 @@ def create_gradio_app():
                 result = app.get_recommendations()
             else:  # statistics
                 prompt = "Show me key statistics"
-                result = app.get_recommendations() if app.analytics else "Please load data first"
+                if app.analytics:
+                    stats = app.analytics.get_summary_stats()
+                    result = f"""<strong>📊 Key Statistics</strong><br><br>
+Total Shipments: {stats.get('total_shipments', 0)}<br>
+Delayed Shipments: {stats.get('delayed_shipments', 0)}<br>
+On-Time Rate: {stats.get('on_time_rate', 0):.1%}<br>
+Average Delay: {stats.get('avg_delay_minutes', 0):.2f} minutes<br>
+Median Delay: {stats.get('median_delay_minutes', 0):.2f} minutes"""
+                else:
+                    result = "Please load data first"
             
             history.append([prompt, result])
             return history, history, gr.update(visible=False), gr.update(visible=True)
