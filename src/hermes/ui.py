@@ -54,7 +54,13 @@ def create_gradio_app():
             value="""
             <div style='margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px;'>
                 <p style='margin-bottom: 10px; font-weight: 600; color: #333;'>💡 Try asking:</p>
-                <div id='suggestions-container'></div>
+                <ul style='list-style: none; padding: 0; margin: 0;'>
+                    <li style='padding: 8px 0; color: #555;'>• Which route had the most delays last week?</li>
+                    <li style='padding: 8px 0; color: #555;'>• Show warehouse performance metrics</li>
+                    <li style='padding: 8px 0; color: #555;'>• Visualize delivery time trends</li>
+                    <li style='padding: 8px 0; color: #555;'>• What's the average delay by route?</li>
+                    <li style='padding: 8px 0; color: #555;'>• Compare warehouse processing times</li>
+                </ul>
             </div>
             """,
             visible=True
@@ -65,15 +71,6 @@ def create_gradio_app():
             predict_btn = gr.Button("🔮 Get Predictions", size="sm")
             recommend_btn = gr.Button("💡 Get Recommendations", size="sm")
             stats_btn = gr.Button("📊 Show Statistics", size="sm")
-
-        # Sample questions for suggestions
-        sample_questions = [
-            "Which route had the most delays last week?",
-            "Show warehouse performance metrics",
-            "Visualize delivery time trends",
-            "What's the average delay by route?",
-            "Compare warehouse processing times"
-        ]
 
         def handle_submit(message, data_source, history):
             if not message or not message.strip():
@@ -134,9 +131,6 @@ Median Delay: {stats.get('median_delay_minutes', 0):.2f} minutes"""
         def handle_clear():
             app.chat_history = []
             return [], [], gr.update(visible=True), gr.update(visible=True)
-
-        def handle_suggestion_click(suggestion, data_source, history):
-            return handle_submit(suggestion, data_source, history)
 
         # Event handlers
         submit_btn.click(
