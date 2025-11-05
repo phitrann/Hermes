@@ -225,7 +225,7 @@ class HermesApp:
                 pass
         return ""
     
-    def _get_chart_for_ui(self, chart_path: Optional[str]):
+    def _get_chart_for_ui(self, chart_path: Optional[str]) -> Optional[Any]:
         """Convert chart path to PIL Image for UI display."""
         if not chart_path:
             return None

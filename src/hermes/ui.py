@@ -123,7 +123,7 @@ def create_gradio_app():
                     result = f"""<strong>📊 Key Statistics</strong><br><br>
 Total Shipments: {stats.get('total_shipments', 0)}<br>
 Delayed Shipments: {stats.get('delayed_shipments', 0)}<br>
-On-Time Rate: {stats.get('on_time_rate', 0):.1%}<br>
+On-Time Rate: {stats.get('on_time_rate', 0) * 100:.1f}%<br>
 Average Delay: {stats.get('avg_delay_minutes', 0):.2f} minutes<br>
 Median Delay: {stats.get('median_delay_minutes', 0):.2f} minutes"""
                 else:
@@ -149,35 +149,40 @@ Median Delay: {stats.get('median_delay_minutes', 0):.2f} minutes"""
             outputs=[chatbot, user_input, suggestions, suggestion_buttons, suggestion_buttons_2, suggestion_buttons_3, quick_actions]
         )
         
-        # Suggestion button handlers
+        # Suggestion button handlers - helper function to reduce duplication
+        def create_suggestion_handler(query):
+            return lambda ds, h: handle_submit(query, ds, h)
+        
+        suggestion_outputs = [chatbot, user_input, suggestions, suggestion_buttons, suggestion_buttons_2, suggestion_buttons_3, quick_actions]
+        
         suggestion_1.click(
-            fn=lambda ds, h: handle_submit("Which route had the most delays last week?", ds, h),
+            fn=create_suggestion_handler("Which route had the most delays last week?"),
             inputs=[data_dropdown, chatbot],
-            outputs=[chatbot, user_input, suggestions, suggestion_buttons, suggestion_buttons_2, suggestion_buttons_3, quick_actions]
+            outputs=suggestion_outputs
         )
         
         suggestion_2.click(
-            fn=lambda ds, h: handle_submit("Show warehouse performance metrics", ds, h),
+            fn=create_suggestion_handler("Show warehouse performance metrics"),
             inputs=[data_dropdown, chatbot],
-            outputs=[chatbot, user_input, suggestions, suggestion_buttons, suggestion_buttons_2, suggestion_buttons_3, quick_actions]
+            outputs=suggestion_outputs
         )
         
         suggestion_3.click(
-            fn=lambda ds, h: handle_submit("Visualize delivery time trends", ds, h),
+            fn=create_suggestion_handler("Visualize delivery time trends"),
             inputs=[data_dropdown, chatbot],
-            outputs=[chatbot, user_input, suggestions, suggestion_buttons, suggestion_buttons_2, suggestion_buttons_3, quick_actions]
+            outputs=suggestion_outputs
         )
         
         suggestion_4.click(
-            fn=lambda ds, h: handle_submit("What's the average delay by route?", ds, h),
+            fn=create_suggestion_handler("What's the average delay by route?"),
             inputs=[data_dropdown, chatbot],
-            outputs=[chatbot, user_input, suggestions, suggestion_buttons, suggestion_buttons_2, suggestion_buttons_3, quick_actions]
+            outputs=suggestion_outputs
         )
         
         suggestion_5.click(
-            fn=lambda ds, h: handle_submit("Compare warehouse processing times", ds, h),
+            fn=create_suggestion_handler("Compare warehouse processing times"),
             inputs=[data_dropdown, chatbot],
-            outputs=[chatbot, user_input, suggestions, suggestion_buttons, suggestion_buttons_2, suggestion_buttons_3, quick_actions]
+            outputs=suggestion_outputs
         )
         
         predict_btn.click(
