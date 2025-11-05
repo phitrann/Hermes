@@ -1,894 +1,25 @@
-2025-11-04 16:28:03 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
-2025-11-04 16:28:03 [INFO] Loaded 1000 records from /data1/workspaces/phitha1/Hermes/data/shipments_1000.csv
-2025-11-04 16:28:03 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:28:03 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:28:03 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:28:03 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:28:03 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
-2025-11-04 16:28:03 [INFO] Handling statistics request
-2025-11-04 16:28:03 [INFO] Question: <TIME_CONTEXT>Current date in dataset: 2024-12-30</TIME_CONTEXT>
-How many total shipments are in the dataset?
-2025-11-04 16:28:04 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 16:28:04 [INFO] Prompt ID: 59b4af68-15d6-4814-b625-690043bcc697
-2025-11-04 16:28:04 [INFO] Generating new code...
-2025-11-04 16:28:04 [INFO] Using Prompt: <tables>
-
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
-id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
-2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
-3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
-4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
-5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
-</table>
-
-
-</tables>
-
-You are already provided with the following functions that you can call:
-<function>
-def execute_sql_query(sql_query: str) -> pd.Dataframe
-    """This method connects to the database, executes the sql query and returns the dataframe"""
-</function>
-
-
-Update this initial code:
-```python
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-
-# Declare result var: 
-type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
-
-```
-
-
-
-### QUERY
- <TIME_CONTEXT>Current date in dataset: 2024-12-30</TIME_CONTEXT>
-How many total shipments are in the dataset?
-
-At the end, declare "result" variable as a dictionary of type and value.
-
-
-Generate python code and return full updated code:
-
-### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 16:28:17 [INFO] Code Generated:
-# TODO: import the required dependencies
-import pandas as pd
-
-# Execute SQL query to count total shipments
-count_df = execute_sql_query("SELECT COUNT(*) FROM table_6619b1d3d4c59fcb9f82845d59178bfd")
-
-# Extract the count value from the DataFrame
-total_shipments = count_df.iloc[0, 0]
-
-# Declare result variable
-result = {"type": "number", "value": total_shipments}
-2025-11-04 16:28:17 [INFO] Validating code requirements...
-2025-11-04 16:28:17 [INFO] Code validation successful.
-2025-11-04 16:28:17 [INFO] Cleaning the generated code...
-2025-11-04 16:28:17 [INFO] Executing code: import pandas as pd
-count_df = execute_sql_query('SELECT COUNT(*) FROM table_6619b1d3d4c59fcb9f82845d59178bfd')
-total_shipments = count_df.iloc[0, 0]
-result = {'type': 'number', 'value': total_shipments}
-2025-11-04 16:28:17 [INFO] Response generated successfully.
-2025-11-04 16:31:32 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
-2025-11-04 16:31:32 [INFO] Loaded 100 records from /data1/workspaces/phitha1/Hermes/data/shipments.csv
-2025-11-04 16:31:32 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:31:32 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:31:32 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:31:32 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:31:32 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
-2025-11-04 16:31:32 [INFO] Handling statistics request
-2025-11-04 16:31:32 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-How many total shipments are in the dataset? /no_think
-2025-11-04 16:31:32 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 16:31:32 [INFO] Prompt ID: fdfa2f1d-4329-464b-9bf4-6737e8aeef9d
-2025-11-04 16:31:32 [INFO] Generating new code...
-2025-11-04 16:31:32 [INFO] Using Prompt: <tables>
-
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
-id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
-2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
-3,Route C,WH2,4.8,0,,2024-10-12,1
-4,Route A,WH2,5.0,0,,2024-10-13,1
-5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
-</table>
-
-
-</tables>
-
-You are already provided with the following functions that you can call:
-<function>
-def execute_sql_query(sql_query: str) -> pd.Dataframe
-    """This method connects to the database, executes the sql query and returns the dataframe"""
-</function>
-
-
-Update this initial code:
-```python
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-
-# Declare result var: 
-type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
-
-```
-
-
-
-### QUERY
- <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-How many total shipments are in the dataset? /no_think
-
-At the end, declare "result" variable as a dictionary of type and value.
-
-
-Generate python code and return full updated code:
-
-### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 16:31:34 [INFO] Code Generated:
-# Import the required dependencies
-import pandas as pd
-
-# Execute SQL query to count the total number of shipments
-sql_query = "SELECT COUNT(*) AS total_shipments FROM table_6619b1d3d4c59fcb9f82845d59178bfd;"
-result_df = execute_sql_query(sql_query)
-
-# Extract the total shipments value
-total_shipments = result_df.iloc[0, 0]
-
-# Declare result variable
-result = {
-    "type": "number",
-    "value": total_shipments
-}
-2025-11-04 16:31:34 [INFO] Validating code requirements...
-2025-11-04 16:31:34 [INFO] Code validation successful.
-2025-11-04 16:31:34 [INFO] Cleaning the generated code...
-2025-11-04 16:31:34 [INFO] Executing code: import pandas as pd
-sql_query = 'SELECT COUNT(*) AS total_shipments FROM table_6619b1d3d4c59fcb9f82845d59178bfd'
-result_df = execute_sql_query(sql_query)
-total_shipments = result_df.iloc[0, 0]
-result = {'type': 'number', 'value': total_shipments}
-2025-11-04 16:31:34 [INFO] Response generated successfully.
-2025-11-04 16:31:39 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:31:39 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:31:39 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:31:39 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:31:39 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
-2025-11-04 16:31:39 [INFO] Handling statistics request
-2025-11-04 16:31:39 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-How many shipments had zero delay? /no_think
-2025-11-04 16:31:39 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 16:31:39 [INFO] Prompt ID: f15c0ed3-01ae-439b-ae1c-ff0070733d59
-2025-11-04 16:31:39 [INFO] Generating new code...
-2025-11-04 16:31:39 [INFO] Using Prompt: <tables>
-
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
-id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
-2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
-3,Route C,WH2,4.8,0,,2024-10-12,1
-4,Route A,WH2,5.0,0,,2024-10-13,1
-5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
-</table>
-
-
-</tables>
-
-You are already provided with the following functions that you can call:
-<function>
-def execute_sql_query(sql_query: str) -> pd.Dataframe
-    """This method connects to the database, executes the sql query and returns the dataframe"""
-</function>
-
-
-Update this initial code:
-```python
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-
-# Declare result var: 
-type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
-
-```
-
-
-
-### QUERY
- <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-How many shipments had zero delay? /no_think
-
-At the end, declare "result" variable as a dictionary of type and value.
-
-
-Generate python code and return full updated code:
-
-### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 16:31:41 [INFO] Code Generated:
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-sql_query = """
-    SELECT COUNT(*) AS zero_delay_count
-    FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-    WHERE delay_minutes = 0;
-"""
-
-# Execute the SQL query
-result_df = execute_sql_query(sql_query)
-
-# Declare result var:
-result = {
-    "type": "number",
-    "value": result_df.iloc[0, 0]
-}
-2025-11-04 16:31:41 [INFO] Validating code requirements...
-2025-11-04 16:31:41 [INFO] Code validation successful.
-2025-11-04 16:31:41 [INFO] Cleaning the generated code...
-2025-11-04 16:31:41 [INFO] Executing code: import pandas as pd
-sql_query = """
-    SELECT COUNT(*) AS zero_delay_count
-    FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-    WHERE delay_minutes = 0;
-"""
-result_df = execute_sql_query(sql_query)
-result = {'type': 'number', 'value': result_df.iloc[0, 0]}
-2025-11-04 16:31:41 [INFO] Response generated successfully.
-2025-11-04 16:32:16 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:32:16 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:32:16 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:32:16 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:32:16 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
-2025-11-04 16:32:16 [INFO] Handling statistics request
-2025-11-04 16:32:16 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-Show the route-wise breakdown of delay reasons. (count only) /no_think
-2025-11-04 16:32:16 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 16:32:16 [INFO] Prompt ID: 5bbe2573-a106-41c3-be7f-de5b27a6a956
-2025-11-04 16:32:16 [INFO] Generating new code...
-2025-11-04 16:32:16 [INFO] Using Prompt: <tables>
-
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
-id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
-2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
-3,Route C,WH2,4.8,0,,2024-10-12,1
-4,Route A,WH2,5.0,0,,2024-10-13,1
-5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
-</table>
-
-
-</tables>
-
-You are already provided with the following functions that you can call:
-<function>
-def execute_sql_query(sql_query: str) -> pd.Dataframe
-    """This method connects to the database, executes the sql query and returns the dataframe"""
-</function>
-
-
-Update this initial code:
-```python
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-
-# Declare result var: 
-type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
-
-```
-
-
-
-### QUERY
- <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-Show the route-wise breakdown of delay reasons. (count only) /no_think
-
-At the end, declare "result" variable as a dictionary of type and value.
-
-
-Generate python code and return full updated code:
-
-### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 16:32:18 [INFO] Code Generated:
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-sql_query = """
-SELECT 
-    route,
-    delay_reason,
-    COUNT(*) AS delay_count
-FROM 
-    table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE 
-    delay_minutes > 0
-GROUP BY 
-    route, delay_reason
-ORDER BY 
-    route, delay_count DESC;
-"""
-
-result_df = execute_sql_query(sql_query)
-
-# Declare result var: 
-result = {
-    "type": "dataframe",
-    "value": result_df
-}
-2025-11-04 16:32:18 [INFO] Validating code requirements...
-2025-11-04 16:32:18 [INFO] Code validation successful.
-2025-11-04 16:32:18 [INFO] Cleaning the generated code...
-2025-11-04 16:32:18 [INFO] Executing code: import pandas as pd
-sql_query = """
-SELECT 
-    route,
-    delay_reason,
-    COUNT(*) AS delay_count
-FROM 
-    table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE 
-    delay_minutes > 0
-GROUP BY 
-    route, delay_reason
-ORDER BY 
-    route, delay_count DESC;
-"""
-result_df = execute_sql_query(sql_query)
-result = {'type': 'dataframe', 'value': result_df}
-2025-11-04 16:32:18 [INFO] Response generated successfully.
-2025-11-04 16:32:31 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:32:31 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:32:31 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
-2025-11-04 16:32:31 [INFO] Handling general query
-2025-11-04 16:32:31 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-Show delay reason counts for WH1. /no_think
-2025-11-04 16:32:31 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 16:32:31 [INFO] Prompt ID: 5875fede-5be5-4e6d-a534-f514e6013acc
-2025-11-04 16:32:31 [INFO] Generating new code...
-2025-11-04 16:32:31 [INFO] Using Prompt: <tables>
-
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
-id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
-2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
-3,Route C,WH2,4.8,0,,2024-10-12,1
-4,Route A,WH2,5.0,0,,2024-10-13,1
-5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
-</table>
-
-
-</tables>
-
-You are already provided with the following functions that you can call:
-<function>
-def execute_sql_query(sql_query: str) -> pd.Dataframe
-    """This method connects to the database, executes the sql query and returns the dataframe"""
-</function>
-
-
-Update this initial code:
-```python
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-
-# Declare result var: 
-type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
-
-```
-
-
-
-### QUERY
- <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-Show delay reason counts for WH1. /no_think
-
-At the end, declare "result" variable as a dictionary of type and value.
-
-
-Generate python code and return full updated code:
-
-### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 16:32:33 [INFO] Code Generated:
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-sql_query = """
-SELECT delay_reason, COUNT(*) AS count
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE warehouse = 'WH1'
-GROUP BY delay_reason
-ORDER BY count DESC;
-"""
-
-result_df = execute_sql_query(sql_query)
-
-# Declare result var: 
-result = {
-    "type": "dataframe",
-    "value": result_df
-}
-2025-11-04 16:32:33 [INFO] Validating code requirements...
-2025-11-04 16:32:33 [INFO] Code validation successful.
-2025-11-04 16:32:33 [INFO] Cleaning the generated code...
-2025-11-04 16:32:33 [INFO] Executing code: import pandas as pd
-sql_query = """
-SELECT delay_reason, COUNT(*) AS count
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE warehouse = 'WH1'
-GROUP BY delay_reason
-ORDER BY count DESC;
-"""
-result_df = execute_sql_query(sql_query)
-result = {'type': 'dataframe', 'value': result_df}
-2025-11-04 16:32:33 [INFO] Response generated successfully.
-2025-11-04 16:43:21 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
-2025-11-04 16:43:21 [INFO] Loaded 100 records from /data1/workspaces/phitha1/Hermes/data/shipments.csv
-2025-11-04 16:43:21 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:43:21 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:43:21 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:43:21 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:43:21 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
-2025-11-04 16:43:21 [INFO] Handling statistics request
-2025-11-04 16:43:21 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-How many total shipments are in the dataset? /no_think
-2025-11-04 16:43:22 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 16:43:22 [INFO] Prompt ID: 616ed222-0bb3-45d6-bbc9-b55491a23364
-2025-11-04 16:43:22 [INFO] Generating new code...
-2025-11-04 16:43:22 [INFO] Using Prompt: <tables>
-
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
-id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
-2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
-3,Route C,WH2,4.8,0,,2024-10-12,1
-4,Route A,WH2,5.0,0,,2024-10-13,1
-5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
-</table>
-
-
-</tables>
-
-You are already provided with the following functions that you can call:
-<function>
-def execute_sql_query(sql_query: str) -> pd.Dataframe
-    """This method connects to the database, executes the sql query and returns the dataframe"""
-</function>
-
-
-Update this initial code:
-```python
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-
-# Declare result var: 
-type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
-
-```
-
-
-
-### QUERY
- <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-How many total shipments are in the dataset? /no_think
-
-At the end, declare "result" variable as a dictionary of type and value.
-
-
-Generate python code and return full updated code:
-
-### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 16:43:24 [INFO] Code Generated:
-# Import the required dependencies
-import pandas as pd
-
-# Execute SQL query to count the total number of shipments
-sql_query = "SELECT COUNT(*) AS total_shipments FROM table_6619b1d3d4c59fcb9f82845d59178bfd;"
-result_df = execute_sql_query(sql_query)
-
-# Extract the total shipments value
-total_shipments = result_df.iloc[0, 0]
-
-# Declare result variable
-result = {
-    "type": "number",
-    "value": total_shipments
-}
-2025-11-04 16:43:24 [INFO] Validating code requirements...
-2025-11-04 16:43:24 [INFO] Code validation successful.
-2025-11-04 16:43:24 [INFO] Cleaning the generated code...
-2025-11-04 16:43:24 [INFO] Executing code: import pandas as pd
-sql_query = 'SELECT COUNT(*) AS total_shipments FROM table_6619b1d3d4c59fcb9f82845d59178bfd'
-result_df = execute_sql_query(sql_query)
-total_shipments = result_df.iloc[0, 0]
-result = {'type': 'number', 'value': total_shipments}
-2025-11-04 16:43:24 [INFO] Response generated successfully.
-2025-11-04 16:43:42 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:43:42 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:43:42 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
-2025-11-04 16:43:42 [INFO] Handling general query
-2025-11-04 16:43:42 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-What percentage of all shipments were delayed? /no_think
-2025-11-04 16:43:42 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 16:43:42 [INFO] Prompt ID: e64dcfc2-e254-48bd-8635-296c054b722a
-2025-11-04 16:43:42 [INFO] Generating new code...
-2025-11-04 16:43:42 [INFO] Using Prompt: <tables>
-
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
-id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
-2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
-3,Route C,WH2,4.8,0,,2024-10-12,1
-4,Route A,WH2,5.0,0,,2024-10-13,1
-5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
-</table>
-
-
-</tables>
-
-You are already provided with the following functions that you can call:
-<function>
-def execute_sql_query(sql_query: str) -> pd.Dataframe
-    """This method connects to the database, executes the sql query and returns the dataframe"""
-</function>
-
-
-Update this initial code:
-```python
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-
-# Declare result var: 
-type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
-
-```
-
-
-
-### QUERY
- <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-What percentage of all shipments were delayed? /no_think
-
-At the end, declare "result" variable as a dictionary of type and value.
-
-
-Generate python code and return full updated code:
-
-### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 16:43:44 [INFO] Code Generated:
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-sql_query = """
-SELECT 
-    (COUNT(*) FILTER (WHERE on_time = 0) * 100.0 / COUNT(*)) AS percentage_delayed
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd;
-"""
-
-result_df = execute_sql_query(sql_query)
-
-# Declare result var: 
-result = {
-    "type": "number",
-    "value": result_df.iloc[0, 0]
-}
-2025-11-04 16:43:44 [INFO] Validating code requirements...
-2025-11-04 16:43:44 [INFO] Code validation successful.
-2025-11-04 16:43:44 [INFO] Cleaning the generated code...
-2025-11-04 16:43:44 [INFO] Executing code: import pandas as pd
-sql_query = """
-SELECT 
-    (COUNT(*) FILTER (WHERE on_time = 0) * 100.0 / COUNT(*)) AS percentage_delayed
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd;
-"""
-result_df = execute_sql_query(sql_query)
-result = {'type': 'number', 'value': result_df.iloc[0, 0]}
-2025-11-04 16:43:44 [INFO] Response generated successfully.
-2025-11-04 16:44:16 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:44:16 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:44:16 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
-2025-11-04 16:44:16 [INFO] Handling general query
-2025-11-04 16:44:16 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-Rank all routes by reliability (fewest delays to most). /no_think
-2025-11-04 16:44:16 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 16:44:16 [INFO] Prompt ID: 7cc2fb84-9f88-4b4b-9be5-fb3d24d111f7
-2025-11-04 16:44:16 [INFO] Generating new code...
-2025-11-04 16:44:16 [INFO] Using Prompt: <tables>
-
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
-id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
-2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
-3,Route C,WH2,4.8,0,,2024-10-12,1
-4,Route A,WH2,5.0,0,,2024-10-13,1
-5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
-</table>
-
-
-</tables>
-
-You are already provided with the following functions that you can call:
-<function>
-def execute_sql_query(sql_query: str) -> pd.Dataframe
-    """This method connects to the database, executes the sql query and returns the dataframe"""
-</function>
-
-
-Update this initial code:
-```python
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-
-# Declare result var: 
-type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
-
-```
-
-
-
-### QUERY
- <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-Rank all routes by reliability (fewest delays to most). /no_think
-
-At the end, declare "result" variable as a dictionary of type and value.
-
-
-Generate python code and return full updated code:
-
-### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 16:44:19 [INFO] Code Generated:
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-sql_query = """
-SELECT 
-    route,
-    COUNT(*) AS total_deliveries,
-    SUM(CASE WHEN delay_minutes > 0 THEN 1 ELSE 0 END) AS delayed_deliveries,
-    SUM(CASE WHEN delay_minutes = 0 THEN 1 ELSE 0 END) AS on_time_deliveries
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-GROUP BY route
-ORDER BY delayed_deliveries ASC;
-"""
-
-result_df = execute_sql_query(sql_query)
-
-# Declare result var: 
-result = {
-    "type": "dataframe",
-    "value": result_df
-}
-2025-11-04 16:44:19 [INFO] Validating code requirements...
-2025-11-04 16:44:19 [INFO] Code validation successful.
-2025-11-04 16:44:19 [INFO] Cleaning the generated code...
-2025-11-04 16:44:19 [INFO] Executing code: import pandas as pd
-sql_query = """
-SELECT 
-    route,
-    COUNT(*) AS total_deliveries,
-    SUM(CASE WHEN delay_minutes > 0 THEN 1 ELSE 0 END) AS delayed_deliveries,
-    SUM(CASE WHEN delay_minutes = 0 THEN 1 ELSE 0 END) AS on_time_deliveries
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-GROUP BY route
-ORDER BY delayed_deliveries ASC;
-"""
-result_df = execute_sql_query(sql_query)
-result = {'type': 'dataframe', 'value': result_df}
-2025-11-04 16:44:19 [INFO] Response generated successfully.
-2025-11-04 16:44:35 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:44:35 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:44:35 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
-2025-11-04 16:44:35 [INFO] Handling general query
-2025-11-04 16:44:35 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-List top 5 routes with longest delays this quarter. /no_think
-2025-11-04 16:44:35 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 16:44:35 [INFO] Prompt ID: 7a90779a-3c82-4f70-8096-7cc2380c87e0
-2025-11-04 16:44:35 [INFO] Generating new code...
-2025-11-04 16:44:35 [INFO] Using Prompt: <tables>
-
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
-id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
-2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
-3,Route C,WH2,4.8,0,,2024-10-12,1
-4,Route A,WH2,5.0,0,,2024-10-13,1
-5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
-</table>
-
-
-</tables>
-
-You are already provided with the following functions that you can call:
-<function>
-def execute_sql_query(sql_query: str) -> pd.Dataframe
-    """This method connects to the database, executes the sql query and returns the dataframe"""
-</function>
-
-
-Update this initial code:
-```python
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-
-# Declare result var: 
-type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
-
-```
-
-
-
-### QUERY
- <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-List top 5 routes with longest delays this quarter. /no_think
-
-At the end, declare "result" variable as a dictionary of type and value.
-
-
-Generate python code and return full updated code:
-
-### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 16:44:37 [INFO] Code Generated:
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-sql_query = """
-SELECT route, SUM(delay_minutes) AS total_delay
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE date >= '2024-10-01' AND date < '2024-12-31'
-GROUP BY route
-ORDER BY total_delay DESC
-LIMIT 5;
-"""
-
-result_df = execute_sql_query(sql_query)
-
-# Declare result var: 
-result = {
-    "type": "dataframe",
-    "value": result_df
-}
-2025-11-04 16:44:37 [INFO] Validating code requirements...
-2025-11-04 16:44:37 [INFO] Code validation successful.
-2025-11-04 16:44:37 [INFO] Cleaning the generated code...
-2025-11-04 16:44:37 [INFO] Executing code: import pandas as pd
-sql_query = """
-SELECT route, SUM(delay_minutes) AS total_delay
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE date >= '2024-10-01' AND date < '2024-12-31'
-GROUP BY route
-ORDER BY total_delay DESC
-LIMIT 5;
-"""
-result_df = execute_sql_query(sql_query)
-result = {'type': 'dataframe', 'value': result_df}
-2025-11-04 16:44:37 [INFO] Response generated successfully.
-2025-11-04 16:50:12 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
-2025-11-04 16:50:12 [INFO] Loaded 1000 records from /data1/workspaces/phitha1/Hermes/data/shipments_1000.csv
-2025-11-04 16:50:12 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:50:12 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:50:12 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:50:12 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:50:12 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
-2025-11-04 16:50:12 [INFO] Handling statistics request
-2025-11-04 16:50:12 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
-How many total shipments are in the dataset? /no_think
-2025-11-04 16:50:12 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 16:50:12 [INFO] Prompt ID: 593fe96b-894a-4378-a76b-a1152ca1db9a
-2025-11-04 16:50:12 [INFO] Generating new code...
-2025-11-04 16:50:13 [INFO] Using Prompt: <tables>
-
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
-id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
-2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
-3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
-4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
-5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
-</table>
-
-
-</tables>
-
-You are already provided with the following functions that you can call:
-<function>
-def execute_sql_query(sql_query: str) -> pd.Dataframe
-    """This method connects to the database, executes the sql query and returns the dataframe"""
-</function>
-
-
-Update this initial code:
-```python
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-
-# Declare result var: 
-type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
-
-```
-
-
-
-### QUERY
- <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
-How many total shipments are in the dataset? /no_think
-
-At the end, declare "result" variable as a dictionary of type and value.
-
-
-Generate python code and return full updated code:
-
-### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 16:50:14 [INFO] Code Generated:
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-sql_query = "SELECT COUNT(*) AS total_shipments FROM table_6619b1d3d4c59fcb9f82845d59178bfd;"
-result_df = execute_sql_query(sql_query)
-
-# Declare result var: 
-result = {
-    "type": "number",
-    "value": int(result_df.iloc[0]["total_shipments"])
-}
-2025-11-04 16:50:14 [INFO] Validating code requirements...
-2025-11-04 16:50:14 [INFO] Code validation successful.
-2025-11-04 16:50:14 [INFO] Cleaning the generated code...
-2025-11-04 16:50:14 [INFO] Executing code: import pandas as pd
-sql_query = 'SELECT COUNT(*) AS total_shipments FROM table_6619b1d3d4c59fcb9f82845d59178bfd'
-result_df = execute_sql_query(sql_query)
-result = {'type': 'number', 'value': int(result_df.iloc[0]['total_shipments'])}
-2025-11-04 16:50:14 [INFO] Response generated successfully.
-2025-11-04 16:50:16 [INFO] Model trained: R²=0.0025, RMSE=38.94
-2025-11-04 16:50:53 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:50:53 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:50:53 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:50:53 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:50:53 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
-2025-11-04 16:50:53 [INFO] Handling statistics request
-2025-11-04 16:50:53 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+2025-11-05 00:44:57 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-05 00:44:57 [INFO] Loaded 100 records from /data1/workspaces/phitha1/Hermes/data/shipments.csv
+2025-11-05 00:44:57 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 00:44:57 [INFO] Regex router: classified intent='statistics'
+2025-11-05 00:44:57 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 00:44:57 [INFO] Regex router: classified intent='statistics'
+2025-11-05 00:44:57 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
+2025-11-05 00:44:57 [INFO] Handling statistics request
+2025-11-05 00:44:57 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
 How many unique routes are there? /no_think
-2025-11-04 16:50:53 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 16:50:53 [INFO] Prompt ID: d4fac01a-5d8c-4c02-8d35-b5a568020c49
-2025-11-04 16:50:53 [INFO] Generating new code...
-2025-11-04 16:50:53 [INFO] Using Prompt: <tables>
+2025-11-05 00:44:57 [INFO] Running PandasAI with litellm LLM...
+2025-11-05 00:44:57 [INFO] Prompt ID: cfe66ec2-6825-403d-8330-a08f9f97eccd
+2025-11-05 00:44:57 [INFO] Generating new code...
+2025-11-05 00:44:57 [INFO] Using Prompt: <tables>
 
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
 id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
-2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
-3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
-4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
-5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
+3,Route C,WH2,4.8,0,,2024-10-12,1
+4,Route A,WH2,5.0,0,,2024-10-13,1
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
 </table>
 
 
@@ -916,7 +47,7 @@ type (possible values "string", "number", "dataframe", "plot"). Examples: { "typ
 
 
 ### QUERY
- <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+ <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
 How many unique routes are there? /no_think
 
 At the end, declare "result" variable as a dictionary of type and value.
@@ -925,7 +56,7 @@ At the end, declare "result" variable as a dictionary of type and value.
 Generate python code and return full updated code:
 
 ### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 16:50:55 [INFO] Code Generated:
+2025-11-05 00:44:59 [INFO] Code Generated:
 # TODO: import the required dependencies
 import pandas as pd
 
@@ -942,37 +73,35 @@ result = {
     "type": "number",
     "value": result_df.iloc[0, 0]
 }
-2025-11-04 16:50:55 [INFO] Validating code requirements...
-2025-11-04 16:50:55 [INFO] Code validation successful.
-2025-11-04 16:50:55 [INFO] Cleaning the generated code...
-2025-11-04 16:50:55 [INFO] Executing code: import pandas as pd
+2025-11-05 00:44:59 [INFO] Validating code requirements...
+2025-11-05 00:44:59 [INFO] Code validation successful.
+2025-11-05 00:44:59 [INFO] Cleaning the generated code...
+2025-11-05 00:44:59 [INFO] Executing code: import pandas as pd
 sql_query = """
 SELECT COUNT(DISTINCT route) AS unique_routes
 FROM table_6619b1d3d4c59fcb9f82845d59178bfd;
 """
 result_df = execute_sql_query(sql_query)
 result = {'type': 'number', 'value': result_df.iloc[0, 0]}
-2025-11-04 16:50:55 [INFO] Response generated successfully.
-2025-11-04 16:51:24 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:51:24 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:51:24 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:51:24 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:51:24 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
-2025-11-04 16:51:24 [INFO] Handling statistics request
-2025-11-04 16:51:24 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
-Show average delay per route in the last two weeks. /no_think
-2025-11-04 16:51:24 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 16:51:24 [INFO] Prompt ID: b9fb3d07-4bbb-44ac-be3f-581b2418d5fa
-2025-11-04 16:51:24 [INFO] Generating new code...
-2025-11-04 16:51:24 [INFO] Using Prompt: <tables>
+2025-11-05 00:44:59 [INFO] Response generated successfully.
+2025-11-05 00:45:02 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 00:45:02 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 00:45:02 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
+2025-11-05 00:45:02 [INFO] Handling general query
+2025-11-05 00:45:02 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+Show the route-wise breakdown of delay reasons. /no_think
+2025-11-05 00:45:02 [INFO] Running PandasAI with litellm LLM...
+2025-11-05 00:45:02 [INFO] Prompt ID: da012dd4-6c67-4332-9816-18eafb26f342
+2025-11-05 00:45:02 [INFO] Generating new code...
+2025-11-05 00:45:02 [INFO] Using Prompt: <tables>
 
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
 id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
-2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
-3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
-4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
-5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
+3,Route C,WH2,4.8,0,,2024-10-12,1
+4,Route A,WH2,5.0,0,,2024-10-13,1
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
 </table>
 
 
@@ -1000,8 +129,8 @@ type (possible values "string", "number", "dataframe", "plot"). Examples: { "typ
 
 
 ### QUERY
- <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
-Show average delay per route in the last two weeks. /no_think
+ <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+Show the route-wise breakdown of delay reasons. /no_think
 
 At the end, declare "result" variable as a dictionary of type and value.
 
@@ -1009,7 +138,7 @@ At the end, declare "result" variable as a dictionary of type and value.
 Generate python code and return full updated code:
 
 ### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 16:51:27 [INFO] Code Generated:
+2025-11-05 00:45:04 [INFO] Code Generated:
 # TODO: import the required dependencies
 import pandas as pd
 
@@ -1017,11 +146,16 @@ import pandas as pd
 sql_query = """
 SELECT 
     route,
-    AVG(delay_minutes) AS average_delay
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE date >= DATE_SUB('2024-12-30', INTERVAL 2 WEEK)
-GROUP BY route
-ORDER BY average_delay DESC;
+    delay_reason,
+    COUNT(*) AS count
+FROM 
+    table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE 
+    delay_minutes > 0
+GROUP BY 
+    route, delay_reason
+ORDER BY 
+    route, count DESC;
 """
 
 result_df = execute_sql_query(sql_query)
@@ -1031,281 +165,45 @@ result = {
     "type": "dataframe",
     "value": result_df
 }
-2025-11-04 16:51:27 [INFO] Validating code requirements...
-2025-11-04 16:51:27 [INFO] Code validation successful.
-2025-11-04 16:51:27 [INFO] Cleaning the generated code...
-2025-11-04 16:51:27 [INFO] Executing code: import pandas as pd
+2025-11-05 00:45:04 [INFO] Validating code requirements...
+2025-11-05 00:45:04 [INFO] Code validation successful.
+2025-11-05 00:45:04 [INFO] Cleaning the generated code...
+2025-11-05 00:45:04 [INFO] Executing code: import pandas as pd
 sql_query = """
 SELECT 
     route,
-    AVG(delay_minutes) AS average_delay
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE date >= DATE_SUB('2024-12-30', INTERVAL 2 WEEK)
-GROUP BY route
-ORDER BY average_delay DESC;
+    delay_reason,
+    COUNT(*) AS count
+FROM 
+    table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE 
+    delay_minutes > 0
+GROUP BY 
+    route, delay_reason
+ORDER BY 
+    route, count DESC;
 """
 result_df = execute_sql_query(sql_query)
 result = {'type': 'dataframe', 'value': result_df}
-2025-11-04 16:51:27 [INFO] Retrying execution (1/3)...
-2025-11-04 16:51:27 [INFO] Execution failed with error: Traceback (most recent call last):
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 29, in execute
-    exec(code, self._environment)
-  File "<string>", line 11, in <module>
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 156, in _execute_sql_query
-    return db_manager.sql(final_query).df()
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-duckdb.duckdb.ConversionException: Conversion Error: Unimplemented type for cast (INTERVAL -> DOUBLE)
+2025-11-05 00:45:05 [INFO] Response generated successfully.
+2025-11-05 00:45:14 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 00:45:14 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 00:45:14 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
+2025-11-05 00:45:14 [INFO] Handling general query
+2025-11-05 00:45:14 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+Which warehouse had the most weather-related delays? /no_think
+2025-11-05 00:45:14 [INFO] Running PandasAI with litellm LLM...
+2025-11-05 00:45:14 [INFO] Prompt ID: bbf3980b-b87d-4bd5-b673-5373f4e63bcc
+2025-11-05 00:45:14 [INFO] Generating new code...
+2025-11-05 00:45:14 [INFO] Using Prompt: <tables>
 
-LINE 1: ...(date >= (CAST('2024-12-30' AS DATE) - to_days(CAST(trunc(CAST((7 * to_days(CAST(trunc(CAST('2' AS DOUBLE)) AS INTEGER...
-                                                                          ^
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 193, in execute_with_retries
-    result = self.execute_code(code)
-             ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 124, in execute_code
-    return code_executor.execute_and_return_result(code)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 38, in execute_and_return_result
-    self.execute(code)
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 31, in execute
-    raise CodeExecutionError("Code execution failed") from e
-pandasai.exceptions.CodeExecutionError: Code execution failed
-
-2025-11-04 16:51:27 [INFO] Using Prompt: <table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
 id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
-2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
-3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
-4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
-5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
-</table>
-
-
-The user asked the following question:
-### QUERY
- <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
-Show average delay per route in the last two weeks. /no_think
-
-You generated the following Python code:
-import pandas as pd
-sql_query = """
-SELECT 
-    route,
-    AVG(delay_minutes) AS average_delay
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE date >= DATE_SUB('2024-12-30', INTERVAL 2 WEEK)
-GROUP BY route
-ORDER BY average_delay DESC;
-"""
-result_df = execute_sql_query(sql_query)
-result = {'type': 'dataframe', 'value': result_df}
-
-However, it resulted in the following error:
-Traceback (most recent call last):
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 29, in execute
-    exec(code, self._environment)
-  File "<string>", line 11, in <module>
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 156, in _execute_sql_query
-    return db_manager.sql(final_query).df()
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-duckdb.duckdb.ConversionException: Conversion Error: Unimplemented type for cast (INTERVAL -> DOUBLE)
-
-LINE 1: ...(date >= (CAST('2024-12-30' AS DATE) - to_days(CAST(trunc(CAST((7 * to_days(CAST(trunc(CAST('2' AS DOUBLE)) AS INTEGER...
-                                                                          ^
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 193, in execute_with_retries
-    result = self.execute_code(code)
-             ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 124, in execute_code
-    return code_executor.execute_and_return_result(code)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 38, in execute_and_return_result
-    self.execute(code)
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 31, in execute
-    raise CodeExecutionError("Code execution failed") from e
-pandasai.exceptions.CodeExecutionError: Code execution failed
-
-
-Fix the python code above and return the new python code but the code generated should use execute_sql_query function
-2025-11-04 16:51:31 [INFO] Code Generated:
-import pandas as pd
-
-sql_query = """
-SELECT 
-    route,
-    AVG(delay_minutes) AS average_delay
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE date >= DATE_SUB('2024-12-30', INTERVAL 14 DAY)
-GROUP BY route
-ORDER BY average_delay DESC;
-"""
-result_df = execute_sql_query(sql_query)
-result = {'type': 'dataframe', 'value': result_df}
-2025-11-04 16:51:31 [INFO] Validating code requirements...
-2025-11-04 16:51:31 [INFO] Code validation successful.
-2025-11-04 16:51:31 [INFO] Cleaning the generated code...
-2025-11-04 16:51:31 [INFO] Executing code: import pandas as pd
-sql_query = """
-SELECT 
-    route,
-    AVG(delay_minutes) AS average_delay
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE date >= DATE_SUB('2024-12-30', INTERVAL 14 DAY)
-GROUP BY route
-ORDER BY average_delay DESC;
-"""
-result_df = execute_sql_query(sql_query)
-result = {'type': 'dataframe', 'value': result_df}
-2025-11-04 16:51:31 [INFO] Retrying execution (2/3)...
-2025-11-04 16:51:31 [INFO] Execution failed with error: Traceback (most recent call last):
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 29, in execute
-    exec(code, self._environment)
-  File "<string>", line 11, in <module>
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 156, in _execute_sql_query
-    return db_manager.sql(final_query).df()
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-duckdb.duckdb.ConversionException: Conversion Error: Unimplemented type for cast (INTERVAL -> DOUBLE)
-
-LINE 1: ...(date >= (CAST('2024-12-30' AS DATE) - to_days(CAST(trunc(CAST(to_days(CAST(trunc(CAST('14' AS DOUBLE)) AS INTEGER)) AS...
-                                                                          ^
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 193, in execute_with_retries
-    result = self.execute_code(code)
-             ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 124, in execute_code
-    return code_executor.execute_and_return_result(code)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 38, in execute_and_return_result
-    self.execute(code)
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 31, in execute
-    raise CodeExecutionError("Code execution failed") from e
-pandasai.exceptions.CodeExecutionError: Code execution failed
-
-2025-11-04 16:51:31 [INFO] Using Prompt: <table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
-id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
-2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
-3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
-4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
-5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
-</table>
-
-
-The user asked the following question:
-### QUERY
- <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
-Show average delay per route in the last two weeks. /no_think
-
-You generated the following Python code:
-import pandas as pd
-sql_query = """
-SELECT 
-    route,
-    AVG(delay_minutes) AS average_delay
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE date >= DATE_SUB('2024-12-30', INTERVAL 14 DAY)
-GROUP BY route
-ORDER BY average_delay DESC;
-"""
-result_df = execute_sql_query(sql_query)
-result = {'type': 'dataframe', 'value': result_df}
-
-However, it resulted in the following error:
-Traceback (most recent call last):
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 29, in execute
-    exec(code, self._environment)
-  File "<string>", line 11, in <module>
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 156, in _execute_sql_query
-    return db_manager.sql(final_query).df()
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-duckdb.duckdb.ConversionException: Conversion Error: Unimplemented type for cast (INTERVAL -> DOUBLE)
-
-LINE 1: ...(date >= (CAST('2024-12-30' AS DATE) - to_days(CAST(trunc(CAST(to_days(CAST(trunc(CAST('14' AS DOUBLE)) AS INTEGER)) AS...
-                                                                          ^
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 193, in execute_with_retries
-    result = self.execute_code(code)
-             ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 124, in execute_code
-    return code_executor.execute_and_return_result(code)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 38, in execute_and_return_result
-    self.execute(code)
-  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 31, in execute
-    raise CodeExecutionError("Code execution failed") from e
-pandasai.exceptions.CodeExecutionError: Code execution failed
-
-
-Fix the python code above and return the new python code but the code generated should use execute_sql_query function
-2025-11-04 16:51:35 [INFO] Code Generated:
-import pandas as pd
-
-# Calculate the date 14 days before the current date
-current_date = '2024-12-30'
-start_date = pd.to_datetime(current_date) - pd.Timedelta(days=14)
-
-sql_query = f"""
-SELECT 
-    route,
-    AVG(delay_minutes) AS average_delay
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE date >= '{start_date.strftime('%Y-%m-%d')}'
-GROUP BY route
-ORDER BY average_delay DESC;
-"""
-
-result_df = execute_sql_query(sql_query)
-result = {'type': 'dataframe', 'value': result_df}
-2025-11-04 16:51:35 [INFO] Validating code requirements...
-2025-11-04 16:51:35 [INFO] Code validation successful.
-2025-11-04 16:51:35 [INFO] Cleaning the generated code...
-2025-11-04 16:51:35 [INFO] Executing code: import pandas as pd
-current_date = '2024-12-30'
-start_date = pd.to_datetime(current_date) - pd.Timedelta(days=14)
-sql_query = f"""
-SELECT 
-    route,
-    AVG(delay_minutes) AS average_delay
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE date >= '{start_date.strftime('%Y-%m-%d')}'
-GROUP BY route
-ORDER BY average_delay DESC;
-"""
-result_df = execute_sql_query(sql_query)
-result = {'type': 'dataframe', 'value': result_df}
-2025-11-04 16:51:35 [INFO] Response generated successfully.
-2025-11-04 16:52:26 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:52:26 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:52:26 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 16:52:26 [INFO] Regex router: classified intent='statistics'
-2025-11-04 16:52:26 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
-2025-11-04 16:52:26 [INFO] Handling statistics request
-2025-11-04 16:52:26 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
-Show the bottom 3 warehouses by average delivery_time. /no_think
-2025-11-04 16:52:26 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 16:52:26 [INFO] Prompt ID: b002b7b7-ecbf-4350-b56b-35e12c1fd4cc
-2025-11-04 16:52:26 [INFO] Generating new code...
-2025-11-04 16:52:26 [INFO] Using Prompt: <tables>
-
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
-id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
-2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
-3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
-4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
-5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
+3,Route C,WH2,4.8,0,,2024-10-12,1
+4,Route A,WH2,5.0,0,,2024-10-13,1
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
 </table>
 
 
@@ -1333,8 +231,8 @@ type (possible values "string", "number", "dataframe", "plot"). Examples: { "typ
 
 
 ### QUERY
- <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
-Show the bottom 3 warehouses by average delivery_time. /no_think
+ <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+Which warehouse had the most weather-related delays? /no_think
 
 At the end, declare "result" variable as a dictionary of type and value.
 
@@ -1342,61 +240,68 @@ At the end, declare "result" variable as a dictionary of type and value.
 Generate python code and return full updated code:
 
 ### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 16:52:28 [INFO] Code Generated:
-# TODO: import the required dependencies
+2025-11-05 00:45:17 [INFO] Code Generated:
+# Import the required dependencies
 import pandas as pd
 
-# Write code here
+# Execute SQL query to find the warehouse with the most weather-related delays
 sql_query = """
-SELECT warehouse, AVG(delivery_time) AS avg_delivery_time
+SELECT warehouse, COUNT(*) AS num_weather_delays
 FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_reason = 'Weather'
 GROUP BY warehouse
-ORDER BY avg_delivery_time ASC
-LIMIT 3;
+ORDER BY num_weather_delays DESC
+LIMIT 1;
 """
 
 result_df = execute_sql_query(sql_query)
 
-# Declare result var: 
+# Extract the warehouse name from the result
+warehouse_with_most_delays = result_df.iloc[0]['warehouse'] if not result_df.empty else "No weather-related delays found"
+
+# Declare result variable
 result = {
-    "type": "dataframe",
-    "value": result_df
+    "type": "string",
+    "value": f"The warehouse with the most weather-related delays is {warehouse_with_most_delays}."
 }
-2025-11-04 16:52:28 [INFO] Validating code requirements...
-2025-11-04 16:52:28 [INFO] Code validation successful.
-2025-11-04 16:52:28 [INFO] Cleaning the generated code...
-2025-11-04 16:52:28 [INFO] Executing code: import pandas as pd
+2025-11-05 00:45:17 [INFO] Validating code requirements...
+2025-11-05 00:45:17 [INFO] Code validation successful.
+2025-11-05 00:45:17 [INFO] Cleaning the generated code...
+2025-11-05 00:45:17 [INFO] Executing code: import pandas as pd
 sql_query = """
-SELECT warehouse, AVG(delivery_time) AS avg_delivery_time
+SELECT warehouse, COUNT(*) AS num_weather_delays
 FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_reason = 'Weather'
 GROUP BY warehouse
-ORDER BY avg_delivery_time ASC
-LIMIT 3;
+ORDER BY num_weather_delays DESC
+LIMIT 1;
 """
 result_df = execute_sql_query(sql_query)
-result = {'type': 'dataframe', 'value': result_df}
-2025-11-04 16:52:28 [INFO] Response generated successfully.
-2025-11-04 16:52:50 [INFO] Model trained: R²=0.0025, RMSE=38.94
-2025-11-04 17:03:33 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
-2025-11-04 17:03:33 [INFO] Loaded 1000 records from /data1/workspaces/phitha1/Hermes/data/shipments_1000.csv
-2025-11-04 17:03:33 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 17:03:33 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 17:03:33 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
-2025-11-04 17:03:33 [INFO] Handling general query
-2025-11-04 17:03:33 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
-What percentage of all shipments were delayed? /no_think
-2025-11-04 17:03:33 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 17:03:33 [INFO] Prompt ID: 01de6164-6291-4465-9012-7d215387ec31
-2025-11-04 17:03:33 [INFO] Generating new code...
-2025-11-04 17:03:33 [INFO] Using Prompt: <tables>
+warehouse_with_most_delays = result_df.iloc[0]['warehouse'] if not result_df.empty else 'No weather-related delays found'
+result = {'type': 'string', 'value': f'The warehouse with the most weather-related delays is {warehouse_with_most_delays}.'}
+2025-11-05 00:45:17 [INFO] Response generated successfully.
+2025-11-05 01:04:31 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-05 01:04:31 [INFO] Loaded 100 records from /data1/workspaces/phitha1/Hermes/data/shipments.csv
+2025-11-05 01:04:31 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:04:31 [INFO] Regex router: classified intent='statistics'
+2025-11-05 01:04:31 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:04:31 [INFO] Regex router: classified intent='statistics'
+2025-11-05 01:04:31 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
+2025-11-05 01:04:31 [INFO] Handling statistics request
+2025-11-05 01:04:31 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset? /no_think
+2025-11-05 01:04:31 [INFO] Running PandasAI with litellm LLM...
+2025-11-05 01:04:31 [INFO] Prompt ID: 58f6e4be-9583-43ab-a9a5-064ea81f18f5
+2025-11-05 01:04:31 [INFO] Generating new code...
+2025-11-05 01:04:31 [INFO] Using Prompt: <tables>
 
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
 id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
-2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
-3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
-4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
-5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
+3,Route C,WH2,4.8,0,,2024-10-12,1
+4,Route A,WH2,5.0,0,,2024-10-13,1
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
 </table>
 
 
@@ -1424,8 +329,8 @@ type (possible values "string", "number", "dataframe", "plot"). Examples: { "typ
 
 
 ### QUERY
- <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
-What percentage of all shipments were delayed? /no_think
+ <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset? /no_think
 
 At the end, declare "result" variable as a dictionary of type and value.
 
@@ -1433,54 +338,51 @@ At the end, declare "result" variable as a dictionary of type and value.
 Generate python code and return full updated code:
 
 ### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 17:03:36 [INFO] Code Generated:
-# TODO: import the required dependencies
+2025-11-05 01:04:33 [INFO] Code Generated:
+# Import the required dependencies
 import pandas as pd
 
-# Write code here
-sql_query = """
-SELECT 
-    (COUNT(*) FILTER (WHERE delay_minutes > 0) * 100.0 / COUNT(*)) AS percentage_delayed
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd;
-"""
-
+# Execute SQL query to count the total number of shipments
+sql_query = "SELECT COUNT(*) AS total_shipments FROM table_6619b1d3d4c59fcb9f82845d59178bfd;"
 result_df = execute_sql_query(sql_query)
 
-# Declare result var: 
+# Extract the total shipments value
+total_shipments = result_df.iloc[0, 0]
+
+# Declare result variable
 result = {
     "type": "number",
-    "value": result_df.iloc[0, 0]
+    "value": total_shipments
 }
-2025-11-04 17:03:36 [INFO] Validating code requirements...
-2025-11-04 17:03:36 [INFO] Code validation successful.
-2025-11-04 17:03:36 [INFO] Cleaning the generated code...
-2025-11-04 17:03:36 [INFO] Executing code: import pandas as pd
-sql_query = """
-SELECT 
-    (COUNT(*) FILTER (WHERE delay_minutes > 0) * 100.0 / COUNT(*)) AS percentage_delayed
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd;
-"""
+2025-11-05 01:04:33 [INFO] Validating code requirements...
+2025-11-05 01:04:33 [INFO] Code validation successful.
+2025-11-05 01:04:33 [INFO] Cleaning the generated code...
+2025-11-05 01:04:33 [INFO] Executing code: import pandas as pd
+sql_query = 'SELECT COUNT(*) AS total_shipments FROM table_6619b1d3d4c59fcb9f82845d59178bfd'
 result_df = execute_sql_query(sql_query)
-result = {'type': 'number', 'value': result_df.iloc[0, 0]}
-2025-11-04 17:03:36 [INFO] Response generated successfully.
-2025-11-04 17:03:43 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 17:03:43 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 17:03:43 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
-2025-11-04 17:03:43 [INFO] Handling general query
-2025-11-04 17:03:43 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
-Which month had the highest delay rate? /no_think
-2025-11-04 17:03:43 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 17:03:43 [INFO] Prompt ID: aba029c2-51c6-4da7-a144-0800979a00d0
-2025-11-04 17:03:43 [INFO] Generating new code...
-2025-11-04 17:03:43 [INFO] Using Prompt: <tables>
+total_shipments = result_df.iloc[0, 0]
+result = {'type': 'number', 'value': total_shipments}
+2025-11-05 01:04:33 [INFO] Response generated successfully.
+2025-11-05 01:04:37 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:04:37 [INFO] Regex router: classified intent='statistics'
+2025-11-05 01:04:37 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:04:37 [INFO] Regex router: classified intent='statistics'
+2025-11-05 01:04:37 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
+2025-11-05 01:04:37 [INFO] Handling statistics request
+2025-11-05 01:04:37 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+Which route has the highest average delivery time? /no_think
+2025-11-05 01:04:37 [INFO] Running PandasAI with litellm LLM...
+2025-11-05 01:04:37 [INFO] Prompt ID: 5412abac-85ae-4100-9ab5-f44da05e61e6
+2025-11-05 01:04:37 [INFO] Generating new code...
+2025-11-05 01:04:37 [INFO] Using Prompt: <tables>
 
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
 id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
-2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
-3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
-4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
-5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
+3,Route C,WH2,4.8,0,,2024-10-12,1
+4,Route A,WH2,5.0,0,,2024-10-13,1
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
 </table>
 
 
@@ -1508,8 +410,8 @@ type (possible values "string", "number", "dataframe", "plot"). Examples: { "typ
 
 
 ### QUERY
- <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
-Which month had the highest delay rate? /no_think
+ <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+Which route has the highest average delivery time? /no_think
 
 At the end, declare "result" variable as a dictionary of type and value.
 
@@ -1517,159 +419,59 @@ At the end, declare "result" variable as a dictionary of type and value.
 Generate python code and return full updated code:
 
 ### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 17:03:47 [INFO] Code Generated:
-# TODO: import the required dependencies
+2025-11-05 01:04:39 [INFO] Code Generated:
+# Import the required dependencies
 import pandas as pd
 
-# Write code here
-def calculate_delay_rate(df):
-    # Calculate the delay rate as the average of delay_minutes
-    delay_rate = df['delay_minutes'].mean()
-    return delay_rate
-
-# Execute SQL query to get the data grouped by month
+# Execute SQL query to calculate the average delivery time per route
 sql_query = """
 SELECT 
-    strftime(date, '%Y-%m') AS month,
-    AVG(delay_minutes) AS delay_rate
+    route,
+    AVG(delivery_time) AS avg_delivery_time
 FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-GROUP BY month
-ORDER BY delay_rate DESC
+GROUP BY route
+ORDER BY avg_delivery_time DESC
 LIMIT 1;
 """
 
 # Execute the query and get the result
 result_df = execute_sql_query(sql_query)
 
-# Extract the month with the highest delay rate
-highest_delay_month = result_df.iloc[0]['month']
+# Extract the route with the highest average delivery time
+highest_avg_route = result_df.iloc[0]['route']
 
-# Declare result var:
+# Declare result variable
 result = {
     "type": "string",
-    "value": f"The month with the highest delay rate is {highest_delay_month}."
+    "value": f"The route with the highest average delivery time is {highest_avg_route}."
 }
-2025-11-04 17:03:47 [INFO] Validating code requirements...
-2025-11-04 17:03:47 [INFO] Code validation successful.
-2025-11-04 17:03:47 [INFO] Cleaning the generated code...
-2025-11-04 17:03:47 [INFO] Executing code: import pandas as pd
-
-
-def calculate_delay_rate(df):
-    delay_rate = df['delay_minutes'].mean()
-    return delay_rate
-
-
+2025-11-05 01:04:39 [INFO] Validating code requirements...
+2025-11-05 01:04:39 [INFO] Code validation successful.
+2025-11-05 01:04:39 [INFO] Cleaning the generated code...
+2025-11-05 01:04:39 [INFO] Executing code: import pandas as pd
 sql_query = """
 SELECT 
-    strftime(date, '%Y-%m') AS month,
-    AVG(delay_minutes) AS delay_rate
+    route,
+    AVG(delivery_time) AS avg_delivery_time
 FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-GROUP BY month
-ORDER BY delay_rate DESC
+GROUP BY route
+ORDER BY avg_delivery_time DESC
 LIMIT 1;
 """
 result_df = execute_sql_query(sql_query)
-highest_delay_month = result_df.iloc[0]['month']
-result = {'type': 'string', 'value': f'The month with the highest delay rate is {highest_delay_month}.'}
-2025-11-04 17:03:47 [INFO] Response generated successfully.
-2025-11-04 17:03:57 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 17:03:57 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 17:03:57 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
-2025-11-04 17:03:57 [INFO] Handling general query
-2025-11-04 17:03:57 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
-List shipments in June with delay_minutes > 30. /no_think
-2025-11-04 17:03:57 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 17:03:57 [INFO] Prompt ID: b47e90a4-b1b3-461b-9a88-0078fc91464b
-2025-11-04 17:03:57 [INFO] Generating new code...
-2025-11-04 17:03:57 [INFO] Using Prompt: <tables>
-
-<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
-id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
-1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
-2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
-3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
-4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
-5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
-</table>
-
-
-</tables>
-
-You are already provided with the following functions that you can call:
-<function>
-def execute_sql_query(sql_query: str) -> pd.Dataframe
-    """This method connects to the database, executes the sql query and returns the dataframe"""
-</function>
-
-
-Update this initial code:
-```python
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-
-# Declare result var: 
-type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
-
-```
-
-
-
-### QUERY
- <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
-List shipments in June with delay_minutes > 30. /no_think
-
-At the end, declare "result" variable as a dictionary of type and value.
-
-
-Generate python code and return full updated code:
-
-### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 17:03:59 [INFO] Code Generated:
-# TODO: import the required dependencies
-import pandas as pd
-
-# Write code here
-sql_query = """
-SELECT *
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE strftime('%m', date) = '06' AND delay_minutes > 30
-"""
-result_df = execute_sql_query(sql_query)
-
-# Declare result var: 
-result = {
-    "type": "dataframe",
-    "value": result_df
-}
-2025-11-04 17:03:59 [INFO] Validating code requirements...
-2025-11-04 17:03:59 [INFO] Code validation successful.
-2025-11-04 17:03:59 [INFO] Cleaning the generated code...
-2025-11-04 17:03:59 [INFO] Executing code: import pandas as pd
-sql_query = """
-SELECT *
-FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-WHERE strftime('%m', date) = '06' AND delay_minutes > 30
-"""
-result_df = execute_sql_query(sql_query)
-result = {'type': 'dataframe', 'value': result_df}
-2025-11-04 17:03:59 [INFO] Response generated successfully.
-2025-11-04 17:07:31 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
-2025-11-04 17:07:31 [INFO] Loaded 100 records from /data1/workspaces/phitha1/Hermes/data/shipments.csv
-2025-11-04 17:07:31 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 17:07:31 [INFO] Regex router: classified intent='statistics'
-2025-11-04 17:07:31 [WARNING] LLM classification failed: '"intent"'
-2025-11-04 17:07:31 [INFO] Regex router: classified intent='statistics'
-2025-11-04 17:07:31 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
-2025-11-04 17:07:31 [INFO] Handling statistics request
-2025-11-04 17:07:31 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-What is the average delivery time per route? /no_think
-2025-11-04 17:07:31 [INFO] Running PandasAI with litellm LLM...
-2025-11-04 17:07:31 [INFO] Prompt ID: f97bd3e3-6138-4599-a030-c6c1c5b673ca
-2025-11-04 17:07:31 [INFO] Generating new code...
-2025-11-04 17:07:31 [INFO] Using Prompt: <tables>
+highest_avg_route = result_df.iloc[0]['route']
+result = {'type': 'string', 'value': f'The route with the highest average delivery time is {highest_avg_route}.'}
+2025-11-05 01:04:39 [INFO] Response generated successfully.
+2025-11-05 01:04:48 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:04:48 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:04:48 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
+2025-11-05 01:04:48 [INFO] Handling general query
+2025-11-05 01:04:48 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+Show all shipments delayed last week. /no_think
+2025-11-05 01:04:48 [INFO] Running PandasAI with litellm LLM...
+2025-11-05 01:04:48 [INFO] Prompt ID: 328477b9-6e4e-44bb-92de-91a3f378a465
+2025-11-05 01:04:48 [INFO] Generating new code...
+2025-11-05 01:04:48 [INFO] Using Prompt: <tables>
 
 <table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
 id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
@@ -1706,7 +508,7 @@ type (possible values "string", "number", "dataframe", "plot"). Examples: { "typ
 
 ### QUERY
  <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
-What is the average delivery time per route? /no_think
+Show all shipments delayed last week. /no_think
 
 At the end, declare "result" variable as a dictionary of type and value.
 
@@ -1714,17 +516,15 @@ At the end, declare "result" variable as a dictionary of type and value.
 Generate python code and return full updated code:
 
 ### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-04 17:07:34 [INFO] Code Generated:
+2025-11-05 01:04:50 [INFO] Code Generated:
 # TODO: import the required dependencies
 import pandas as pd
 
 # Write code here
 sql_query = """
-SELECT 
-    route,
-    AVG(delivery_time) AS average_delivery_time
+SELECT *
 FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-GROUP BY route;
+WHERE date >= '2025-01-10' AND date <= '2025-01-17' AND delay_minutes > 0;
 """
 
 result_df = execute_sql_query(sql_query)
@@ -1734,34 +534,205 @@ result = {
     "type": "dataframe",
     "value": result_df
 }
-2025-11-04 17:07:34 [INFO] Validating code requirements...
-2025-11-04 17:07:34 [INFO] Code validation successful.
-2025-11-04 17:07:34 [INFO] Cleaning the generated code...
-2025-11-04 17:07:34 [INFO] Executing code: import pandas as pd
+2025-11-05 01:04:50 [INFO] Validating code requirements...
+2025-11-05 01:04:50 [INFO] Code validation successful.
+2025-11-05 01:04:50 [INFO] Cleaning the generated code...
+2025-11-05 01:04:50 [INFO] Executing code: import pandas as pd
 sql_query = """
-SELECT 
-    route,
-    AVG(delivery_time) AS average_delivery_time
+SELECT *
 FROM table_6619b1d3d4c59fcb9f82845d59178bfd
-GROUP BY route;
+WHERE date >= '2025-01-10' AND date <= '2025-01-17' AND delay_minutes > 0;
 """
 result_df = execute_sql_query(sql_query)
 result = {'type': 'dataframe', 'value': result_df}
-2025-11-04 17:07:34 [INFO] Response generated successfully.
-2025-11-05 00:27:25 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
-2025-11-05 00:27:25 [INFO] Loaded 100 records from /data1/workspaces/phitha1/Hermes/data/shipments.csv
-2025-11-05 00:27:25 [WARNING] LLM classification failed: '"intent"'
-2025-11-05 00:27:25 [INFO] Regex router: classified intent='statistics'
-2025-11-05 00:27:25 [WARNING] LLM classification failed: '"intent"'
-2025-11-05 00:27:25 [INFO] Regex router: classified intent='statistics'
-2025-11-05 00:27:25 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
-2025-11-05 00:27:25 [INFO] Handling statistics request
-2025-11-05 00:27:25 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+2025-11-05 01:04:50 [INFO] Response generated successfully.
+2025-11-05 01:04:57 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:04:57 [INFO] Regex router: classified intent='statistics'
+2025-11-05 01:04:57 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:04:57 [INFO] Regex router: classified intent='statistics'
+2025-11-05 01:04:57 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
+2025-11-05 01:04:57 [INFO] Handling statistics request
+2025-11-05 01:04:57 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+What is the rolling 7-day average delay_minutes? /no_think
+2025-11-05 01:04:57 [INFO] Running PandasAI with litellm LLM...
+2025-11-05 01:04:57 [INFO] Prompt ID: 954be078-2047-4d85-88e0-426d4d919f9d
+2025-11-05 01:04:57 [INFO] Generating new code...
+2025-11-05 01:04:57 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
+3,Route C,WH2,4.8,0,,2024-10-12,1
+4,Route A,WH2,5.0,0,,2024-10-13,1
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+What is the rolling 7-day average delay_minutes? /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-05 01:04:59 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT 
+    date,
+    AVG(delay_minutes) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS rolling_7_day_avg_delay
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE date <= '2025-01-17'
+ORDER BY date;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "dataframe",
+    "value": result_df
+}
+2025-11-05 01:04:59 [INFO] Validating code requirements...
+2025-11-05 01:04:59 [INFO] Code validation successful.
+2025-11-05 01:04:59 [INFO] Cleaning the generated code...
+2025-11-05 01:04:59 [INFO] Executing code: import pandas as pd
+sql_query = """
+SELECT 
+    date,
+    AVG(delay_minutes) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS rolling_7_day_avg_delay
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE date <= '2025-01-17'
+ORDER BY date;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'dataframe', 'value': result_df}
+2025-11-05 01:04:59 [INFO] Response generated successfully.
+2025-11-05 01:11:54 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:11:54 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:11:54 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
+2025-11-05 01:11:54 [INFO] Handling general query
+2025-11-05 01:11:54 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+What is the most recent shipment date? /no_think
+2025-11-05 01:11:54 [INFO] Running PandasAI with litellm LLM...
+2025-11-05 01:11:54 [INFO] Prompt ID: b8e45818-2f2b-43b7-b403-b1139e7d522b
+2025-11-05 01:11:54 [INFO] Generating new code...
+2025-11-05 01:11:54 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
+3,Route C,WH2,4.8,0,,2024-10-12,1
+4,Route A,WH2,5.0,0,,2024-10-13,1
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+What is the most recent shipment date? /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-05 01:11:56 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+    SELECT MAX(date) AS most_recent_date
+    FROM table_6619b1d3d4c59fcb9f82845d59178bfd;
+"""
+
+result_df = execute_sql_query(sql_query)
+most_recent_date = result_df.iloc[0, 0]
+
+# Declare result var: 
+result = { "type": "string", "value": f"The most recent shipment date is {most_recent_date}." }
+2025-11-05 01:11:56 [INFO] Validating code requirements...
+2025-11-05 01:11:56 [INFO] Code validation successful.
+2025-11-05 01:11:56 [INFO] Cleaning the generated code...
+2025-11-05 01:11:56 [INFO] Executing code: import pandas as pd
+sql_query = """
+    SELECT MAX(date) AS most_recent_date
+    FROM table_6619b1d3d4c59fcb9f82845d59178bfd;
+"""
+result_df = execute_sql_query(sql_query)
+most_recent_date = result_df.iloc[0, 0]
+result = {'type': 'string', 'value': f'The most recent shipment date is {most_recent_date}.'}
+2025-11-05 01:11:56 [INFO] Response generated successfully.
+2025-11-05 01:12:47 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-05 01:12:47 [INFO] Loaded 100 records from /data1/workspaces/phitha1/Hermes/data/shipments.csv
+2025-11-05 01:12:47 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:12:47 [INFO] Regex router: classified intent='statistics'
+2025-11-05 01:12:47 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:12:47 [INFO] Regex router: classified intent='statistics'
+2025-11-05 01:12:47 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
+2025-11-05 01:12:47 [INFO] Handling statistics request
+2025-11-05 01:12:47 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
 How many total shipments are in the dataset? /no_think
-2025-11-05 00:27:25 [INFO] Running PandasAI with litellm LLM...
-2025-11-05 00:27:25 [INFO] Prompt ID: 35cf128e-5749-43ff-801b-e5a37313b287
-2025-11-05 00:27:25 [INFO] Generating new code...
-2025-11-05 00:27:25 [INFO] Using Prompt: <tables>
+2025-11-05 01:12:47 [INFO] Running PandasAI with litellm LLM...
+2025-11-05 01:12:47 [INFO] Prompt ID: 26d74b68-d321-4451-b6b7-191e45ee4ead
+2025-11-05 01:12:47 [INFO] Generating new code...
+2025-11-05 01:12:47 [INFO] Using Prompt: <tables>
 
 <table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
 id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
@@ -1806,7 +777,7 @@ At the end, declare "result" variable as a dictionary of type and value.
 Generate python code and return full updated code:
 
 ### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
-2025-11-05 00:27:28 [INFO] Code Generated:
+2025-11-05 01:12:49 [INFO] Code Generated:
 # Import the required dependencies
 import pandas as pd
 
@@ -1822,12 +793,359 @@ result = {
     "type": "number",
     "value": total_shipments
 }
-2025-11-05 00:27:28 [INFO] Validating code requirements...
-2025-11-05 00:27:28 [INFO] Code validation successful.
-2025-11-05 00:27:28 [INFO] Cleaning the generated code...
-2025-11-05 00:27:28 [INFO] Executing code: import pandas as pd
+2025-11-05 01:12:49 [INFO] Validating code requirements...
+2025-11-05 01:12:49 [INFO] Code validation successful.
+2025-11-05 01:12:49 [INFO] Cleaning the generated code...
+2025-11-05 01:12:49 [INFO] Executing code: import pandas as pd
 sql_query = 'SELECT COUNT(*) AS total_shipments FROM table_6619b1d3d4c59fcb9f82845d59178bfd'
 result_df = execute_sql_query(sql_query)
 total_shipments = result_df.iloc[0, 0]
 result = {'type': 'number', 'value': total_shipments}
-2025-11-05 00:27:28 [INFO] Response generated successfully.
+2025-11-05 01:12:49 [INFO] Response generated successfully.
+2025-11-05 01:12:55 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:12:55 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:12:55 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
+2025-11-05 01:12:55 [INFO] Handling general query
+2025-11-05 01:12:55 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+What is the most recent shipment date? /no_think
+2025-11-05 01:12:55 [INFO] Running PandasAI with litellm LLM...
+2025-11-05 01:12:55 [INFO] Prompt ID: 809e405c-6223-4d20-bce7-47399fea3941
+2025-11-05 01:12:55 [INFO] Generating new code...
+2025-11-05 01:12:55 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
+3,Route C,WH2,4.8,0,,2024-10-12,1
+4,Route A,WH2,5.0,0,,2024-10-13,1
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+What is the most recent shipment date? /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-05 01:12:57 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+    SELECT MAX(date) AS most_recent_shipment_date
+    FROM table_6619b1d3d4c59fcb9f82845d59178bfd;
+"""
+
+# Execute the SQL query
+result_df = execute_sql_query(sql_query)
+
+# Extract the most recent shipment date
+most_recent_shipment_date = result_df.iloc[0, 0]
+
+# Declare result var:
+result = {
+    "type": "string",
+    "value": f"The most recent shipment date is {most_recent_shipment_date}."
+}
+2025-11-05 01:12:57 [INFO] Validating code requirements...
+2025-11-05 01:12:57 [INFO] Code validation successful.
+2025-11-05 01:12:57 [INFO] Cleaning the generated code...
+2025-11-05 01:12:57 [INFO] Executing code: import pandas as pd
+sql_query = """
+    SELECT MAX(date) AS most_recent_shipment_date
+    FROM table_6619b1d3d4c59fcb9f82845d59178bfd;
+"""
+result_df = execute_sql_query(sql_query)
+most_recent_shipment_date = result_df.iloc[0, 0]
+result = {'type': 'string', 'value': f'The most recent shipment date is {most_recent_shipment_date}.'}
+2025-11-05 01:12:57 [INFO] Response generated successfully.
+2025-11-05 01:13:04 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:13:04 [INFO] Regex router: classified intent='statistics'
+2025-11-05 01:13:04 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 01:13:04 [INFO] Regex router: classified intent='statistics'
+2025-11-05 01:13:04 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
+2025-11-05 01:13:04 [INFO] Handling statistics request
+2025-11-05 01:13:04 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+What is the total delay time across all shipments? /no_think
+2025-11-05 01:13:04 [INFO] Running PandasAI with litellm LLM...
+2025-11-05 01:13:04 [INFO] Prompt ID: 609755b4-cc59-4096-a77e-c1caa771f202
+2025-11-05 01:13:04 [INFO] Generating new code...
+2025-11-05 01:13:04 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
+3,Route C,WH2,4.8,0,,2024-10-12,1
+4,Route A,WH2,5.0,0,,2024-10-13,1
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+What is the total delay time across all shipments? /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-05 01:13:06 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+    SELECT SUM(delay_minutes) AS total_delay_time
+    FROM table_6619b1d3d4c59fcb9f82845d59178bfd;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "number",
+    "value": result_df.iloc[0, 0]
+}
+2025-11-05 01:13:06 [INFO] Validating code requirements...
+2025-11-05 01:13:06 [INFO] Code validation successful.
+2025-11-05 01:13:06 [INFO] Cleaning the generated code...
+2025-11-05 01:13:06 [INFO] Executing code: import pandas as pd
+sql_query = """
+    SELECT SUM(delay_minutes) AS total_delay_time
+    FROM table_6619b1d3d4c59fcb9f82845d59178bfd;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'number', 'value': result_df.iloc[0, 0]}
+2025-11-05 01:13:06 [INFO] Response generated successfully.
+2025-11-05 09:13:42 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-05 09:13:42 [INFO] Loaded 100 records from /data1/workspaces/phitha1/Hermes/data/shipments.csv
+2025-11-05 09:13:42 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 09:13:42 [INFO] Regex router: classified intent='statistics'
+2025-11-05 09:13:42 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 09:13:42 [INFO] Regex router: classified intent='statistics'
+2025-11-05 09:13:42 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
+2025-11-05 09:13:42 [INFO] Handling statistics request
+2025-11-05 09:13:42 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset? /no_think
+2025-11-05 09:13:42 [INFO] Running PandasAI with litellm LLM...
+2025-11-05 09:13:42 [INFO] Prompt ID: 2caed6d0-d574-41ca-9d8e-5d8d3f6dee4a
+2025-11-05 09:13:42 [INFO] Generating new code...
+2025-11-05 09:13:42 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
+3,Route C,WH2,4.8,0,,2024-10-12,1
+4,Route A,WH2,5.0,0,,2024-10-13,1
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+How many total shipments are in the dataset? /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-05 09:13:45 [INFO] Code Generated:
+# Import the required dependencies
+import pandas as pd
+
+# Execute SQL query to count the total number of shipments
+sql_query = "SELECT COUNT(*) AS total_shipments FROM table_6619b1d3d4c59fcb9f82845d59178bfd;"
+result_df = execute_sql_query(sql_query)
+
+# Extract the total shipments value
+total_shipments = result_df.iloc[0, 0]
+
+# Declare result variable
+result = {
+    "type": "number",
+    "value": total_shipments
+}
+2025-11-05 09:13:45 [INFO] Validating code requirements...
+2025-11-05 09:13:45 [INFO] Code validation successful.
+2025-11-05 09:13:45 [INFO] Cleaning the generated code...
+2025-11-05 09:13:45 [INFO] Executing code: import pandas as pd
+sql_query = 'SELECT COUNT(*) AS total_shipments FROM table_6619b1d3d4c59fcb9f82845d59178bfd'
+result_df = execute_sql_query(sql_query)
+total_shipments = result_df.iloc[0, 0]
+result = {'type': 'number', 'value': total_shipments}
+2025-11-05 09:13:45 [INFO] Response generated successfully.
+2025-11-05 09:13:53 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 09:13:53 [WARNING] LLM classification failed: '"intent"'
+2025-11-05 09:13:53 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
+2025-11-05 09:13:53 [INFO] Handling general query
+2025-11-05 09:13:53 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+Which warehouse handled the most shipments overall? /no_think
+2025-11-05 09:13:53 [INFO] Running PandasAI with litellm LLM...
+2025-11-05 09:13:53 [INFO] Prompt ID: 6a9dbd20-8c9d-458c-91ad-c4b9c75ffdfb
+2025-11-05 09:13:53 [INFO] Generating new code...
+2025-11-05 09:13:53 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
+3,Route C,WH2,4.8,0,,2024-10-12,1
+4,Route A,WH2,5.0,0,,2024-10-13,1
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+Which warehouse handled the most shipments overall? /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-05 09:13:55 [INFO] Code Generated:
+# Import the required dependencies
+import pandas as pd
+
+# Execute SQL query to count the number of shipments per warehouse
+sql_query = """
+SELECT warehouse, COUNT(*) AS shipment_count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY warehouse
+ORDER BY shipment_count DESC
+LIMIT 1;
+"""
+
+# Execute the query and get the result
+result_df = execute_sql_query(sql_query)
+
+# Extract the warehouse with the most shipments
+warehouse_with_most_shipments = result_df.iloc[0]['warehouse']
+
+# Declare result variable
+result = {
+    "type": "string",
+    "value": f"The warehouse that handled the most shipments overall is {warehouse_with_most_shipments}."
+}
+2025-11-05 09:13:55 [INFO] Validating code requirements...
+2025-11-05 09:13:55 [INFO] Code validation successful.
+2025-11-05 09:13:56 [INFO] Cleaning the generated code...
+2025-11-05 09:13:56 [INFO] Executing code: import pandas as pd
+sql_query = """
+SELECT warehouse, COUNT(*) AS shipment_count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY warehouse
+ORDER BY shipment_count DESC
+LIMIT 1;
+"""
+result_df = execute_sql_query(sql_query)
+warehouse_with_most_shipments = result_df.iloc[0]['warehouse']
+result = {'type': 'string', 'value': f'The warehouse that handled the most shipments overall is {warehouse_with_most_shipments}.'}
+2025-11-05 09:13:56 [INFO] Response generated successfully.

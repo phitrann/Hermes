@@ -9,6 +9,9 @@ Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
 Requires-Python: <3.12,>=3.8
 Description-Content-Type: text/markdown
+Requires-Dist: pandasai>=3.0.0b19
+Requires-Dist: pandasai-litellm>=0.0.1
+Requires-Dist: watchgod
 Provides-Extra: dev
 Requires-Dist: pytest>=7.0; extra == "dev"
 Requires-Dist: pytest-cov; extra == "dev"

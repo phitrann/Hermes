@@ -38,8 +38,9 @@ def create_gradio_app():
                 user_prompt = gr.Textbox(placeholder="e.g., Predict next week delays or Visualize warehouse performance", lines=3)
                 with gr.Row():
                     submit_btn = gr.Button("🚀 Analyze")
-                    clear_btn = gr.Button("🗑️ Clear")
-                response_output = gr.Markdown()
+                    clear_btn = gr.Button("🗑️ Clear") 
+                # Conversation-style chatbot (list of [user, assistant])
+                response_output = gr.Chatbot(label="Hermes Chat")
                 with gr.Tabs():
                     with gr.Tab("📈 Visualization"):
                         chart_output = gr.Image(height=420)
@@ -50,10 +51,38 @@ def create_gradio_app():
                     with gr.Tab("💬 Chat History"):
                         history_output = gr.JSON()
 
-        submit_btn.click(fn=app.process_query, inputs=[data_input_mode, data_uploader, data_dropdown, question_dropdown, user_prompt], outputs=[response_output, chart_output, stats_output, data_preview, history_output])
-        predict_btn.click(fn=app.get_predictions, outputs=response_output)
-        recommend_btn.click(fn=app.get_recommendations, outputs=response_output)
+        # Local wrappers adapt HermesApp outputs to the UI components
+        def _make_chat_items(history_list):
+            items = []
+            for e in history_list:
+                user_q = e.get("query", "")
+                resp = e.get("response", "")
+                items.append([user_q, resp])
+            return items
+
+        def handle_submit(data_input_mode_val, data_uploader_val, data_dropdown_val, question_dropdown_val, user_prompt_val):
+            formatted, chart, stats, preview, history = app.process_query(data_input_mode_val, data_uploader_val, data_dropdown_val, question_dropdown_val, user_prompt_val)
+            chat_items = _make_chat_items(history)
+            # chart may be a PIL Image or a file path; gr.Image can accept either
+            return chat_items, chart, stats, preview, history
+
+        def handle_predict():
+            res = app.get_predictions()
+            # app.get_predictions appends to app.chat_history
+            return _make_chat_items(app.chat_history), None, None, None, app.chat_history
+
+        def handle_recommend():
+            res = app.get_recommendations()
+            return _make_chat_items(app.chat_history), None, None, None, app.chat_history
+
+        def handle_clear():
+            app.chat_history = []
+            return [], None, None, None, []
+
+        submit_btn.click(fn=handle_submit, inputs=[data_input_mode, data_uploader, data_dropdown, question_dropdown, user_prompt], outputs=[response_output, chart_output, stats_output, data_preview, history_output])
+        predict_btn.click(fn=handle_predict, outputs=[response_output, chart_output, stats_output, data_preview, history_output])
+        recommend_btn.click(fn=handle_recommend, outputs=[response_output, chart_output, stats_output, data_preview, history_output])
         export_btn.click(fn=app.export_chat_history, outputs=gr.File())
-        clear_btn.click(fn=lambda: ("", None, None, None, []), outputs=[response_output, chart_output, stats_output, data_preview, history_output])
+        clear_btn.click(fn=handle_clear, outputs=[response_output, chart_output, stats_output, data_preview, history_output])
 
     return demo

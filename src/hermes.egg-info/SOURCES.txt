@@ -3,6 +3,7 @@ pyproject.toml
 src/hermes/___init___.py
 src/hermes/analytics.py
 src/hermes/app.py
+src/hermes/autoviz.py
 src/hermes/config.py
 src/hermes/prompts.py
 src/hermes/router.py

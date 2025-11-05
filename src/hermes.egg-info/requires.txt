@@ -1,3 +1,6 @@
+pandasai>=3.0.0b19
+pandasai-litellm>=0.0.1
+watchgod
 
 [dev]
 pytest>=7.0
