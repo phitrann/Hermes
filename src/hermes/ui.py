@@ -74,14 +74,14 @@ def create_gradio_app():
 
         def handle_submit(message, data_source, history):
             if not message or not message.strip():
-                return history, history, "", gr.update(visible=len(history) == 0), gr.update(visible=True)
+                return history, "", gr.update(visible=len(history) == 0), gr.update(visible=True)
             
             # Load data if needed
             if app.current_df is None:
                 df, msg = app.load_data("Select Existing Data CSV", None, data_source)
                 if df is None:
                     history.append([message, msg])
-                    return history, history, "", gr.update(visible=False), gr.update(visible=True)
+                    return history, "", gr.update(visible=False), gr.update(visible=True)
             
             # Process the query - returns (formatted_html, chart, stats, preview, chat_history)
             formatted_html, chart, stats, preview, chat_history = app.process_query(
@@ -97,14 +97,14 @@ def create_gradio_app():
                 history.append([message, response])
             
             # Hide suggestions after first message
-            return history, history, "", gr.update(visible=False), gr.update(visible=True)
+            return history, "", gr.update(visible=False), gr.update(visible=True)
 
         def handle_quick_action(action_type, data_source, history):
             if app.current_df is None:
                 df, msg = app.load_data("Select Existing Data CSV", None, data_source)
                 if df is None:
                     history.append(["Quick Action", msg])
-                    return history, history, gr.update(visible=False), gr.update(visible=True)
+                    return history, gr.update(visible=False), gr.update(visible=True)
             
             if action_type == "predictions":
                 prompt = "Get predictions for next week"
@@ -126,46 +126,46 @@ Median Delay: {stats.get('median_delay_minutes', 0):.2f} minutes"""
                     result = "Please load data first"
             
             history.append([prompt, result])
-            return history, history, gr.update(visible=False), gr.update(visible=True)
+            return history, gr.update(visible=False), gr.update(visible=True)
 
         def handle_clear():
             app.chat_history = []
-            return [], [], gr.update(visible=True), gr.update(visible=True)
+            return [], gr.update(visible=True), gr.update(visible=True)
 
         # Event handlers
         submit_btn.click(
             fn=handle_submit,
             inputs=[user_input, data_dropdown, chatbot],
-            outputs=[chatbot, chatbot, user_input, suggestions, quick_actions]
+            outputs=[chatbot, user_input, suggestions, quick_actions]
         )
         
         user_input.submit(
             fn=handle_submit,
             inputs=[user_input, data_dropdown, chatbot],
-            outputs=[chatbot, chatbot, user_input, suggestions, quick_actions]
+            outputs=[chatbot, user_input, suggestions, quick_actions]
         )
         
         predict_btn.click(
             fn=lambda ds, h: handle_quick_action("predictions", ds, h),
             inputs=[data_dropdown, chatbot],
-            outputs=[chatbot, chatbot, suggestions, quick_actions]
+            outputs=[chatbot, suggestions, quick_actions]
         )
         
         recommend_btn.click(
             fn=lambda ds, h: handle_quick_action("recommendations", ds, h),
             inputs=[data_dropdown, chatbot],
-            outputs=[chatbot, chatbot, suggestions, quick_actions]
+            outputs=[chatbot, suggestions, quick_actions]
         )
         
         stats_btn.click(
             fn=lambda ds, h: handle_quick_action("statistics", ds, h),
             inputs=[data_dropdown, chatbot],
-            outputs=[chatbot, chatbot, suggestions, quick_actions]
+            outputs=[chatbot, suggestions, quick_actions]
         )
         
         clear_btn.click(
             fn=handle_clear,
-            outputs=[chatbot, chatbot, suggestions, quick_actions]
+            outputs=[chatbot, suggestions, quick_actions]
         )
 
     return demo
