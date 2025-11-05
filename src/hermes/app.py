@@ -25,7 +25,6 @@ from .analytics import HermesAnalytics
 from .visualizer import HermesVisualizer
 from .router import QueryRouter
 from .semantic import register_semantic_dataset
-from .autoviz import auto_visualize
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
@@ -160,12 +159,7 @@ class HermesApp:
         logger.info("Handling prediction request")
         result = self.get_predictions()
         stats = self.analytics.get_summary_stats() if self.analytics else {}
-        self.chat_history.append({
-            "query": prompt,
-            "response": result,
-            "intent": "prediction",
-            "timestamp": datetime.now().isoformat()
-        })
+        self._add_to_history(prompt, result, "prediction")
         return result, None, stats, (self.current_df.head(10) if self.current_df is not None else None), self.chat_history
 
     def _handle_recommendation_request(self, prompt: str):
@@ -173,80 +167,39 @@ class HermesApp:
         logger.info("Handling recommendation request")
         result = self.get_recommendations()
         stats = self.analytics.get_summary_stats() if self.analytics else {}
-        self.chat_history.append({
-            "query": prompt,
-            "response": result,
-            "intent": "recommendation",
-            "timestamp": datetime.now().isoformat()
-        })
+        self._add_to_history(prompt, result, "recommendation")
         return result, None, stats, (self.current_df.head(10) if self.current_df is not None else None), self.chat_history
 
     def _handle_visualization_request(self, prompt: str, force_chart: bool = True):
         """Handle visualization intent by asking SmartDataframe to generate a chart."""
         logger.info("Handling visualization request")
-        # Provide time context and a guided visualization instruction
-        max_date = ""
-        if self.current_df is not None and "date" in self.current_df.columns:
-            try:
-                max_date = self.current_df["date"].max().strftime("%Y-%m-%d")
-            except Exception:
-                max_date = ""
+        max_date = self._get_time_context()
         viz_prompt = f"<TIME_CONTEXT>Current date: {max_date}</TIME_CONTEXT>\n{prompt}\nPlease create and save a relevant visualization as a PNG. /no_think"
         response = self.smart_df.chat(viz_prompt)
         chart_path = self.visualizer.get_latest_chart()
-        # try to load a PIL Image for the UI to avoid browser caching of overwritten files
-        chart_for_ui = None
-        if chart_path:
-            try:
-                from PIL import Image
-                chart_for_ui = Image.open(chart_path).copy()
-            except Exception:
-                chart_for_ui = None
+        chart_for_ui = self._get_chart_for_ui(chart_path)
 
         stats = self.analytics.get_summary_stats() if self.analytics else {}
         response_html = self._beautify_response(response, title="📊 Visualization", footer="")
-        self.chat_history.append({
-            "query": prompt,
-            "response": str(response),
-            "intent": "visualization",
-            "chart_generated": chart_path is not None,
-            "chart_path": chart_path,
-            "timestamp": datetime.now().isoformat()
-        })
-        # return a PIL Image for the UI if available (Gradio accepts PIL.Image), otherwise return path
-        return response_html, (chart_for_ui if chart_for_ui is not None else chart_path), stats, (self.current_df.head(10) if self.current_df is not None else None), self.chat_history
+        self._add_to_history(prompt, response, "visualization", chart_path)
+        return response_html, (chart_for_ui if chart_for_ui else chart_path), stats, (self.current_df.head(10) if self.current_df is not None else None), self.chat_history
 
     def _handle_stats_request(self, prompt: str):
         """Handle stats intent by asking PandasAI and returning summary stats as well."""
         logger.info("Handling statistics request")
-        max_date = ""
-        if self.current_df is not None and "date" in self.current_df.columns:
-            try:
-                max_date = self.current_df["date"].max().strftime("%Y-%m-%d")
-            except Exception:
-                max_date = ""
+        max_date = self._get_time_context()
         full_prompt = f"<TIME_CONTEXT>Current date: {max_date}</TIME_CONTEXT>\n{prompt} /no_think"
         response = self.smart_df.chat(full_prompt)
         stats = self.analytics.get_summary_stats() if self.analytics else {}
         footer = f"Total shipments: {stats.get('total_shipments', 0)}, Delayed: {stats.get('delayed_shipments', 0)}" if stats else ""
         response_html = self._beautify_response(response, title="📊 Statistics", footer=footer)
-        self.chat_history.append({
-            "query": prompt,
-            "response": str(response),
-            "intent": "statistics",
-            "timestamp": datetime.now().isoformat()
-        })
+        self._add_to_history(prompt, response, "statistics")
         return response_html, None, stats, (self.current_df.head(10) if self.current_df is not None else None), self.chat_history
 
     def _handle_general_query(self, prompt: str, force_chart: bool = False):
         """Default handler that forwards the prompt to PandasAI for execution."""
         logger.info("Handling general query")
-        max_date = ""
-        if self.current_df is not None and "date" in self.current_df.columns:
-            try:
-                max_date = self.current_df["date"].max().strftime("%Y-%m-%d")
-            except Exception:
-                max_date = ""
+        max_date = self._get_time_context()
         full_prompt = f"<TIME_CONTEXT>Current date: {max_date}</TIME_CONTEXT>\n{prompt} /no_think"
         if force_chart:
             full_prompt += "\nPlease include a relevant visualization and save the chart."
@@ -254,37 +207,47 @@ class HermesApp:
         stats = self.analytics.get_summary_stats() if self.analytics else {}
         response_html = self._beautify_response(response, title="", footer="")
         
-        # First check if PandasAI created a chart:
         chart_path = self.visualizer.get_latest_chart()
-        chart_for_ui = None
-        if chart_path:
-            try:
-                from PIL import Image
-                chart_for_ui = Image.open(chart_path).copy()
-            except Exception:
-                chart_for_ui = None
+        chart_for_ui = self._get_chart_for_ui(chart_path)
 
-        # if not chart_path:
-        #     # Try deterministic auto-visualization
-        #     viz_result = auto_visualize(response, df_fallback=self.current_df, prompt_hint=prompt)
-        #     if viz_result:
-        #         chart_path = viz_result["chart_path"]
-        #         # append caption to HTML response
-        #         response_html += f"<div style='margin-top:8px; font-size:0.95em; color:#fff; opacity:0.95;'>{viz_result['caption']}</div>"
-
-        self.chat_history.append({
-            "query": prompt,
-            "response": str(response),
-            "intent": "general",
-            "chart_generated": chart_path is not None,
-            "chart_path": chart_path,
-            "timestamp": datetime.now().isoformat()
-        })
-        return response_html, (chart_for_ui if chart_for_ui is not None else chart_path), stats, (self.current_df.head(10) if self.current_df is not None else None), self.chat_history
+        self._add_to_history(prompt, response, "general", chart_path)
+        return response_html, (chart_for_ui if chart_for_ui else chart_path), stats, (self.current_df.head(10) if self.current_df is not None else None), self.chat_history
 
     # -----------------------
     # Utilities & features
     # -----------------------
+    def _get_time_context(self) -> str:
+        """Extract max date from current dataframe for time context."""
+        if self.current_df is not None and "date" in self.current_df.columns:
+            try:
+                return self.current_df["date"].max().strftime("%Y-%m-%d")
+            except Exception:
+                pass
+        return ""
+    
+    def _get_chart_for_ui(self, chart_path: Optional[str]) -> Optional[Any]:
+        """Convert chart path to PIL Image for UI display."""
+        if not chart_path:
+            return None
+        try:
+            from PIL import Image
+            return Image.open(chart_path).copy()
+        except Exception:
+            return None
+    
+    def _add_to_history(self, prompt: str, response: str, intent: str, chart_path: Optional[str] = None):
+        """Add entry to chat history."""
+        entry = {
+            "query": prompt,
+            "response": str(response),
+            "intent": intent,
+            "timestamp": datetime.now().isoformat()
+        }
+        if chart_path is not None:
+            entry["chart_generated"] = True
+            entry["chart_path"] = chart_path
+        self.chat_history.append(entry)
+    
     def _beautify_response(self, response_obj: Any, title: str = "", footer: str = "") -> str:
         """Return formatted response string for display in chat UI."""
         # Convert response to safe string and replace newlines with <br>

@@ -21,15 +21,28 @@ class HermesAnalytics:
     def get_summary_stats(self):
         total = len(self.df)
         delayed = int((self.df['delay_minutes'] > 0).sum()) if 'delay_minutes' in self.df.columns else 0
+        on_time = int(total - delayed)
+        
         stats = {
             'total_shipments': int(total),
             'delayed_shipments': delayed,
-            'on_time_shipments': int(total - delayed),
+            'on_time_shipments': on_time,
+            'on_time_rate': (on_time / total) if total > 0 else 0.0,
             'delay_rate': f"{(delayed / total * 100):.1f}%" if total > 0 else "0.0%",
             'avg_delay': f"{self.df[self.df['delay_minutes'] > 0]['delay_minutes'].mean():.1f} min" if delayed > 0 else "0.0 min",
             'avg_delivery_time': f"{self.df['delivery_time'].mean():.2f} days" if 'delivery_time' in self.df.columns else "N/A",
             'date_range': f"{self.df['date'].min().date()} to {self.df['date'].max().date()}"
         }
+        
+        # Add raw numeric values for UI
+        if 'delay_minutes' in self.df.columns:
+            delay_values = self.df[self.df['delay_minutes'] > 0]['delay_minutes']
+            stats['avg_delay_minutes'] = float(delay_values.mean()) if len(delay_values) > 0 else 0.0
+            stats['median_delay_minutes'] = float(delay_values.median()) if len(delay_values) > 0 else 0.0
+        else:
+            stats['avg_delay_minutes'] = 0.0
+            stats['median_delay_minutes'] = 0.0
+            
         if 'cost' in self.df.columns:
             stats['total_cost'] = f"${self.df['cost'].sum():,.2f}"
         return stats
