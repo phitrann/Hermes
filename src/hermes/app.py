@@ -16,6 +16,7 @@ import logging
 import os
 from datetime import datetime
 from typing import Any, Dict, Optional, Tuple, Union, Literal
+from pathlib import Path
 
 import pandas as pd
 import pandasai as pai
@@ -64,9 +65,9 @@ class HermesApp:
     # -----------------------
     # Data loading / helpers
     # -----------------------
-    def get_csv_files(self) -> list[str]:
+    def get_csv_files(self, truncate=False) -> list[str]:
         """Return list of CSV files in the data directory."""
-        return sorted([os.path.join(DATA_DIR, f) for f in os.listdir(DATA_DIR) if f.lower().endswith(".csv")])
+        return sorted([f for f in Path(DATA_DIR).iterdir() if f.suffix.lower() == ".csv"])
 
     def get_questions(self) -> list[str]:
         """Load sample questions list (if present)."""
@@ -170,7 +171,6 @@ class HermesApp:
             else:
                 result = self._handle_general_chat(prompt, force_chart)
             
-            logger.info(f"{result = }")
             # Add to chat history (convert to dict for storage)
             self.chat_history.append({
                 "query": prompt,

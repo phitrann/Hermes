@@ -18,7 +18,7 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 DATA_DIR = os.path.join(ROOT_DIR, "data")
 LOGS_DIR = os.path.join(ROOT_DIR, "logs")
 CACHE_DIR = os.path.join(ROOT_DIR, ".cache")
-CHARTS_DIR = os.path.join(ROOT_DIR, "charts")
+CHARTS_DIR = os.path.join(ROOT_DIR, "exports/charts")
 
 SHIPMENTS_FILE = os.path.join(DATA_DIR, "shipments.csv")
 QUESTIONS_FILE = os.path.join(DATA_DIR, "shipment_questions_500.csv")

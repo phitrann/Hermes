@@ -1,29 +1,42 @@
 """
 Data models for validating and structuring Hermes response outputs.
-
 Provides Pydantic models for type-safe validation of handler responses,
 ensuring consistent structure across prediction, recommendation, visualization,
 statistics, and general query handlers.
 """
-
 from __future__ import annotations
-
-from typing import Any, Dict, List, Optional, Union, Literal
+from typing import Any, Dict, List, Optional, Union, Literal, Tuple
 from datetime import datetime
 from pathlib import Path
-
 try:
-    from pydantic import BaseModel, Field, validator, field_validator
+    from pydantic import BaseModel, Field, field_validator, ValidationInfo, model_validator
     PYDANTIC_V2 = True
 except ImportError:
-    from pydantic import BaseModel, Field, validator
+    from pydantic import BaseModel, Field, validator, root_validator
     PYDANTIC_V2 = False
 
+# Export for use in other modules
+__all__ = [
+    'PYDANTIC_V2',
+    'ChartData',
+    'MetricsData', 
+    'PredictionData',
+    'RecommendationItem',
+    'StatsSummary',
+    'DataFramePreview',
+    'BaseResponse',
+    'PredictionResponse',
+    'RecommendationResponse',
+    'VisualizationResponse',
+    'StatisticsResponse',
+    'GeneralResponse',
+    'ResponseFactory',
+    'GradioFormatter',
+]
 
 # ============================================================================
 # Core Response Models
 # ============================================================================
-
 class ChartData(BaseModel):
     """Represents a generated chart/visualization."""
     
@@ -50,7 +63,6 @@ class ChartData(BaseModel):
         """Check if chart file exists."""
         return self.path is not None and Path(self.path).exists()
 
-
 class MetricsData(BaseModel):
     """ML model performance metrics."""
     
@@ -60,15 +72,37 @@ class MetricsData(BaseModel):
     model_type: str = Field(default="Linear Regression", description="Model algorithm used")
     training_samples: Optional[int] = Field(None, ge=0, description="Number of training samples")
 
-
 class PredictionData(BaseModel):
     """Prediction forecast results."""
     
     predicted_avg_delay: float = Field(..., description="Predicted average delay (minutes)")
     predicted_median: float = Field(..., description="Predicted median delay (minutes)")
     forecast_period: str = Field(..., description="Time period for forecast")
-    confidence_interval: Optional[Dict[str, float]] = Field(None, description="95% confidence bounds")
-
+    confidence_interval: Optional[Union[tuple, Dict[str, float]]] = Field(None, description="95% confidence bounds (tuple or dict)")
+    
+    if PYDANTIC_V2:
+        @model_validator(mode='after')
+        def convert_confidence_interval(self) -> 'PredictionData':
+            """Convert confidence interval tuple to dict format."""
+            if self.confidence_interval and isinstance(self.confidence_interval, tuple):
+                if len(self.confidence_interval) == 2:
+                    self.confidence_interval = {
+                        "lower": float(self.confidence_interval[0]),
+                        "upper": float(self.confidence_interval[1])
+                    }
+            return self
+    else:
+        @root_validator
+        def convert_confidence_interval(cls, values):
+            """Convert confidence interval tuple to dict format."""
+            ci = values.get("confidence_interval")
+            if ci and isinstance(ci, tuple):
+                if len(ci) == 2:
+                    values["confidence_interval"] = {
+                        "lower": float(ci[0]),
+                        "upper": float(ci[1])
+                    }
+            return values
 
 class RecommendationItem(BaseModel):
     """Single actionable recommendation."""
@@ -95,18 +129,18 @@ class RecommendationItem(BaseModel):
                 raise ValueError(f"Priority must be one of {allowed}")
             return v
 
-
 class StatsSummary(BaseModel):
     """Summary statistics for dataset."""
     
     total_shipments: int = Field(..., ge=0)
     delayed_shipments: int = Field(..., ge=0)
     on_time_shipments: int = Field(..., ge=0)
+    on_time_rate: float = Field(..., ge=0.0)
+    delay_rate: float = Field(..., ge=0.0, le=1.0, description="Proportion of delayed shipments")
     avg_delay_minutes: float = Field(..., ge=0.0)
     median_delay_minutes: Optional[float] = Field(None, ge=0.0)
-    delay_rate: float = Field(..., ge=0.0, le=1.0, description="Proportion of delayed shipments")
+    avg_delivery_time: float = Field(..., ge=0.0, description="Average days of delivery time"),
     date_range: Optional[str] = Field(None, description="Data date range")
-
 
 class DataFramePreview(BaseModel):
     """Structured dataframe preview for UI display."""
@@ -116,11 +150,9 @@ class DataFramePreview(BaseModel):
     shape: tuple[int, int] = Field(..., description="(rows, cols)")
     dtypes: Optional[Dict[str, str]] = Field(None, description="Column data types")
 
-
 # ============================================================================
 # Handler Response Models
 # ============================================================================
-
 class BaseResponse(BaseModel):
     """Base response structure for all handlers."""
     
@@ -132,84 +164,63 @@ class BaseResponse(BaseModel):
     success: bool = Field(default=True, description="Whether request succeeded")
     error: Optional[str] = Field(None, description="Error message if failed")
 
-
 class PredictionResponse(BaseResponse):
     """Response for prediction queries."""
     
-    intent: Literal["prediction"]
+    intent: Literal["prediction"] = "prediction"
     metrics: Optional[MetricsData] = Field(None, description="Model performance metrics")
     prediction: Optional[PredictionData] = Field(None, description="Forecast results")
     
     if PYDANTIC_V2:
-        @field_validator("metadata")
-        @classmethod
-        def populate_metadata(cls, v: Dict[str, Any], values) -> Dict[str, Any]:
-            # Auto-populate metadata from metrics and prediction
-            if "metrics" in values and values["metrics"]:
-                v["metrics"] = values["metrics"].dict()
-            if "prediction" in values and values["prediction"]:
-                v["prediction"] = values["prediction"].dict()
-            return v
+        @model_validator(mode='after')
+        def populate_metadata(self) -> 'PredictionResponse':
+            """Auto-populate metadata from metrics and prediction."""
+            if self.metrics:
+                self.metadata["metrics"] = self.metrics.model_dump()
+            if self.prediction:
+                self.metadata["prediction"] = self.prediction.model_dump()
+            return self
     else:
-        @validator("metadata", always=True)
-        def populate_metadata(cls, v: Dict[str, Any], values) -> Dict[str, Any]:
-            if "metrics" in values and values["metrics"]:
-                v["metrics"] = values["metrics"].dict()
-            if "prediction" in values and values["prediction"]:
-                v["prediction"] = values["prediction"].dict()
-            return v
-
+        @root_validator
+        def populate_metadata(cls, values):
+            """Auto-populate metadata from metrics and prediction."""
+            metadata = values.get("metadata", {})
+            if values.get("metrics"):
+                metadata["metrics"] = values["metrics"].dict()
+            if values.get("prediction"):
+                metadata["prediction"] = values["prediction"].dict()
+            values["metadata"] = metadata
+            return values
 
 class RecommendationResponse(BaseResponse):
     """Response for recommendation queries."""
-
-    intent: Literal["recommendation"]
+    intent: Literal["recommendation"] = "recommendation"
     recommendations: List[RecommendationItem] = Field(default_factory=list)
     summary_stats: Optional[StatsSummary] = Field(None, description="Supporting statistics")
-
 
 class VisualizationResponse(BaseResponse):
     """Response for visualization queries."""
     
-    intent: Literal["visualization"]
+    intent: Literal["visualization"] = "visualization"
     chart_type: Optional[str] = Field(None, description="Type of chart generated")
     data_preview: Optional[DataFramePreview] = Field(None, description="Underlying data")
-    
-    if PYDANTIC_V2:
-        @field_validator("chart")
-        @classmethod
-        def ensure_chart_exists(cls, v: Optional[ChartData]) -> Optional[ChartData]:
-            if v and not v.exists:
-                raise ValueError("Visualization response must include valid chart")
-            return v
-    else:
-        @validator("chart")
-        def ensure_chart_exists(cls, v: Optional[ChartData]) -> Optional[ChartData]:
-            if v and not v.exists:
-                raise ValueError("Visualization response must include valid chart")
-            return v
-
 
 class StatisticsResponse(BaseResponse):
     """Response for statistics queries."""
-
-    intent: Literal["statistics"]
+    intent: Literal["statistics"] = "statistics"
     stats: Optional[StatsSummary] = Field(None, description="Computed statistics")
     data_preview: Optional[DataFramePreview] = Field(None, description="Sample data")
-
 
 class GeneralResponse(BaseResponse):
     """Response for general queries."""
     
-    intent: Literal["general"]
+    intent: Literal["general"] = "general"
     data_type: Optional[str] = Field(None, description="Type of data returned (text/number/dataframe)")
     raw_result: Optional[Any] = Field(None, description="Raw LLM response")
-
 
 # ============================================================================
 # Response Factory & Helpers
 # ============================================================================
-
 class ResponseFactory:
     """Factory for creating typed responses from handler outputs."""
     
@@ -287,11 +298,9 @@ class ResponseFactory:
                 raw_result=response_dict.get("metadata", {}).get("raw"),
             )
 
-
 # ============================================================================
 # Gradio Display Helpers
 # ============================================================================
-
 class GradioFormatter:
     """Format typed responses for Gradio component display."""
     

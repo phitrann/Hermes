@@ -10131,3 +10131,3396 @@ result = {'type': 'plot', 'value': 'exports/charts/temp_chart_a549be88-0e68-4c83
 2025-11-06 09:39:50 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
 2025-11-06 09:39:50 [INFO] result = VisualizationResponse(text='📊 exports/charts/temp_chart_a549be88-0e68-4c83-9e8c-cd4574beaf53.png', chart=ChartData(path='/data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png', mime_type='image/png', caption='Visualization for: 🏢 Compare warehouse performance'), intent='visualization', metadata={'chart_path': '/data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png', 'chart_type': 'bar'}, timestamp=datetime.datetime(2025, 11, 6, 9, 39, 50, 191922), success=True, error=None, chart_type='bar', data_preview=None)
 2025-11-06 09:39:50 [INFO] Added chart to message: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
+2025-11-06 09:49:01 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 09:49:03 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 09:50:12 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 09:50:12 [INFO] Loaded 1000 records from /data1/workspaces/phitha1/Hermes/data/shipments_1000.csv
+2025-11-06 09:50:12 [INFO] ✅ Data auto-loaded: ✅ Loaded 1000 shipment records
+2025-11-06 09:50:12 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:50:12 [INFO] Classification: general (50%)
+2025-11-06 09:50:13 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:50:13 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:50:13 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
+2025-11-06 09:50:13 [INFO] Handling general query (typed)
+2025-11-06 09:50:13 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+⏱️ Which routes have most delays? /no_think
+2025-11-06 09:50:13 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 09:50:13 [INFO] Prompt ID: 021fe516-7c92-4a3b-a355-e1d9567a33c4
+2025-11-06 09:50:13 [INFO] Generating new code...
+2025-11-06 09:50:13 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+⏱️ Which routes have most delays? /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 09:50:15 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT route, COUNT(*) AS num_delays
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY num_delays DESC;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "dataframe",
+    "value": result_df
+}
+2025-11-06 09:50:15 [INFO] Validating code requirements...
+2025-11-06 09:50:15 [INFO] Code validation successful.
+2025-11-06 09:50:15 [INFO] Cleaning the generated code...
+2025-11-06 09:50:15 [INFO] Executing code: import pandas as pd
+sql_query = """
+SELECT route, COUNT(*) AS num_delays
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY num_delays DESC;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'dataframe', 'value': result_df}
+2025-11-06 09:50:15 [INFO] Response generated successfully.
+2025-11-06 09:56:36 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 09:56:39 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 09:56:47 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 09:56:47 [INFO] Loaded 1000 records from /data1/workspaces/phitha1/Hermes/data/shipments_1000.csv
+2025-11-06 09:56:47 [INFO] ✅ Data auto-loaded: ✅ Loaded 1000 shipment records
+2025-11-06 09:56:47 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:56:47 [INFO] Classification: general (50%)
+2025-11-06 09:56:47 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:56:47 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:56:47 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
+2025-11-06 09:56:47 [INFO] Handling general query (typed)
+2025-11-06 09:56:47 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+⏱️ Which routes have most delays? /no_think
+2025-11-06 09:56:47 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 09:56:47 [INFO] Prompt ID: 0d9778e6-36fb-4017-b62d-4f026da06135
+2025-11-06 09:56:47 [INFO] Generating new code...
+2025-11-06 09:56:47 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+⏱️ Which routes have most delays? /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 09:56:49 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT route, COUNT(*) AS num_delays
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY num_delays DESC;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "dataframe",
+    "value": result_df
+}
+2025-11-06 09:56:49 [INFO] Validating code requirements...
+2025-11-06 09:56:49 [INFO] Code validation successful.
+2025-11-06 09:56:49 [INFO] Cleaning the generated code...
+2025-11-06 09:56:49 [INFO] Executing code: import pandas as pd
+sql_query = """
+SELECT route, COUNT(*) AS num_delays
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY num_delays DESC;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'dataframe', 'value': result_df}
+2025-11-06 09:56:49 [INFO] Response generated successfully.
+2025-11-06 09:58:35 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 09:58:37 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 09:58:53 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 09:58:55 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 09:59:05 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 09:59:05 [INFO] Loaded 1000 records from /data1/workspaces/phitha1/Hermes/data/shipments_1000.csv
+2025-11-06 09:59:05 [INFO] ✅ Data auto-loaded: ✅ Loaded 1000 shipment records
+2025-11-06 09:59:05 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:59:05 [INFO] Classification: general (50%)
+2025-11-06 09:59:05 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:59:05 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:59:05 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
+2025-11-06 09:59:05 [INFO] Handling general query (typed)
+2025-11-06 09:59:05 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+⏱️ Which routes have most delays? /no_think
+2025-11-06 09:59:05 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 09:59:05 [INFO] Prompt ID: 1621c320-9c84-44af-88db-a5f3df87f795
+2025-11-06 09:59:05 [INFO] Generating new code...
+2025-11-06 09:59:05 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+⏱️ Which routes have most delays? /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 09:59:07 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT route, COUNT(*) AS num_delays
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY num_delays DESC;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "dataframe",
+    "value": result_df
+}
+2025-11-06 09:59:07 [INFO] Validating code requirements...
+2025-11-06 09:59:07 [INFO] Code validation successful.
+2025-11-06 09:59:07 [INFO] Cleaning the generated code...
+2025-11-06 09:59:07 [INFO] Executing code: import pandas as pd
+sql_query = """
+SELECT route, COUNT(*) AS num_delays
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY num_delays DESC;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'dataframe', 'value': result_df}
+2025-11-06 09:59:07 [INFO] Response generated successfully.
+2025-11-06 09:59:24 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:59:24 [INFO] Regex router: classified intent='comparison'
+2025-11-06 09:59:24 [INFO] Classification: comparison (60%)
+2025-11-06 09:59:24 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:59:24 [INFO] Regex router: classified intent='comparison'
+2025-11-06 09:59:24 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:59:24 [INFO] Regex router: classified intent='comparison'
+2025-11-06 09:59:24 [INFO] Routing: intent=comparison confidence=0.60 method=fallback force_chart=True
+2025-11-06 09:59:24 [INFO] Handling visualization request (typed)
+2025-11-06 09:59:24 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+🏢 Compare warehouse performance
+Create and save a visualization as PNG. /no_think
+2025-11-06 09:59:24 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 09:59:24 [INFO] Prompt ID: 92e06ba1-8eb3-4314-a661-b3eff08a4fb6
+2025-11-06 09:59:24 [INFO] Generating new code...
+2025-11-06 09:59:24 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+🏢 Compare warehouse performance
+Create and save a visualization as PNG. /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 09:59:29 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Write code here
+def analyze_warehouse_performance():
+    # SQL query to calculate average delay minutes per warehouse
+    sql_query = """
+        SELECT 
+            warehouse,
+            AVG(delay_minutes) AS avg_delay_minutes
+        FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+        GROUP BY warehouse
+        ORDER BY avg_delay_minutes DESC;
+    """
+    
+    # Execute the SQL query
+    warehouse_performance = execute_sql_query(sql_query)
+    
+    # Plot the results
+    plt.figure(figsize=(10, 6))
+    plt.bar(warehouse_performance['warehouse'], warehouse_performance['avg_delay_minutes'], color='skyblue')
+    plt.xlabel('Warehouse')
+    plt.ylabel('Average Delay Minutes')
+    plt.title('Warehouse Performance: Average Delay Minutes')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    
+    # Save the plot as a PNG file
+    plt.savefig('warehouse_performance.png')
+    plt.close()
+    
+    # Return the result as a dictionary
+    return {
+        "type": "plot",
+        "value": "warehouse_performance.png"
+    }
+
+# Call the function and store the result
+result = analyze_warehouse_performance()
+2025-11-06 09:59:29 [INFO] Validating code requirements...
+2025-11-06 09:59:29 [INFO] Code validation successful.
+2025-11-06 09:59:29 [INFO] Cleaning the generated code...
+2025-11-06 09:59:29 [INFO] Executing code: import pandas as pd
+import matplotlib.pyplot as plt
+
+
+def analyze_warehouse_performance():
+    sql_query = """
+        SELECT 
+            warehouse,
+            AVG(delay_minutes) AS avg_delay_minutes
+        FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+        GROUP BY warehouse
+        ORDER BY avg_delay_minutes DESC;
+    """
+    warehouse_performance = execute_sql_query(sql_query)
+    plt.figure(figsize=(10, 6))
+    plt.bar(warehouse_performance['warehouse'], warehouse_performance['avg_delay_minutes'], color='skyblue')
+    plt.xlabel('Warehouse')
+    plt.ylabel('Average Delay Minutes')
+    plt.title('Warehouse Performance: Average Delay Minutes')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig('exports/charts/temp_chart_b442faf3-47b5-4f10-a7f4-830329e53dbc.png')
+    plt.close()
+    return {'type': 'plot', 'value': 'exports/charts/temp_chart_b442faf3-47b5-4f10-a7f4-830329e53dbc.png'}
+
+
+result = analyze_warehouse_performance()
+2025-11-06 09:59:29 [INFO] Response generated successfully.
+2025-11-06 09:59:29 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
+2025-11-06 09:59:29 [INFO] Added chart to message: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
+2025-11-06 09:59:38 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:59:38 [INFO] Classification: general (50%)
+2025-11-06 09:59:38 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:59:38 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 09:59:38 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
+2025-11-06 09:59:38 [INFO] Handling general query (typed)
+2025-11-06 09:59:38 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📈 Show delivery trends by route /no_think
+2025-11-06 09:59:38 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 09:59:38 [INFO] Prompt ID: 2800d5b1-4793-4368-b70b-5776fe2f690b
+2025-11-06 09:59:38 [INFO] Generating new code...
+2025-11-06 09:59:38 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📈 Show delivery trends by route /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 09:59:41 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT 
+    route,
+    COUNT(*) AS total_deliveries,
+    AVG(delivery_time) AS avg_delivery_time,
+    SUM(delay_minutes) AS total_delay_minutes,
+    COUNT(CASE WHEN on_time = 1 THEN 1 ELSE NULL END) AS on_time_deliveries
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY route
+ORDER BY total_deliveries DESC;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "dataframe",
+    "value": result_df
+}
+2025-11-06 09:59:41 [INFO] Validating code requirements...
+2025-11-06 09:59:41 [INFO] Code validation successful.
+2025-11-06 09:59:41 [INFO] Cleaning the generated code...
+2025-11-06 09:59:41 [INFO] Executing code: import pandas as pd
+sql_query = """
+SELECT 
+    route,
+    COUNT(*) AS total_deliveries,
+    AVG(delivery_time) AS avg_delivery_time,
+    SUM(delay_minutes) AS total_delay_minutes,
+    COUNT(CASE WHEN on_time = 1 THEN 1 ELSE NULL END) AS on_time_deliveries
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY route
+ORDER BY total_deliveries DESC;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'dataframe', 'value': result_df}
+2025-11-06 09:59:41 [INFO] Response generated successfully.
+2025-11-06 10:04:35 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 10:04:35 [INFO] Regex router: classified intent='comparison'
+2025-11-06 10:04:35 [INFO] Classification: comparison (60%)
+2025-11-06 10:04:35 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 10:04:35 [INFO] Regex router: classified intent='comparison'
+2025-11-06 10:04:35 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 10:04:35 [INFO] Regex router: classified intent='comparison'
+2025-11-06 10:04:35 [INFO] Routing: intent=comparison confidence=0.60 method=fallback force_chart=True
+2025-11-06 10:04:35 [INFO] Handling visualization request (typed)
+2025-11-06 10:04:35 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+🏢 Compare warehouse performance
+Create and save a visualization as PNG. /no_think
+2025-11-06 10:04:35 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 10:04:35 [INFO] Prompt ID: e883ade9-8c70-4c9e-aa4d-a90752f49664
+2025-11-06 10:04:35 [INFO] Generating new code...
+2025-11-06 10:04:35 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+🏢 Compare warehouse performance
+Create and save a visualization as PNG. /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 10:04:40 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Write code here
+def analyze_warehouse_performance():
+    # SQL query to calculate average delay minutes per warehouse
+    sql_query = """
+        SELECT 
+            warehouse,
+            AVG(delay_minutes) AS avg_delay_minutes
+        FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+        GROUP BY warehouse
+        ORDER BY avg_delay_minutes DESC;
+    """
+    
+    # Execute SQL query
+    warehouse_performance = execute_sql_query(sql_query)
+    
+    # Plot the results
+    plt.figure(figsize=(10, 6))
+    plt.bar(warehouse_performance['warehouse'], warehouse_performance['avg_delay_minutes'], color='skyblue')
+    plt.xlabel('Warehouse')
+    plt.ylabel('Average Delay Minutes')
+    plt.title('Warehouse Performance: Average Delay Minutes')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    
+    # Save the plot as a PNG file
+    plt.savefig('warehouse_performance.png')
+    plt.close()
+    
+    # Return the result as a dictionary
+    return {
+        "type": "plot",
+        "value": "warehouse_performance.png"
+    }
+
+# Call the function and store the result
+result = analyze_warehouse_performance()
+2025-11-06 10:04:40 [INFO] Validating code requirements...
+2025-11-06 10:04:40 [INFO] Code validation successful.
+2025-11-06 10:04:40 [INFO] Cleaning the generated code...
+2025-11-06 10:04:40 [INFO] Executing code: import pandas as pd
+import matplotlib.pyplot as plt
+
+
+def analyze_warehouse_performance():
+    sql_query = """
+        SELECT 
+            warehouse,
+            AVG(delay_minutes) AS avg_delay_minutes
+        FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+        GROUP BY warehouse
+        ORDER BY avg_delay_minutes DESC;
+    """
+    warehouse_performance = execute_sql_query(sql_query)
+    plt.figure(figsize=(10, 6))
+    plt.bar(warehouse_performance['warehouse'], warehouse_performance['avg_delay_minutes'], color='skyblue')
+    plt.xlabel('Warehouse')
+    plt.ylabel('Average Delay Minutes')
+    plt.title('Warehouse Performance: Average Delay Minutes')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig('exports/charts/temp_chart_ab434d5b-dc82-46e6-858c-2117f1a67700.png')
+    plt.close()
+    return {'type': 'plot', 'value': 'exports/charts/temp_chart_ab434d5b-dc82-46e6-858c-2117f1a67700.png'}
+
+
+result = analyze_warehouse_performance()
+2025-11-06 10:04:40 [INFO] Response generated successfully.
+2025-11-06 10:04:40 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
+2025-11-06 10:04:40 [INFO] Added chart to message: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
+2025-11-06 10:11:41 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 10:11:43 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 10:15:13 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 10:15:13 [INFO] Loaded 1000 records from /data1/workspaces/phitha1/Hermes/data/shipments_1000.csv
+2025-11-06 10:15:13 [INFO] ✅ Data auto-loaded: ✅ Loaded 1000 shipment records
+2025-11-06 10:15:13 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 10:15:13 [INFO] Regex router: classified intent='prediction'
+2025-11-06 10:15:13 [INFO] Classification: prediction (60%)
+2025-11-06 10:15:13 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 10:15:13 [INFO] Regex router: classified intent='prediction'
+2025-11-06 10:15:13 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 10:15:13 [INFO] Regex router: classified intent='prediction'
+2025-11-06 10:15:13 [INFO] Routing: intent=prediction confidence=0.60 method=fallback force_chart=False
+2025-11-06 10:15:13 [INFO] Handling prediction request (typed)
+2025-11-06 10:15:13 [INFO] Model trained: R²=0.0025, RMSE=38.94 (trained on 1000 samples)
+2025-11-06 10:15:14 [ERROR] Prediction error
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/app.py", line 216, in _handle_prediction_chat
+    prediction = PredictionData(**pred_dict)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for PredictionData
+confidence_interval
+  Input should be a valid dictionary [type=dict_type, input_value=(53.802953910622996, 54.96932568710414), input_type=tuple]
+    For further information visit https://errors.pydantic.dev/2.11/v/dict_type
+2025-11-06 10:15:14 [ERROR] Query processing error
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/app.py", line 216, in _handle_prediction_chat
+    prediction = PredictionData(**pred_dict)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for PredictionData
+confidence_interval
+  Input should be a valid dictionary [type=dict_type, input_value=(53.802953910622996, 54.96932568710414), input_type=tuple]
+    For further information visit https://errors.pydantic.dev/2.11/v/dict_type
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/app.py", line 163, in process_query_chat
+    result = self._handle_prediction_chat(prompt)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/app.py", line 247, in _handle_prediction_chat
+    return PredictionResponse(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/models.py", line 148, in populate_metadata
+    if "metrics" in values and values["metrics"]:
+       ^^^^^^^^^^^^^^^^^^^
+TypeError: argument of type 'pydantic_core._pydantic_core.ValidationInfo' is not iterable
+2025-11-06 10:15:14 [ERROR] Query processing error: (warning: argument of type 'pydantic_core._pydantic_core.ValidationInfo' is not iterable)
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/ui_agent.py", line 561, in respond
+    raise Exception(result["reasoning"])
+Exception: (warning: argument of type 'pydantic_core._pydantic_core.ValidationInfo' is not iterable)
+2025-11-06 10:39:50 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 10:39:52 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 10:40:22 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 10:40:24 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 10:40:32 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 10:40:34 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 10:40:46 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 10:40:48 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 10:41:05 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 10:41:08 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 10:41:24 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 10:41:24 [INFO] Loaded 1000 records from /data1/workspaces/phitha1/Hermes/data/shipments_1000.csv
+2025-11-06 10:41:24 [INFO] ✅ Data auto-loaded: ✅ Loaded 1000 shipment records
+2025-11-06 10:41:24 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 10:41:24 [INFO] Regex router: classified intent='prediction'
+2025-11-06 10:41:24 [INFO] Classification: prediction (60%)
+2025-11-06 10:41:24 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 10:41:24 [INFO] Regex router: classified intent='prediction'
+2025-11-06 10:41:24 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 10:41:24 [INFO] Regex router: classified intent='prediction'
+2025-11-06 10:41:24 [INFO] Routing: intent=prediction confidence=0.60 method=fallback force_chart=False
+2025-11-06 10:41:24 [INFO] Handling prediction request (typed)
+2025-11-06 10:41:24 [INFO] Model trained: R²=0.0025, RMSE=38.94 (trained on 1000 samples)
+2025-11-06 10:41:24 [ERROR] Prediction error
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/app.py", line 216, in _handle_prediction_chat
+    prediction = PredictionData(**pred_dict)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for PredictionData
+confidence_interval
+  Input should be a valid dictionary [type=dict_type, input_value=(53.802953910622996, 54.96932568710414), input_type=tuple]
+    For further information visit https://errors.pydantic.dev/2.11/v/dict_type
+2025-11-06 10:41:24 [ERROR] Query processing error: (warning: 1 validation error for PredictionData
+confidence_interval
+  Input should be a valid dictionary [type=dict_type, input_value=(53.802953910622996, 54.96932568710414), input_type=tuple]
+    For further information visit https://errors.pydantic.dev/2.11/v/dict_type)
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/ui_agent.py", line 561, in respond
+    raise Exception(result["reasoning"])
+Exception: (warning: 1 validation error for PredictionData
+confidence_interval
+  Input should be a valid dictionary [type=dict_type, input_value=(53.802953910622996, 54.96932568710414), input_type=tuple]
+    For further information visit https://errors.pydantic.dev/2.11/v/dict_type)
+2025-11-06 10:43:14 [INFO] Handling prediction request (typed)
+2025-11-06 10:43:14 [INFO] Model trained: R²=0.0025, RMSE=38.94 (trained on 1000 samples)
+2025-11-06 10:43:14 [ERROR] Prediction error
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/app.py", line 215, in _handle_prediction_chat
+    metrics = MetricsData(**metrics_dict)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for PredictionData
+confidence_interval
+  Input should be a valid dictionary [type=dict_type, input_value=(53.802953910622996, 54.96932568710414), input_type=tuple]
+    For further information visit https://errors.pydantic.dev/2.11/v/dict_type
+2025-11-06 10:51:27 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 10:51:29 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 10:56:12 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 10:56:14 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 10:56:19 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 10:56:21 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 10:56:42 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 10:56:46 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 10:56:48 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 10:56:57 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 10:56:59 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 10:57:18 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 10:57:20 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:03:30 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 11:03:30 [INFO] Loaded 1000 records from /data1/workspaces/phitha1/Hermes/data/shipments_1000.csv
+2025-11-06 11:03:30 [INFO] ✅ Data auto-loaded: ✅ Loaded 1000 shipment records
+2025-11-06 11:03:30 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:03:30 [INFO] Regex router: classified intent='prediction'
+2025-11-06 11:03:30 [INFO] Classification: prediction (60%)
+2025-11-06 11:03:30 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:03:30 [INFO] Regex router: classified intent='prediction'
+2025-11-06 11:03:30 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:03:30 [INFO] Regex router: classified intent='prediction'
+2025-11-06 11:03:30 [INFO] Routing: intent=prediction confidence=0.60 method=fallback force_chart=False
+2025-11-06 11:03:30 [INFO] Handling prediction request (typed)
+2025-11-06 11:03:30 [INFO] Model trained: R²=0.0025, RMSE=38.94 (trained on 1000 samples)
+2025-11-06 11:03:30 [ERROR] Prediction error
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/app.py", line 216, in _handle_prediction_chat
+    prediction = PredictionData(**pred_dict)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for PredictionData
+confidence_interval
+  Input should be a valid dictionary [type=dict_type, input_value=(53.802953910622996, 54.96932568710414), input_type=tuple]
+    For further information visit https://errors.pydantic.dev/2.11/v/dict_type
+2025-11-06 11:03:30 [ERROR] Query processing error: (warning: 1 validation error for PredictionData
+confidence_interval
+  Input should be a valid dictionary [type=dict_type, input_value=(53.802953910622996, 54.96932568710414), input_type=tuple]
+    For further information visit https://errors.pydantic.dev/2.11/v/dict_type)
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/ui_agent.py", line 561, in respond
+    raise Exception(result["reasoning"])
+Exception: (warning: 1 validation error for PredictionData
+confidence_interval
+  Input should be a valid dictionary [type=dict_type, input_value=(53.802953910622996, 54.96932568710414), input_type=tuple]
+    For further information visit https://errors.pydantic.dev/2.11/v/dict_type)
+2025-11-06 11:07:12 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:07:14 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:07:26 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 11:07:26 [ERROR] Data loading error
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'date'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/app.py", line 114, in load_data
+    self.analytics = HermesAnalytics(df)
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/analytics.py", line 17, in __init__
+    self.df['date'] = pd.to_datetime(self.df['date'], errors='coerce')
+                                     ~~~~~~~^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandas/core/frame.py", line 4113, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'date'
+2025-11-06 11:07:34 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 11:07:34 [INFO] Loaded 100 records from /data1/workspaces/phitha1/Hermes/data/shipments.csv
+2025-11-06 11:07:34 [INFO] ✅ Data auto-loaded: ✅ Loaded 100 shipment records
+2025-11-06 11:07:34 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:07:34 [INFO] Regex router: classified intent='prediction'
+2025-11-06 11:07:34 [INFO] Classification: prediction (60%)
+2025-11-06 11:07:34 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:07:34 [INFO] Regex router: classified intent='prediction'
+2025-11-06 11:07:34 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:07:34 [INFO] Regex router: classified intent='prediction'
+2025-11-06 11:07:34 [INFO] Routing: intent=prediction confidence=0.60 method=fallback force_chart=False
+2025-11-06 11:07:34 [INFO] Handling prediction request (typed)
+2025-11-06 11:07:34 [INFO] Model trained: R²=0.0353, RMSE=18.18 (trained on 100 samples)
+2025-11-06 11:07:43 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:07:43 [INFO] Classification: general (50%)
+2025-11-06 11:07:43 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:07:43 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:07:43 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
+2025-11-06 11:07:43 [INFO] Handling general query (typed)
+2025-11-06 11:07:43 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+⏱️ Which routes have most delays? /no_think
+2025-11-06 11:07:43 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 11:07:43 [INFO] Prompt ID: 567f7a09-9d75-4986-958f-36110fd06501
+2025-11-06 11:07:43 [INFO] Generating new code...
+2025-11-06 11:07:43 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
+3,Route C,WH2,4.8,0,,2024-10-12,1
+4,Route A,WH2,5.0,0,,2024-10-13,1
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+⏱️ Which routes have most delays? /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 11:07:46 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT route, COUNT(*) AS num_delays
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY num_delays DESC;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "dataframe",
+    "value": result_df
+}
+2025-11-06 11:07:46 [INFO] Validating code requirements...
+2025-11-06 11:07:46 [INFO] Code validation successful.
+2025-11-06 11:07:46 [INFO] Cleaning the generated code...
+2025-11-06 11:07:46 [INFO] Executing code: import pandas as pd
+sql_query = """
+SELECT route, COUNT(*) AS num_delays
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_minutes > 0
+GROUP BY route
+ORDER BY num_delays DESC;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'dataframe', 'value': result_df}
+2025-11-06 11:07:46 [INFO] Response generated successfully.
+2025-11-06 11:07:50 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:07:50 [INFO] Classification: general (50%)
+2025-11-06 11:07:50 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:07:50 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:07:50 [INFO] Routing: intent=general confidence=0.50 method=fallback force_chart=False
+2025-11-06 11:07:50 [INFO] Handling general query (typed)
+2025-11-06 11:07:50 [INFO] Question: <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+📈 Show delivery trends by route /no_think
+2025-11-06 11:07:50 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 11:07:50 [INFO] Prompt ID: 9d62c672-8731-449c-834c-f4ae7069481a
+2025-11-06 11:07:50 [INFO] Generating new code...
+2025-11-06 11:07:50 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="100x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route D,WH2,5.3,46,Driver Rest,2024-10-10,0
+2,Route C,WH3,6.3,34,Mechanical Issue,2024-10-11,0
+3,Route C,WH2,4.8,0,,2024-10-12,1
+4,Route A,WH2,5.0,0,,2024-10-13,1
+5,Route A,WH1,4.7,17,Mechanical Issue,2024-10-14,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2025-01-17</TIME_CONTEXT>
+📈 Show delivery trends by route /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 11:07:53 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT 
+    route,
+    COUNT(*) AS total_deliveries,
+    SUM(CASE WHEN on_time = 1 THEN 1 ELSE 0 END) AS on_time_deliveries,
+    SUM(CASE WHEN on_time = 0 THEN 1 ELSE 0 END) AS delayed_deliveries
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY route
+ORDER BY total_deliveries DESC;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "dataframe",
+    "value": result_df
+}
+2025-11-06 11:07:53 [INFO] Validating code requirements...
+2025-11-06 11:07:53 [INFO] Code validation successful.
+2025-11-06 11:07:53 [INFO] Cleaning the generated code...
+2025-11-06 11:07:53 [INFO] Executing code: import pandas as pd
+sql_query = """
+SELECT 
+    route,
+    COUNT(*) AS total_deliveries,
+    SUM(CASE WHEN on_time = 1 THEN 1 ELSE 0 END) AS on_time_deliveries,
+    SUM(CASE WHEN on_time = 0 THEN 1 ELSE 0 END) AS delayed_deliveries
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY route
+ORDER BY total_deliveries DESC;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'dataframe', 'value': result_df}
+2025-11-06 11:07:53 [INFO] Response generated successfully.
+2025-11-06 11:19:15 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:19:21 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:20:54 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:20:56 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:21:12 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 11:21:12 [ERROR] Data loading error
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'date'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/app.py", line 114, in load_data
+    self.analytics = HermesAnalytics(df)
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/analytics.py", line 17, in __init__
+    self.df['date'] = pd.to_datetime(self.df['date'], errors='coerce')
+                                     ~~~~~~~^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandas/core/frame.py", line 4113, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'date'
+2025-11-06 11:21:17 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 11:21:17 [INFO] Loaded 1000 records from /data1/workspaces/phitha1/Hermes/data/shipments_1000.csv
+2025-11-06 11:21:17 [INFO] ✅ Data auto-loaded: ✅ Loaded 1000 shipment records
+2025-11-06 11:21:17 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:21:17 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:21:17 [INFO] Classification: visualization (60%)
+2025-11-06 11:21:17 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:21:17 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:21:17 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:21:17 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:21:17 [INFO] Routing: intent=visualization confidence=0.60 method=fallback force_chart=True
+2025-11-06 11:21:17 [INFO] Handling visualization request (typed)
+2025-11-06 11:21:17 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+2025-11-06 11:21:17 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 11:21:17 [INFO] Prompt ID: 832069f2-c41d-4072-b1b1-eab90cb5f853
+2025-11-06 11:21:17 [INFO] Generating new code...
+2025-11-06 11:21:17 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 11:21:21 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Write code here
+# Execute SQL query to get delay distribution
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+
+delay_distribution_df = execute_sql_query(sql_query)
+
+# Create a bar chart for delay distribution
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+# Save the plot as a PNG file
+plt.savefig('delay_distribution_chart.png')
+plt.close()
+
+# Declare result var: 
+result = {
+    "type": "plot",
+    "value": "delay_distribution_chart.png"
+}
+2025-11-06 11:21:21 [INFO] Validating code requirements...
+2025-11-06 11:21:21 [INFO] Code validation successful.
+2025-11-06 11:21:21 [INFO] Cleaning the generated code...
+2025-11-06 11:21:21 [INFO] Executing code: import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_9f631723-6f93-4a97-8a73-dede6b274b52.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_9f631723-6f93-4a97-8a73-dede6b274b52.png'}
+2025-11-06 11:21:21 [INFO] Retrying execution (1/3)...
+2025-11-06 11:21:21 [INFO] Execution failed with error: Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 29, in execute
+    exec(code, self._environment)
+  File "<string>", line 11, in <module>
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/pyplot.py", line 2439, in bar
+    return gca().bar(
+           ^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/__init__.py", line 1446, in inner
+    return func(ax, *map(sanitize_sequence, args), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_axes.py", line 2384, in bar
+    self._process_unit_info(
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_base.py", line 2549, in _process_unit_info
+    axis.update_units(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axis.py", line 1713, in update_units
+    default = self.converter.default_units(data, self)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 105, in default_units
+    axis.set_units(UnitData(data))
+                   ^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 181, in __init__
+    self.update(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 216, in update
+    _api.check_isinstance((str, bytes), value=val)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/_api/__init__.py", line 93, in check_isinstance
+    raise TypeError(
+TypeError: 'value' must be an instance of str or bytes, not a None
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 193, in execute_with_retries
+    result = self.execute_code(code)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 124, in execute_code
+    return code_executor.execute_and_return_result(code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 38, in execute_and_return_result
+    self.execute(code)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 31, in execute
+    raise CodeExecutionError("Code execution failed") from e
+pandasai.exceptions.CodeExecutionError: Code execution failed
+
+2025-11-06 11:21:21 [INFO] Using Prompt: <table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+The user asked the following question:
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+
+You generated the following Python code:
+import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_9f631723-6f93-4a97-8a73-dede6b274b52.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_9f631723-6f93-4a97-8a73-dede6b274b52.png'}
+
+However, it resulted in the following error:
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 29, in execute
+    exec(code, self._environment)
+  File "<string>", line 11, in <module>
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/pyplot.py", line 2439, in bar
+    return gca().bar(
+           ^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/__init__.py", line 1446, in inner
+    return func(ax, *map(sanitize_sequence, args), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_axes.py", line 2384, in bar
+    self._process_unit_info(
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_base.py", line 2549, in _process_unit_info
+    axis.update_units(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axis.py", line 1713, in update_units
+    default = self.converter.default_units(data, self)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 105, in default_units
+    axis.set_units(UnitData(data))
+                   ^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 181, in __init__
+    self.update(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 216, in update
+    _api.check_isinstance((str, bytes), value=val)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/_api/__init__.py", line 93, in check_isinstance
+    raise TypeError(
+TypeError: 'value' must be an instance of str or bytes, not a None
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 193, in execute_with_retries
+    result = self.execute_code(code)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 124, in execute_code
+    return code_executor.execute_and_return_result(code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 38, in execute_and_return_result
+    self.execute(code)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 31, in execute
+    raise CodeExecutionError("Code execution failed") from e
+pandasai.exceptions.CodeExecutionError: Code execution failed
+
+
+Fix the python code above and return the new python code but the code generated should use execute_sql_query function
+2025-11-06 11:21:28 [INFO] Code Generated:
+import pandas as pd
+import matplotlib.pyplot as plt
+
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_reason IS NOT NULL
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_9f631723-6f93-4a97-8a73-dede6b274b52.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_9f631723-6f93-4a97-8a73-dede6b274b52.png'}
+2025-11-06 11:21:28 [INFO] Validating code requirements...
+2025-11-06 11:21:28 [INFO] Code validation successful.
+2025-11-06 11:21:28 [INFO] Cleaning the generated code...
+2025-11-06 11:21:28 [INFO] Executing code: import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_reason IS NOT NULL
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_3d60bca8-31d3-452c-b913-0ed0121c92e9.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_3d60bca8-31d3-452c-b913-0ed0121c92e9.png'}
+2025-11-06 11:21:28 [INFO] Response generated successfully.
+2025-11-06 11:21:28 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
+2025-11-06 11:21:28 [INFO] Added chart to chat: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
+2025-11-06 11:21:35 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:21:35 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:21:35 [INFO] Classification: visualization (60%)
+2025-11-06 11:21:35 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:21:35 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:21:35 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:21:35 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:21:35 [INFO] Routing: intent=visualization confidence=0.60 method=fallback force_chart=True
+2025-11-06 11:21:35 [INFO] Handling visualization request (typed)
+2025-11-06 11:21:35 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📈 Visualize trends by route
+Create and save a visualization as PNG. /no_think
+2025-11-06 11:21:35 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 11:21:35 [INFO] Prompt ID: 442097fe-a18e-476f-b416-362779e32c9b
+2025-11-06 11:21:35 [INFO] Generating new code...
+2025-11-06 11:21:36 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📈 Visualize trends by route
+Create and save a visualization as PNG. /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 11:21:40 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Write code here
+def visualize_trends_by_route():
+    # SQL query to aggregate delivery times by route
+    sql_query = """
+        SELECT 
+            route,
+            AVG(delivery_time) AS avg_delivery_time,
+            COUNT(*) AS total_deliveries
+        FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+        GROUP BY route
+        ORDER BY avg_delivery_time DESC;
+    """
+    
+    # Execute the SQL query
+    aggregated_data = execute_sql_query(sql_query)
+    
+    # Plot the data
+    plt.figure(figsize=(10, 6))
+    plt.bar(aggregated_data['route'], aggregated_data['avg_delivery_time'], color='skyblue')
+    plt.xlabel('Route')
+    plt.ylabel('Average Delivery Time (hours)')
+    plt.title('Average Delivery Time by Route')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    
+    # Save the plot as a PNG file
+    plt.savefig('temp_chart.png')
+    plt.close()
+    
+    # Return the result
+    return {
+        "type": "plot",
+        "value": "temp_chart.png"
+    }
+
+# Declare result var:
+result = visualize_trends_by_route()
+2025-11-06 11:21:40 [INFO] Validating code requirements...
+2025-11-06 11:21:40 [INFO] Code validation successful.
+2025-11-06 11:21:40 [INFO] Cleaning the generated code...
+2025-11-06 11:21:40 [INFO] Executing code: import pandas as pd
+import matplotlib.pyplot as plt
+
+
+def visualize_trends_by_route():
+    sql_query = """
+        SELECT 
+            route,
+            AVG(delivery_time) AS avg_delivery_time,
+            COUNT(*) AS total_deliveries
+        FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+        GROUP BY route
+        ORDER BY avg_delivery_time DESC;
+    """
+    aggregated_data = execute_sql_query(sql_query)
+    plt.figure(figsize=(10, 6))
+    plt.bar(aggregated_data['route'], aggregated_data['avg_delivery_time'], color='skyblue')
+    plt.xlabel('Route')
+    plt.ylabel('Average Delivery Time (hours)')
+    plt.title('Average Delivery Time by Route')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig('exports/charts/temp_chart_8e57245e-0aeb-40b5-a388-67f4d62c4aee.png')
+    plt.close()
+    return {'type': 'plot', 'value': 'exports/charts/temp_chart_8e57245e-0aeb-40b5-a388-67f4d62c4aee.png'}
+
+
+result = visualize_trends_by_route()
+2025-11-06 11:21:40 [INFO] Response generated successfully.
+2025-11-06 11:21:40 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
+2025-11-06 11:21:41 [INFO] Added chart to chat: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
+2025-11-06 11:21:46 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:21:46 [INFO] Regex router: classified intent='statistics'
+2025-11-06 11:21:46 [INFO] Classification: statistics (60%)
+2025-11-06 11:21:46 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:21:46 [INFO] Regex router: classified intent='statistics'
+2025-11-06 11:21:46 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:21:46 [INFO] Regex router: classified intent='statistics'
+2025-11-06 11:21:46 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
+2025-11-06 11:21:46 [INFO] Handling statistics request (typed)
+2025-11-06 11:21:46 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+🔢 What's the average delay? /no_think
+2025-11-06 11:21:46 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 11:21:46 [INFO] Prompt ID: e927144e-a0c8-4b27-80eb-3ef48ad5dedc
+2025-11-06 11:21:46 [INFO] Generating new code...
+2025-11-06 11:21:46 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+🔢 What's the average delay? /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 11:21:48 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT AVG(delay_minutes) AS average_delay
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_minutes IS NOT NULL;
+"""
+
+result_df = execute_sql_query(sql_query)
+average_delay = result_df.iloc[0, 0]
+
+# Declare result var: 
+result = { "type": "number", "value": average_delay }
+2025-11-06 11:21:48 [INFO] Validating code requirements...
+2025-11-06 11:21:48 [INFO] Code validation successful.
+2025-11-06 11:21:48 [INFO] Cleaning the generated code...
+2025-11-06 11:21:48 [INFO] Executing code: import pandas as pd
+sql_query = """
+SELECT AVG(delay_minutes) AS average_delay
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_minutes IS NOT NULL;
+"""
+result_df = execute_sql_query(sql_query)
+average_delay = result_df.iloc[0, 0]
+result = {'type': 'number', 'value': average_delay}
+2025-11-06 11:21:48 [INFO] Response generated successfully.
+2025-11-06 11:21:48 [ERROR] Statistics error
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/app.py", line 364, in _handle_stats_chat
+    stats = StatsSummary(**stats_dict) if stats_dict else None
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for StatsSummary
+delay_rate
+  Input should be a valid number, unable to parse string as a number [type=float_parsing, input_value='83.0%', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/float_parsing
+2025-11-06 11:21:48 [ERROR] Query processing error: (warning: 1 validation error for StatsSummary
+delay_rate
+  Input should be a valid number, unable to parse string as a number [type=float_parsing, input_value='83.0%', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/float_parsing)
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/ui_agent.py", line 1342, in respond
+    raise Exception(result["reasoning"])
+Exception: (warning: 1 validation error for StatsSummary
+delay_rate
+  Input should be a valid number, unable to parse string as a number [type=float_parsing, input_value='83.0%', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/float_parsing)
+2025-11-06 11:24:27 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:24:27 [INFO] Regex router: classified intent='statistics'
+2025-11-06 11:24:27 [INFO] Classification: statistics (60%)
+2025-11-06 11:24:27 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:24:27 [INFO] Regex router: classified intent='statistics'
+2025-11-06 11:24:27 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:24:27 [INFO] Regex router: classified intent='statistics'
+2025-11-06 11:24:27 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
+2025-11-06 11:24:27 [INFO] Handling statistics request (typed)
+2025-11-06 11:24:27 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+Show the bottom 3 warehouses by average delivery_time. /no_think
+2025-11-06 11:24:27 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 11:24:27 [INFO] Prompt ID: 10983bbe-0d93-4ba9-bd69-b576cdf3adc4
+2025-11-06 11:24:27 [INFO] Generating new code...
+2025-11-06 11:24:27 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+Show the bottom 3 warehouses by average delivery_time. /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 11:24:29 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT warehouse, AVG(delivery_time) AS avg_delivery_time
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY warehouse
+ORDER BY avg_delivery_time ASC
+LIMIT 3;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "dataframe",
+    "value": result_df
+}
+2025-11-06 11:24:29 [INFO] Validating code requirements...
+2025-11-06 11:24:29 [INFO] Code validation successful.
+2025-11-06 11:24:29 [INFO] Cleaning the generated code...
+2025-11-06 11:24:29 [INFO] Executing code: import pandas as pd
+sql_query = """
+SELECT warehouse, AVG(delivery_time) AS avg_delivery_time
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY warehouse
+ORDER BY avg_delivery_time ASC
+LIMIT 3;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'dataframe', 'value': result_df}
+2025-11-06 11:24:29 [INFO] Response generated successfully.
+2025-11-06 11:24:29 [ERROR] Statistics error
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/app.py", line 364, in _handle_stats_chat
+    stats = StatsSummary(**stats_dict) if stats_dict else None
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for StatsSummary
+delay_rate
+  Input should be a valid number, unable to parse string as a number [type=float_parsing, input_value='83.0%', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/float_parsing
+2025-11-06 11:24:29 [ERROR] Query processing error: (warning: 1 validation error for StatsSummary
+delay_rate
+  Input should be a valid number, unable to parse string as a number [type=float_parsing, input_value='83.0%', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/float_parsing)
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/ui_agent.py", line 1342, in respond
+    raise Exception(result["reasoning"])
+Exception: (warning: 1 validation error for StatsSummary
+delay_rate
+  Input should be a valid number, unable to parse string as a number [type=float_parsing, input_value='83.0%', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/float_parsing)
+2025-11-06 11:26:36 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:26:38 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:26:44 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:26:47 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:27:00 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:27:06 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:27:19 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:27:21 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:27:33 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:28:06 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:28:08 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:29:07 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:29:09 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:30:27 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:30:30 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:30:52 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:30:54 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:32:16 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:32:18 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:32:22 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:32:25 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:32:31 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:32:40 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:32:43 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:32:56 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:32:58 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:33:03 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:33:05 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:33:19 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:33:23 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:33:26 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:33:43 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:33:46 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:35:01 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 11:35:01 [ERROR] Data loading error
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'date'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/app.py", line 114, in load_data
+    self.analytics = HermesAnalytics(df)
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/analytics.py", line 17, in __init__
+    self.df['date'] = pd.to_datetime(self.df['date'], errors='coerce')
+                                     ~~~~~~~^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandas/core/frame.py", line 4113, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'date'
+2025-11-06 11:35:06 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 11:35:06 [INFO] Loaded 1000 records from /data1/workspaces/phitha1/Hermes/data/shipments_1000.csv
+2025-11-06 11:35:06 [INFO] ✅ Data auto-loaded: ✅ Loaded 1000 shipment records
+2025-11-06 11:35:06 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:35:06 [INFO] Regex router: classified intent='statistics'
+2025-11-06 11:35:06 [INFO] Classification: statistics (60%)
+2025-11-06 11:35:06 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:35:06 [INFO] Regex router: classified intent='statistics'
+2025-11-06 11:35:06 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:35:06 [INFO] Regex router: classified intent='statistics'
+2025-11-06 11:35:06 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
+2025-11-06 11:35:06 [INFO] Handling statistics request (typed)
+2025-11-06 11:35:06 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+Show the bottom 3 warehouses by average delivery_time. /no_think
+2025-11-06 11:35:06 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 11:35:06 [INFO] Prompt ID: a8da8253-e4ee-4cac-bc19-7eb1a4e4c6b2
+2025-11-06 11:35:06 [INFO] Generating new code...
+2025-11-06 11:35:06 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+Show the bottom 3 warehouses by average delivery_time. /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 11:35:09 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT warehouse, AVG(delivery_time) AS avg_delivery_time
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY warehouse
+ORDER BY avg_delivery_time ASC
+LIMIT 3;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "dataframe",
+    "value": result_df
+}
+2025-11-06 11:35:09 [INFO] Validating code requirements...
+2025-11-06 11:35:09 [INFO] Code validation successful.
+2025-11-06 11:35:09 [INFO] Cleaning the generated code...
+2025-11-06 11:35:09 [INFO] Executing code: import pandas as pd
+sql_query = """
+SELECT warehouse, AVG(delivery_time) AS avg_delivery_time
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY warehouse
+ORDER BY avg_delivery_time ASC
+LIMIT 3;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'dataframe', 'value': result_df}
+2025-11-06 11:35:09 [INFO] Response generated successfully.
+2025-11-06 11:35:32 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:35:32 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:35:32 [INFO] Classification: visualization (60%)
+2025-11-06 11:35:32 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:35:32 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:35:32 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:35:32 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:35:32 [INFO] Routing: intent=visualization confidence=0.60 method=fallback force_chart=True
+2025-11-06 11:35:32 [INFO] Handling visualization request (typed)
+2025-11-06 11:35:32 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+2025-11-06 11:35:32 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 11:35:32 [INFO] Prompt ID: 29133eb6-9997-4ab2-a853-29984489eb33
+2025-11-06 11:35:32 [INFO] Generating new code...
+2025-11-06 11:35:32 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 11:35:35 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Write code here
+# Execute SQL query to get delay distribution
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+
+delay_distribution_df = execute_sql_query(sql_query)
+
+# Create a bar chart for delay distribution
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+# Save the plot as a PNG file
+plt.savefig('delay_distribution.png')
+plt.close()
+
+# Declare result var: 
+result = { "type": "plot", "value": "delay_distribution.png" }
+2025-11-06 11:35:35 [INFO] Validating code requirements...
+2025-11-06 11:35:35 [INFO] Code validation successful.
+2025-11-06 11:35:35 [INFO] Cleaning the generated code...
+2025-11-06 11:35:35 [INFO] Executing code: import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_f725b9af-1c36-4b55-af74-0e1113fa5909.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_f725b9af-1c36-4b55-af74-0e1113fa5909.png'}
+2025-11-06 11:35:35 [INFO] Retrying execution (1/3)...
+2025-11-06 11:35:36 [INFO] Execution failed with error: Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 29, in execute
+    exec(code, self._environment)
+  File "<string>", line 11, in <module>
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/pyplot.py", line 2439, in bar
+    return gca().bar(
+           ^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/__init__.py", line 1446, in inner
+    return func(ax, *map(sanitize_sequence, args), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_axes.py", line 2384, in bar
+    self._process_unit_info(
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_base.py", line 2549, in _process_unit_info
+    axis.update_units(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axis.py", line 1713, in update_units
+    default = self.converter.default_units(data, self)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 105, in default_units
+    axis.set_units(UnitData(data))
+                   ^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 181, in __init__
+    self.update(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 216, in update
+    _api.check_isinstance((str, bytes), value=val)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/_api/__init__.py", line 93, in check_isinstance
+    raise TypeError(
+TypeError: 'value' must be an instance of str or bytes, not a None
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 193, in execute_with_retries
+    result = self.execute_code(code)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 124, in execute_code
+    return code_executor.execute_and_return_result(code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 38, in execute_and_return_result
+    self.execute(code)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 31, in execute
+    raise CodeExecutionError("Code execution failed") from e
+pandasai.exceptions.CodeExecutionError: Code execution failed
+
+2025-11-06 11:35:36 [INFO] Using Prompt: <table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+The user asked the following question:
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+
+You generated the following Python code:
+import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_f725b9af-1c36-4b55-af74-0e1113fa5909.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_f725b9af-1c36-4b55-af74-0e1113fa5909.png'}
+
+However, it resulted in the following error:
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 29, in execute
+    exec(code, self._environment)
+  File "<string>", line 11, in <module>
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/pyplot.py", line 2439, in bar
+    return gca().bar(
+           ^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/__init__.py", line 1446, in inner
+    return func(ax, *map(sanitize_sequence, args), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_axes.py", line 2384, in bar
+    self._process_unit_info(
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_base.py", line 2549, in _process_unit_info
+    axis.update_units(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axis.py", line 1713, in update_units
+    default = self.converter.default_units(data, self)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 105, in default_units
+    axis.set_units(UnitData(data))
+                   ^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 181, in __init__
+    self.update(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 216, in update
+    _api.check_isinstance((str, bytes), value=val)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/_api/__init__.py", line 93, in check_isinstance
+    raise TypeError(
+TypeError: 'value' must be an instance of str or bytes, not a None
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 193, in execute_with_retries
+    result = self.execute_code(code)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 124, in execute_code
+    return code_executor.execute_and_return_result(code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 38, in execute_and_return_result
+    self.execute(code)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 31, in execute
+    raise CodeExecutionError("Code execution failed") from e
+pandasai.exceptions.CodeExecutionError: Code execution failed
+
+
+Fix the python code above and return the new python code but the code generated should use execute_sql_query function
+2025-11-06 11:35:42 [INFO] Code Generated:
+import pandas as pd
+import matplotlib.pyplot as plt
+
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_reason IS NOT NULL
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_f725b9af-1c36-4b55-af74-0e1113fa5909.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_f725b9af-1c36-4b55-af74-0e1113fa5909.png'}
+2025-11-06 11:35:42 [INFO] Validating code requirements...
+2025-11-06 11:35:42 [INFO] Code validation successful.
+2025-11-06 11:35:42 [INFO] Cleaning the generated code...
+2025-11-06 11:35:42 [INFO] Executing code: import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_reason IS NOT NULL
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_a22db8c9-d29c-4c67-a3e0-c664fbeacf8c.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_a22db8c9-d29c-4c67-a3e0-c664fbeacf8c.png'}
+2025-11-06 11:35:42 [INFO] Response generated successfully.
+2025-11-06 11:35:42 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
+2025-11-06 11:35:43 [INFO] Added chart to chat: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
+2025-11-06 11:44:04 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
+2025-11-06 11:44:17 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
+2025-11-06 11:44:18 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/charts/What-percentage-of-all-shipments-were-delayed_20251104_164344.png
+2025-11-06 11:46:02 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/exports/charts/temp_chart_a22db8c9-d29c-4c67-a3e0-c664fbeacf8c.png
+2025-11-06 11:46:03 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/exports/charts/temp_chart_a22db8c9-d29c-4c67-a3e0-c664fbeacf8c.png
+2025-11-06 11:47:22 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:47:24 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:47:28 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 11:47:30 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 11:47:55 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 11:47:55 [ERROR] Data loading error
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'date'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/app.py", line 114, in load_data
+    self.analytics = HermesAnalytics(df)
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/data1/workspaces/phitha1/Hermes/src/hermes/analytics.py", line 17, in __init__
+    self.df['date'] = pd.to_datetime(self.df['date'], errors='coerce')
+                                     ~~~~~~~^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandas/core/frame.py", line 4113, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'date'
+2025-11-06 11:48:02 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 11:48:02 [INFO] Loaded 1000 records from /data1/workspaces/phitha1/Hermes/data/shipments_1000.csv
+2025-11-06 11:48:02 [INFO] ✅ Data auto-loaded: ✅ Loaded 1000 shipment records
+2025-11-06 11:48:02 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:48:02 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:48:02 [INFO] Classification: visualization (60%)
+2025-11-06 11:48:02 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:48:02 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:48:02 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:48:02 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:48:02 [INFO] Routing: intent=visualization confidence=0.60 method=fallback force_chart=True
+2025-11-06 11:48:02 [INFO] Handling visualization request (typed)
+2025-11-06 11:48:02 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+2025-11-06 11:48:02 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 11:48:02 [INFO] Prompt ID: b6462bfc-fec6-49b6-8302-2c87924ffc92
+2025-11-06 11:48:02 [INFO] Generating new code...
+2025-11-06 11:48:02 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 11:48:06 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Write code here
+# Execute SQL query to get delay distribution
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+
+delay_distribution_df = execute_sql_query(sql_query)
+
+# Create a bar chart for delay distribution
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+# Save the plot as a PNG file
+plt.savefig('delay_distribution.png')
+plt.close()
+
+# Declare result var: 
+result = {
+    "type": "plot",
+    "value": "delay_distribution.png"
+}
+2025-11-06 11:48:06 [INFO] Validating code requirements...
+2025-11-06 11:48:06 [INFO] Code validation successful.
+2025-11-06 11:48:06 [INFO] Cleaning the generated code...
+2025-11-06 11:48:06 [INFO] Executing code: import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_7c40db3d-4684-4b10-abcf-5569d496bab9.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_7c40db3d-4684-4b10-abcf-5569d496bab9.png'}
+2025-11-06 11:48:06 [INFO] Retrying execution (1/3)...
+2025-11-06 11:48:06 [INFO] Execution failed with error: Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 29, in execute
+    exec(code, self._environment)
+  File "<string>", line 11, in <module>
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/pyplot.py", line 2439, in bar
+    return gca().bar(
+           ^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/__init__.py", line 1446, in inner
+    return func(ax, *map(sanitize_sequence, args), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_axes.py", line 2384, in bar
+    self._process_unit_info(
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_base.py", line 2549, in _process_unit_info
+    axis.update_units(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axis.py", line 1713, in update_units
+    default = self.converter.default_units(data, self)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 105, in default_units
+    axis.set_units(UnitData(data))
+                   ^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 181, in __init__
+    self.update(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 216, in update
+    _api.check_isinstance((str, bytes), value=val)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/_api/__init__.py", line 93, in check_isinstance
+    raise TypeError(
+TypeError: 'value' must be an instance of str or bytes, not a None
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 193, in execute_with_retries
+    result = self.execute_code(code)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 124, in execute_code
+    return code_executor.execute_and_return_result(code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 38, in execute_and_return_result
+    self.execute(code)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 31, in execute
+    raise CodeExecutionError("Code execution failed") from e
+pandasai.exceptions.CodeExecutionError: Code execution failed
+
+2025-11-06 11:48:06 [INFO] Using Prompt: <table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+The user asked the following question:
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+
+You generated the following Python code:
+import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_7c40db3d-4684-4b10-abcf-5569d496bab9.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_7c40db3d-4684-4b10-abcf-5569d496bab9.png'}
+
+However, it resulted in the following error:
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 29, in execute
+    exec(code, self._environment)
+  File "<string>", line 11, in <module>
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/pyplot.py", line 2439, in bar
+    return gca().bar(
+           ^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/__init__.py", line 1446, in inner
+    return func(ax, *map(sanitize_sequence, args), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_axes.py", line 2384, in bar
+    self._process_unit_info(
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_base.py", line 2549, in _process_unit_info
+    axis.update_units(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axis.py", line 1713, in update_units
+    default = self.converter.default_units(data, self)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 105, in default_units
+    axis.set_units(UnitData(data))
+                   ^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 181, in __init__
+    self.update(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 216, in update
+    _api.check_isinstance((str, bytes), value=val)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/_api/__init__.py", line 93, in check_isinstance
+    raise TypeError(
+TypeError: 'value' must be an instance of str or bytes, not a None
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 193, in execute_with_retries
+    result = self.execute_code(code)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 124, in execute_code
+    return code_executor.execute_and_return_result(code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 38, in execute_and_return_result
+    self.execute(code)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 31, in execute
+    raise CodeExecutionError("Code execution failed") from e
+pandasai.exceptions.CodeExecutionError: Code execution failed
+
+
+Fix the python code above and return the new python code but the code generated should use execute_sql_query function
+2025-11-06 11:48:13 [INFO] Code Generated:
+import pandas as pd
+import matplotlib.pyplot as plt
+
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_reason IS NOT NULL
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_7c40db3d-4684-4b10-abcf-5569d496bab9.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_7c40db3d-4684-4b10-abcf-5569d496bab9.png'}
+2025-11-06 11:48:13 [INFO] Validating code requirements...
+2025-11-06 11:48:13 [INFO] Code validation successful.
+2025-11-06 11:48:13 [INFO] Cleaning the generated code...
+2025-11-06 11:48:13 [INFO] Executing code: import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_reason IS NOT NULL
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_0744f1b9-9c1b-45bc-91db-24ce1300a959.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_0744f1b9-9c1b-45bc-91db-24ce1300a959.png'}
+2025-11-06 11:48:13 [INFO] Response generated successfully.
+2025-11-06 11:48:13 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/exports/charts/temp_chart_0744f1b9-9c1b-45bc-91db-24ce1300a959.png
+2025-11-06 11:48:13 [INFO] Added chart to chat: /data1/workspaces/phitha1/Hermes/exports/charts/temp_chart_0744f1b9-9c1b-45bc-91db-24ce1300a959.png
+2025-11-06 11:48:26 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:48:26 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:48:26 [INFO] Classification: visualization (60%)
+2025-11-06 11:48:26 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:48:26 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:48:26 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:48:26 [INFO] Regex router: classified intent='visualization'
+2025-11-06 11:48:26 [INFO] Routing: intent=visualization confidence=0.60 method=fallback force_chart=True
+2025-11-06 11:48:26 [INFO] Handling visualization request (typed)
+2025-11-06 11:48:26 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📈 Visualize trends by route
+Create and save a visualization as PNG. /no_think
+2025-11-06 11:48:26 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 11:48:26 [INFO] Prompt ID: 6df9b166-ed93-4920-8272-8455848c0308
+2025-11-06 11:48:26 [INFO] Generating new code...
+2025-11-06 11:48:26 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📈 Visualize trends by route
+Create and save a visualization as PNG. /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 11:48:31 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Write code here
+def visualize_trends_by_route():
+    # SQL query to aggregate delivery times by route
+    sql_query = """
+        SELECT 
+            route,
+            AVG(delivery_time) AS avg_delivery_time,
+            COUNT(*) AS total_deliveries
+        FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+        GROUP BY route
+        ORDER BY avg_delivery_time DESC;
+    """
+    
+    # Execute SQL query and get the dataframe
+    df = execute_sql_query(sql_query)
+    
+    # Plotting the trends by route
+    plt.figure(figsize=(10, 6))
+    plt.bar(df['route'], df['avg_delivery_time'], color='skyblue')
+    plt.xlabel('Route')
+    plt.ylabel('Average Delivery Time (hours)')
+    plt.title('Average Delivery Time by Route')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    
+    # Save the plot as a PNG file
+    plt.savefig('temp_chart.png')
+    plt.close()
+    
+    return "temp_chart.png"
+
+# Call the function to generate the plot
+plot_path = visualize_trends_by_route()
+
+# Declare result var: 
+result = {
+    "type": "plot",
+    "value": plot_path
+}
+2025-11-06 11:48:31 [INFO] Validating code requirements...
+2025-11-06 11:48:31 [INFO] Code validation successful.
+2025-11-06 11:48:31 [INFO] Cleaning the generated code...
+2025-11-06 11:48:31 [INFO] Executing code: import pandas as pd
+import matplotlib.pyplot as plt
+
+
+def visualize_trends_by_route():
+    sql_query = """
+        SELECT 
+            route,
+            AVG(delivery_time) AS avg_delivery_time,
+            COUNT(*) AS total_deliveries
+        FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+        GROUP BY route
+        ORDER BY avg_delivery_time DESC;
+    """
+    df = execute_sql_query(sql_query)
+    plt.figure(figsize=(10, 6))
+    plt.bar(df['route'], df['avg_delivery_time'], color='skyblue')
+    plt.xlabel('Route')
+    plt.ylabel('Average Delivery Time (hours)')
+    plt.title('Average Delivery Time by Route')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig('exports/charts/temp_chart_55a29e5e-83a9-4196-91ba-c3874cf6347c.png')
+    plt.close()
+    return 'exports/charts/temp_chart_55a29e5e-83a9-4196-91ba-c3874cf6347c.png'
+
+
+plot_path = visualize_trends_by_route()
+result = {'type': 'plot', 'value': plot_path}
+2025-11-06 11:48:31 [INFO] Response generated successfully.
+2025-11-06 11:48:31 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/exports/charts/temp_chart_55a29e5e-83a9-4196-91ba-c3874cf6347c.png
+2025-11-06 11:48:31 [INFO] Added chart to chat: /data1/workspaces/phitha1/Hermes/exports/charts/temp_chart_55a29e5e-83a9-4196-91ba-c3874cf6347c.png
+2025-11-06 11:49:15 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:49:15 [INFO] Regex router: classified intent='statistics'
+2025-11-06 11:49:15 [INFO] Classification: statistics (60%)
+2025-11-06 11:49:15 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:49:15 [INFO] Regex router: classified intent='statistics'
+2025-11-06 11:49:15 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 11:49:15 [INFO] Regex router: classified intent='statistics'
+2025-11-06 11:49:15 [INFO] Routing: intent=statistics confidence=0.60 method=fallback force_chart=False
+2025-11-06 11:49:15 [INFO] Handling statistics request (typed)
+2025-11-06 11:49:15 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+List warehouses with average delivery time above 5 days. /no_think
+2025-11-06 11:49:15 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 11:49:15 [INFO] Prompt ID: 39d85e21-1e57-498a-94d8-f7a7d99cbb4c
+2025-11-06 11:49:15 [INFO] Generating new code...
+2025-11-06 11:49:15 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+List warehouses with average delivery time above 5 days. /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 11:49:17 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+sql_query = """
+SELECT warehouse, AVG(delivery_time) AS avg_delivery_time
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY warehouse
+HAVING AVG(delivery_time) > 5
+ORDER BY avg_delivery_time DESC;
+"""
+
+result_df = execute_sql_query(sql_query)
+
+# Declare result var: 
+result = {
+    "type": "dataframe",
+    "value": result_df
+}
+2025-11-06 11:49:17 [INFO] Validating code requirements...
+2025-11-06 11:49:17 [INFO] Code validation successful.
+2025-11-06 11:49:17 [INFO] Cleaning the generated code...
+2025-11-06 11:49:17 [INFO] Executing code: import pandas as pd
+sql_query = """
+SELECT warehouse, AVG(delivery_time) AS avg_delivery_time
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY warehouse
+HAVING AVG(delivery_time) > 5
+ORDER BY avg_delivery_time DESC;
+"""
+result_df = execute_sql_query(sql_query)
+result = {'type': 'dataframe', 'value': result_df}
+2025-11-06 11:49:17 [INFO] Response generated successfully.
+2025-11-06 13:34:45 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 13:34:46 [INFO] Loaded 1000 records from /data1/workspaces/phitha1/Hermes/data/shipments_1000.csv
+2025-11-06 13:34:46 [INFO] ✅ Data auto-loaded: ✅ Loaded 1000 shipment records
+2025-11-06 13:34:46 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 13:34:46 [INFO] Regex router: classified intent='visualization'
+2025-11-06 13:34:46 [INFO] Classification: visualization (60%)
+2025-11-06 13:34:46 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 13:34:46 [INFO] Regex router: classified intent='visualization'
+2025-11-06 13:34:46 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 13:34:46 [INFO] Regex router: classified intent='visualization'
+2025-11-06 13:34:46 [INFO] Routing: intent=visualization confidence=0.60 method=fallback force_chart=True
+2025-11-06 13:34:46 [INFO] Handling visualization request (typed)
+2025-11-06 13:34:46 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+2025-11-06 13:34:46 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 13:34:46 [INFO] Prompt ID: 419f9682-9e9a-407b-85b4-22da84467075
+2025-11-06 13:34:46 [INFO] Generating new code...
+2025-11-06 13:34:46 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 13:34:49 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Write code here
+# Execute SQL query to get delay distribution
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+
+delay_distribution_df = execute_sql_query(sql_query)
+
+# Create a bar chart for delay distribution
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+# Save the plot as a PNG file
+plt.savefig('delay_distribution_chart.png')
+plt.close()
+
+# Declare result var:
+result = {
+    "type": "plot",
+    "value": "delay_distribution_chart.png"
+}
+2025-11-06 13:34:49 [INFO] Validating code requirements...
+2025-11-06 13:34:49 [INFO] Code validation successful.
+2025-11-06 13:34:49 [INFO] Cleaning the generated code...
+2025-11-06 13:34:49 [INFO] Executing code: import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_0d416b5b-7f31-46e8-b3d1-b26bcb565bf9.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_0d416b5b-7f31-46e8-b3d1-b26bcb565bf9.png'}
+2025-11-06 13:34:49 [INFO] Retrying execution (1/3)...
+2025-11-06 13:34:49 [INFO] Execution failed with error: Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 29, in execute
+    exec(code, self._environment)
+  File "<string>", line 11, in <module>
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/pyplot.py", line 2439, in bar
+    return gca().bar(
+           ^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/__init__.py", line 1446, in inner
+    return func(ax, *map(sanitize_sequence, args), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_axes.py", line 2384, in bar
+    self._process_unit_info(
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_base.py", line 2549, in _process_unit_info
+    axis.update_units(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axis.py", line 1713, in update_units
+    default = self.converter.default_units(data, self)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 105, in default_units
+    axis.set_units(UnitData(data))
+                   ^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 181, in __init__
+    self.update(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 216, in update
+    _api.check_isinstance((str, bytes), value=val)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/_api/__init__.py", line 93, in check_isinstance
+    raise TypeError(
+TypeError: 'value' must be an instance of str or bytes, not a None
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 193, in execute_with_retries
+    result = self.execute_code(code)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 124, in execute_code
+    return code_executor.execute_and_return_result(code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 38, in execute_and_return_result
+    self.execute(code)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 31, in execute
+    raise CodeExecutionError("Code execution failed") from e
+pandasai.exceptions.CodeExecutionError: Code execution failed
+
+2025-11-06 13:34:49 [INFO] Using Prompt: <table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+The user asked the following question:
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+
+You generated the following Python code:
+import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_0d416b5b-7f31-46e8-b3d1-b26bcb565bf9.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_0d416b5b-7f31-46e8-b3d1-b26bcb565bf9.png'}
+
+However, it resulted in the following error:
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 29, in execute
+    exec(code, self._environment)
+  File "<string>", line 11, in <module>
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/pyplot.py", line 2439, in bar
+    return gca().bar(
+           ^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/__init__.py", line 1446, in inner
+    return func(ax, *map(sanitize_sequence, args), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_axes.py", line 2384, in bar
+    self._process_unit_info(
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_base.py", line 2549, in _process_unit_info
+    axis.update_units(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axis.py", line 1713, in update_units
+    default = self.converter.default_units(data, self)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 105, in default_units
+    axis.set_units(UnitData(data))
+                   ^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 181, in __init__
+    self.update(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 216, in update
+    _api.check_isinstance((str, bytes), value=val)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/_api/__init__.py", line 93, in check_isinstance
+    raise TypeError(
+TypeError: 'value' must be an instance of str or bytes, not a None
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 193, in execute_with_retries
+    result = self.execute_code(code)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 124, in execute_code
+    return code_executor.execute_and_return_result(code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 38, in execute_and_return_result
+    self.execute(code)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 31, in execute
+    raise CodeExecutionError("Code execution failed") from e
+pandasai.exceptions.CodeExecutionError: Code execution failed
+
+
+Fix the python code above and return the new python code but the code generated should use execute_sql_query function
+2025-11-06 13:34:56 [INFO] Code Generated:
+import pandas as pd
+import matplotlib.pyplot as plt
+
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_reason IS NOT NULL
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_0d416b5b-7f31-46e8-b3d1-b26bcb565bf9.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_0d416b5b-7f31-46e8-b3d1-b26bcb565bf9.png'}
+2025-11-06 13:34:56 [INFO] Validating code requirements...
+2025-11-06 13:34:56 [INFO] Code validation successful.
+2025-11-06 13:34:56 [INFO] Cleaning the generated code...
+2025-11-06 13:34:56 [INFO] Executing code: import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_reason IS NOT NULL
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_5291cdca-f374-4fb0-855f-29d2106d1121.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_5291cdca-f374-4fb0-855f-29d2106d1121.png'}
+2025-11-06 13:34:56 [INFO] Response generated successfully.
+2025-11-06 13:34:56 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/exports/charts/temp_chart_5291cdca-f374-4fb0-855f-29d2106d1121.png
+2025-11-06 13:34:56 [INFO] Added chart to chat: /data1/workspaces/phitha1/Hermes/exports/charts/temp_chart_5291cdca-f374-4fb0-855f-29d2106d1121.png
+2025-11-06 13:36:05 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:36:07 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 13:36:21 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:36:25 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:36:28 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 13:36:37 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:36:39 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 13:36:49 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:37:06 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:37:09 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:37:15 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:37:17 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 13:39:18 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:39:25 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:39:32 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:39:49 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:39:59 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:40:01 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 13:40:36 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:40:38 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 13:48:51 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:49:05 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:49:16 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:49:21 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:49:23 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 13:49:32 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:49:34 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 13:49:52 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:49:54 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 13:50:05 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:50:11 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:50:18 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:50:23 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:50:29 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:50:47 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:50:49 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 13:50:57 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:51:02 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:51:08 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:51:10 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 13:51:17 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:51:27 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:51:29 [INFO] 🌐 Launching on http://0.0.0.0:7860
+2025-11-06 13:51:52 [WARNING] Failed to register semantic dataset: create() got an unexpected keyword argument 'name'
+2025-11-06 13:51:52 [INFO] Loaded 1000 records from /data1/workspaces/phitha1/Hermes/data/shipments_1000.csv
+2025-11-06 13:51:52 [INFO] ✅ Data auto-loaded: ✅ Loaded 1000 shipment records
+2025-11-06 13:51:52 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 13:51:52 [INFO] Regex router: classified intent='visualization'
+2025-11-06 13:51:52 [INFO] Classification: visualization (60%)
+2025-11-06 13:51:52 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 13:51:52 [INFO] Regex router: classified intent='visualization'
+2025-11-06 13:51:52 [WARNING] LLM classification failed: '"intent"'
+2025-11-06 13:51:52 [INFO] Regex router: classified intent='visualization'
+2025-11-06 13:51:52 [INFO] Routing: intent=visualization confidence=0.60 method=fallback force_chart=True
+2025-11-06 13:51:52 [INFO] Handling visualization request (typed)
+2025-11-06 13:51:52 [INFO] Question: <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+2025-11-06 13:51:52 [INFO] Running PandasAI with litellm LLM...
+2025-11-06 13:51:52 [INFO] Prompt ID: 7a133966-88f7-44f1-85e7-1bcc7d20652f
+2025-11-06 13:51:52 [INFO] Generating new code...
+2025-11-06 13:51:52 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+</tables>
+
+You are already provided with the following functions that you can call:
+<function>
+def execute_sql_query(sql_query: str) -> pd.Dataframe
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2025-11-06 13:51:56 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Write code here
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+
+# Execute the SQL query
+delay_distribution_df = execute_sql_query(sql_query)
+
+# Create a bar chart for delay distribution
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+# Save the plot as a PNG file
+plt.savefig('delay_distribution.png')
+plt.close()
+
+# Declare result var: 
+result = { "type": "plot", "value": "delay_distribution.png" }
+2025-11-06 13:51:56 [INFO] Validating code requirements...
+2025-11-06 13:51:56 [INFO] Code validation successful.
+2025-11-06 13:51:56 [INFO] Cleaning the generated code...
+2025-11-06 13:51:56 [INFO] Executing code: import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_8d3d827f-5708-4ea2-81f4-0ad24664700d.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_8d3d827f-5708-4ea2-81f4-0ad24664700d.png'}
+2025-11-06 13:51:56 [INFO] Retrying execution (1/3)...
+2025-11-06 13:51:56 [INFO] Execution failed with error: Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 29, in execute
+    exec(code, self._environment)
+  File "<string>", line 11, in <module>
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/pyplot.py", line 2439, in bar
+    return gca().bar(
+           ^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/__init__.py", line 1446, in inner
+    return func(ax, *map(sanitize_sequence, args), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_axes.py", line 2384, in bar
+    self._process_unit_info(
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_base.py", line 2549, in _process_unit_info
+    axis.update_units(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axis.py", line 1713, in update_units
+    default = self.converter.default_units(data, self)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 105, in default_units
+    axis.set_units(UnitData(data))
+                   ^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 181, in __init__
+    self.update(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 216, in update
+    _api.check_isinstance((str, bytes), value=val)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/_api/__init__.py", line 93, in check_isinstance
+    raise TypeError(
+TypeError: 'value' must be an instance of str or bytes, not a None
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 193, in execute_with_retries
+    result = self.execute_code(code)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 124, in execute_code
+    return code_executor.execute_and_return_result(code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 38, in execute_and_return_result
+    self.execute(code)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 31, in execute
+    raise CodeExecutionError("Code execution failed") from e
+pandasai.exceptions.CodeExecutionError: Code execution failed
+
+2025-11-06 13:51:56 [INFO] Using Prompt: <table dialect="duckdb" table_name="table_6619b1d3d4c59fcb9f82845d59178bfd" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "route", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "warehouse", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "delivery_time", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "delay_minutes", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "delay_reason", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "date", "type": "datetime", "description": null, "expression": null, "alias": null}, {"name": "on_time", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="1000x8">
+id,route,warehouse,delivery_time,delay_minutes,delay_reason,date,on_time
+1,Route C,WH2,4.88,51,Customs Delay,2024-01-02,0
+2,Route A,WH4,4.77,45,Driver Rest,2024-01-03,0
+3,Route C,WH4,5.31,113,Traffic,2024-01-04,0
+4,Route B,WH4,5.83,32,Minor Breakdown,2024-01-05,0
+5,Route C,WH4,6.13,120,Traffic,2024-01-06,0
+</table>
+
+
+The user asked the following question:
+### QUERY
+ <TIME_CONTEXT>Current date: 2024-12-30</TIME_CONTEXT>
+📊 Show me delay distribution
+Create and save a visualization as PNG. /no_think
+
+You generated the following Python code:
+import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_8d3d827f-5708-4ea2-81f4-0ad24664700d.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_8d3d827f-5708-4ea2-81f4-0ad24664700d.png'}
+
+However, it resulted in the following error:
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 29, in execute
+    exec(code, self._environment)
+  File "<string>", line 11, in <module>
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/pyplot.py", line 2439, in bar
+    return gca().bar(
+           ^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/__init__.py", line 1446, in inner
+    return func(ax, *map(sanitize_sequence, args), **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_axes.py", line 2384, in bar
+    self._process_unit_info(
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axes/_base.py", line 2549, in _process_unit_info
+    axis.update_units(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/axis.py", line 1713, in update_units
+    default = self.converter.default_units(data, self)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 105, in default_units
+    axis.set_units(UnitData(data))
+                   ^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 181, in __init__
+    self.update(data)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/category.py", line 216, in update
+    _api.check_isinstance((str, bytes), value=val)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/matplotlib/_api/__init__.py", line 93, in check_isinstance
+    raise TypeError(
+TypeError: 'value' must be an instance of str or bytes, not a None
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 193, in execute_with_retries
+    result = self.execute_code(code)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/agent/base.py", line 124, in execute_code
+    return code_executor.execute_and_return_result(code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 38, in execute_and_return_result
+    self.execute(code)
+  File "/home/c4i/anaconda3/envs/phitha1/lib/python3.11/site-packages/pandasai/core/code_execution/code_executor.py", line 31, in execute
+    raise CodeExecutionError("Code execution failed") from e
+pandasai.exceptions.CodeExecutionError: Code execution failed
+
+
+Fix the python code above and return the new python code but the code generated should use execute_sql_query function
+2025-11-06 13:52:04 [INFO] Code Generated:
+import pandas as pd
+import matplotlib.pyplot as plt
+
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_reason IS NOT NULL
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+
+# Ensure delay_reason is string type
+delay_distribution_df['delay_reason'] = delay_distribution_df['delay_reason'].astype(str)
+
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_8d3d827f-5708-4ea2-81f4-0ad24664700d.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_8d3d827f-5708-4ea2-81f4-0ad24664700d.png'}
+2025-11-06 13:52:04 [INFO] Validating code requirements...
+2025-11-06 13:52:04 [INFO] Code validation successful.
+2025-11-06 13:52:04 [INFO] Cleaning the generated code...
+2025-11-06 13:52:04 [INFO] Executing code: import pandas as pd
+import matplotlib.pyplot as plt
+sql_query = """
+SELECT delay_reason, COUNT(*) AS count
+FROM table_6619b1d3d4c59fcb9f82845d59178bfd
+WHERE delay_reason IS NOT NULL
+GROUP BY delay_reason
+ORDER BY count DESC;
+"""
+delay_distribution_df = execute_sql_query(sql_query)
+delay_distribution_df['delay_reason'] = delay_distribution_df['delay_reason'].astype(str)
+plt.figure(figsize=(10, 6))
+plt.bar(delay_distribution_df['delay_reason'], delay_distribution_df['count'], color='skyblue')
+plt.xlabel('Delay Reason')
+plt.ylabel('Number of Delays')
+plt.title('Delay Distribution')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('exports/charts/temp_chart_ec074cae-e048-453a-a127-0c3c43594158.png')
+plt.close()
+result = {'type': 'plot', 'value': 'exports/charts/temp_chart_ec074cae-e048-453a-a127-0c3c43594158.png'}
+2025-11-06 13:52:04 [INFO] Response generated successfully.
+2025-11-06 13:52:04 [INFO] Latest chart: /data1/workspaces/phitha1/Hermes/exports/charts/temp_chart_ec074cae-e048-453a-a127-0c3c43594158.png
+2025-11-06 13:52:04 [INFO] Added chart to chat: /data1/workspaces/phitha1/Hermes/exports/charts/temp_chart_ec074cae-e048-453a-a127-0c3c43594158.png
+2025-11-06 13:57:36 [INFO] 🚀 Starting Hermes Analytics with agent UI
+2025-11-06 13:57:38 [INFO] 🌐 Launching on http://0.0.0.0:7860

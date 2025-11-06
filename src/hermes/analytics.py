@@ -27,9 +27,9 @@ class HermesAnalytics:
             'delayed_shipments': delayed,
             'on_time_shipments': on_time,
             'on_time_rate': (on_time / total) if total > 0 else 0.0,
-            'delay_rate': f"{(delayed / total * 100):.1f}%" if total > 0 else "0.0%",
-            'avg_delay': f"{self.df[self.df['delay_minutes'] > 0]['delay_minutes'].mean():.1f} min" if delayed > 0 else "0.0 min",
-            'avg_delivery_time': f"{self.df['delivery_time'].mean():.2f} days" if 'delivery_time' in self.df.columns else "N/A",
+            'delay_rate': (delayed / total) if total > 0 else 0.0,
+            'avg_delay_minutes': self.df[self.df['delay_minutes'] > 0]['delay_minutes'].mean() if delayed > 0 else 0.0,
+            'avg_delivery_time': self.df['delivery_time'].mean() if 'delivery_time' in self.df.columns else None,
             'date_range': f"{self.df['date'].min().date()} to {self.df['date'].max().date()}"
         }
         if 'delay_minutes' in self.df.columns:
