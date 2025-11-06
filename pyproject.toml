@@ -20,6 +20,8 @@ classifiers = [
 dependencies = [
   "pandasai>=3.0.0b19",
   "pandasai-litellm>=0.0.1",
+  "gradio>=5.48.0",
+  "pillow>=9.0.0",
   "watchgod"
 ]
 

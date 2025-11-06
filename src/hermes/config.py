@@ -3,6 +3,11 @@ Configuration for Hermes AI - paths and PandasAI / LLM config
 """
 from pathlib import Path
 import os
+
+# Set matplotlib backend to non-interactive to prevent GUI issues
+import matplotlib
+matplotlib.use('Agg')
+
 from pandasai.helpers.logger import Logger
 from pandasai_litellm.litellm import LiteLLM
 import pandasai as pai
@@ -37,10 +42,17 @@ llm = LiteLLM(
 pai.config.set({
     "llm": llm,
     "logger": pandasai_logger,
-    "enable_cache": True,
+    "enable_cache": False,  # 🔥 DISABLE to force chart regeneration for each query
     "save_charts": True,
     "save_charts_path": CHARTS_DIR,
+    "open_charts": False,
     "verbose": False,
     "enforce_privacy": True,
     "max_retries": 3
 })
+
+# SmartDataFrame configuration
+SMART_DF_CONFIG = {
+    "llm": llm,
+    "enable_cache": False,  # 🔥 Force fresh LLM calls
+}

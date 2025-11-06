@@ -21,42 +21,68 @@ class HermesAnalytics:
     def get_summary_stats(self):
         total = len(self.df)
         delayed = int((self.df['delay_minutes'] > 0).sum()) if 'delay_minutes' in self.df.columns else 0
+        on_time = int(total - delayed)
         stats = {
             'total_shipments': int(total),
             'delayed_shipments': delayed,
-            'on_time_shipments': int(total - delayed),
+            'on_time_shipments': on_time,
+            'on_time_rate': (on_time / total) if total > 0 else 0.0,
             'delay_rate': f"{(delayed / total * 100):.1f}%" if total > 0 else "0.0%",
             'avg_delay': f"{self.df[self.df['delay_minutes'] > 0]['delay_minutes'].mean():.1f} min" if delayed > 0 else "0.0 min",
             'avg_delivery_time': f"{self.df['delivery_time'].mean():.2f} days" if 'delivery_time' in self.df.columns else "N/A",
             'date_range': f"{self.df['date'].min().date()} to {self.df['date'].max().date()}"
         }
+        if 'delay_minutes' in self.df.columns:
+            delay_values = self.df[self.df['delay_minutes'] > 0]['delay_minutes']
+            stats['avg_delay_minutes'] = float(delay_values.mean()) if len(delay_values) > 0.0 else 0.0
+            stats['median_delay_minutes'] = float(delay_values.median()) if len(delay_values) > 0.0 else 0.0
+        else:
+            stats['avg_delay_minutes'] = 0.0
+            stats['median_delay_minutes'] = 0.0
+            
         if 'cost' in self.df.columns:
             stats['total_cost'] = f"${self.df['cost'].sum():,.2f}"
         return stats
 
     def train_prediction_model(self):
         try:
-            df_model = self.df.copy()
+            # Validate required columns
+            required_cols = ['date', 'delay_minutes', 'route', 'warehouse']
+            missing = [col for col in required_cols if col not in self.df.columns]
+            if missing:
+                logger.error(f"Missing required columns for prediction: {missing}")
+                return None
+            
+            # Remove rows with NaN in critical columns
+            df_model = self.df[required_cols].dropna().copy()
+            
+            if len(df_model) < 10:
+                logger.error(f"Insufficient data for training: only {len(df_model)} valid rows")
+                return None
+            
             df_model['day_of_week'] = df_model['date'].dt.dayofweek
             df_model['week_of_year'] = df_model['date'].dt.isocalendar().week
             df_model['month'] = df_model['date'].dt.month
+            
             le_route = LabelEncoder()
             le_warehouse = LabelEncoder()
             df_model['route_encoded'] = le_route.fit_transform(df_model['route'])
             df_model['warehouse_encoded'] = le_warehouse.fit_transform(df_model['warehouse'])
             self.encoders = {'route': le_route, 'warehouse': le_warehouse}
+            
             features = ['route_encoded', 'warehouse_encoded', 'day_of_week', 'week_of_year', 'month']
             X = df_model[features]
             y = df_model['delay_minutes']
+            
             self.prediction_model = LinearRegression()
             self.prediction_model.fit(X, y)
             predictions = self.prediction_model.predict(X)
             r2 = r2_score(y, predictions)
             rmse = float(np.sqrt(mean_squared_error(y, predictions)))
-            logger.info(f"Model trained: R²={r2:.4f}, RMSE={rmse:.2f}")
+            logger.info(f"Model trained: R²={r2:.4f}, RMSE={rmse:.2f} (trained on {len(df_model)} samples)")
             return {'r2_score': r2, 'rmse': rmse, 'feature_importance': dict(zip(features, self.prediction_model.coef_))}
         except Exception as e:
-            logger.error(f"Model training failed: {e}")
+            logger.exception(f"Model training failed: {e}")
             return None
 
     def predict_next_week(self):
@@ -70,14 +96,15 @@ class HermesAnalytics:
             date = next_week_start + timedelta(days=day_offset)
             for route in self.df['route'].unique():
                 for warehouse in self.df['warehouse'].unique():
-                    features = np.array([[
+                    # Create DataFrame with proper feature names to avoid sklearn warning
+                    features_df = pd.DataFrame([[
                         self.encoders['route'].transform([route])[0],
                         self.encoders['warehouse'].transform([warehouse])[0],
                         date.dayofweek,
                         date.isocalendar()[1],
                         date.month
-                    ]])
-                    pred = self.prediction_model.predict(features)[0]
+                    ]], columns=['route_encoded', 'warehouse_encoded', 'day_of_week', 'week_of_year', 'month'])
+                    pred = self.prediction_model.predict(features_df)[0]
                     predictions.append(max(0, pred))
         return {
             'predicted_avg_delay': float(np.mean(predictions)),
