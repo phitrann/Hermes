@@ -276,6 +276,11 @@ class LLMReasoningCapture(logging.Handler):
     - Response Generation
     """
     
+    # Configuration constants
+    MAX_MESSAGE_LENGTH = 1000  # Maximum characters per log message
+    MAX_OTHER_LOGS = 5  # Maximum 'other' logs to display in formatted output
+    MAX_CODE_DISPLAY_LENGTH = 500  # Maximum code length for inline display
+    
     # Step categorization patterns
     STEP_PATTERNS = {
         'query_understanding': ['question:', 'handling', 'request', 'query'],
@@ -314,7 +319,7 @@ class LLMReasoningCapture(logging.Handler):
                 'elapsed_ms': int((timestamp - self.start_time).total_seconds() * 1000),
                 'level': record.levelname,
                 'logger': record.name.split('.')[-1],
-                'message': msg[:1000],  # Increased for code snippets
+                'message': msg[:self.MAX_MESSAGE_LENGTH],
                 'step': self._categorize_step(msg)
             }
             
@@ -418,7 +423,7 @@ class LLMReasoningCapture(logging.Handler):
         # Add other logs if any
         if 'other' in self.categorized_steps:
             sections.append("### 📝 Other Logs")
-            for log in self.categorized_steps['other'][:5]:  # Limit to 5
+            for log in self.categorized_steps['other'][:self.MAX_OTHER_LOGS]:
                 sections.append(f"- **+{log['elapsed_ms']}ms**: {log['message'][:100]}")
         
         return "\n".join(sections)

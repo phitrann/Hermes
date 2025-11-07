@@ -598,10 +598,12 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
                             code_start = log['message'].lower().find('code generated:') + len('code generated:')
                             code_content = log['message'][code_start:].strip()
                             
+                            # Use the constant from LLMReasoningCapture for consistency
+                            max_code_len = reasoning_capture.MAX_CODE_DISPLAY_LENGTH
                             duration = log['elapsed_ms']
                             history = add_assistant_message(
                                 history,
-                                f"**Duration:** {duration}ms\n\n```python\n{code_content[:500]}\n```",
+                                f"**Duration:** {duration}ms\n\n```python\n{code_content[:max_code_len]}\n```",
                                 metadata={"title": "⚙️ Code Generation"}
                             )
                             yield yield_state(history, loaded_state)
