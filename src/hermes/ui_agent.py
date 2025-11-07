@@ -173,7 +173,7 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
     - Numbers → gr.Number  
     - Charts → gr.Image (inline in chat)
     - Metrics → gr.JSON
-    - Agent reasoning → ChatMessage with metadata
+    - Agent reasoning → ChatMessage with metadata and step-by-step display
     """
 
     tools = HermesAgentTools(hermes_app)
@@ -186,11 +186,11 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
     }
     .header {
         text-align: center;
-        padding: 16px;
+        padding: 20px;
         background: linear-gradient(135deg, #0066cc 0%, #004080 100%);
         color: white;
         border-radius: 8px 8px 0 0;
-        margin-bottom: 16px;
+        margin-bottom: 20px;
     }
     .number-display {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -204,12 +204,13 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
     }
     .metrics-panel {
         background: #f8f9fa;
-        padding: 12px;
-        border-radius: 6px;
-        margin-top: 8px;
+        padding: 16px;
+        border-radius: 8px;
+        margin-top: 12px;
+        border: 1px solid #e0e0e0;
     }
     .dataframe-section {
-        margin: 10px 0;
+        margin: 12px 0;
         border: 1px solid #e0e0e0;
         border-radius: 8px;
         overflow: hidden;
@@ -217,8 +218,22 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
     /* Improved agent message styling */
     .message.bot.with-metadata {
         background: #f8f9fa;
-        border-left: 3px solid #0066cc;
-        padding-left: 12px;
+        border-left: 4px solid #0066cc;
+        padding: 12px;
+        margin: 8px 0;
+    }
+    .input-row {
+        margin-top: 16px;
+        gap: 8px;
+    }
+    /* Responsive layout */
+    @media (max-width: 768px) {
+        .header {
+            padding: 12px;
+        }
+        .metrics-panel {
+            padding: 12px;
+        }
     }
     """
 
@@ -356,6 +371,81 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
             clear_btn = gr.Button("🗑️ Clear Chat", scale=1, size="sm", variant="secondary")
 
         # =====================================================================
+        # Helper Functions
+        # =====================================================================
+        
+        def create_empty_state():
+            """Create empty state tuple for all outputs."""
+            return (
+                None,  # metrics
+                None,  # stats
+                None,  # number
+                None,  # dataframe
+                gr.update(visible=False),  # metrics visibility
+                gr.update(visible=False),  # stats visibility
+                gr.update(visible=False),  # number visibility
+                gr.update(visible=False),  # dataframe visibility
+            )
+        
+        def yield_state(history, loaded_state, metrics=None, stats=None, number=None, dataframe=None,
+                       show_metrics=False, show_stats=False, show_number=False, show_dataframe=False):
+            """Helper to yield consistent state tuple."""
+            return (
+                history,
+                metrics,
+                stats,
+                number,
+                dataframe,
+                gr.update(visible=show_metrics),
+                gr.update(visible=show_stats),
+                gr.update(visible=show_number),
+                gr.update(visible=show_dataframe),
+                loaded_state
+            )
+        
+        def add_assistant_message(history, content, metadata=None):
+            """Helper to add assistant message to history."""
+            history.append(ChatMessage(
+                role="assistant",
+                content=content,
+                metadata=metadata
+            ))
+            return history
+        
+        def add_error_message(history, error_msg):
+            """Helper to add error message to history."""
+            return add_assistant_message(
+                history,
+                f"❌ **Error:** {error_msg}"
+            )
+        
+        def extract_and_display_reasoning_steps(history):
+            """Extract reasoning logs and display as processing steps."""
+            all_logs = reasoning_capture.reasoning_logs
+            
+            if not all_logs:
+                return history
+            
+            # Get step summary
+            step_summary = reasoning_capture.get_step_summary()
+            
+            # Show each major step
+            for step in step_summary.get('steps', []):
+                step_name = step['name']
+                duration = step['duration_ms']
+                
+                # Format step content
+                step_content = f"**Duration:** {duration}ms"
+                
+                history = add_assistant_message(
+                    history,
+                    step_content,
+                    metadata={"title": f"{step_name}"}
+                )
+            
+            return history
+        
+        # =====================================================================
         # Event Handlers
         # =====================================================================
         
@@ -420,15 +510,15 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
             selected_data: Optional[str]
         ) -> Iterator:
             """
-            Main chat handler with agent tool usage display.
-
-            Yields progressively:
-            1. Auto-load data if needed
-            2. User message added
-            3. Classification tool usage (with metadata)
-            4. LLM processing tool usage (with metadata)
-            5. Handler execution tool usage (with metadata)
-            6. Final result with appropriate component display
+            Main chat handler with enhanced reasoning step display.
+            
+            Shows dynamic processing steps:
+            1. Auto-load data (if needed)
+            2. User message
+            3. Query Classification
+            4. LLM Processing (with step-by-step reasoning)
+            5. Code Generation & Execution
+            6. Final result with smart component display
             """
 
             if not message.strip():
@@ -440,22 +530,8 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
                     df, load_msg = hermes_app.load_data("Select Existing", None, selected_data)
                     
                     if df is None:
-                        history.append(ChatMessage(
-                            role="assistant",
-                            content=f"❌ **Unable to load data**\n\n{load_msg}",
-                        ))
-                        yield (
-                            history,
-                            None,
-                            None,
-                            None,
-                            None,
-                            gr.update(visible=False),
-                            gr.update(visible=False),
-                            gr.update(visible=False),
-                            gr.update(visible=False),
-                            loaded_state
-                        )
+                        history = add_error_message(history, f"Unable to load data: {load_msg}")
+                        yield yield_state(history, loaded_state)
                         return
                     
                     loaded_state = True
@@ -463,40 +539,15 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
                     
                 except Exception as e:
                     logger.error(f"Auto-load error: {e}")
-                    history.append(ChatMessage(
-                        role="assistant",
-                        content=f"❌ **Error loading data:** {str(e)}",
-                    ))
-                    yield (
-                        history,
-                        None,
-                        None,
-                        None,
-                        None,
-                        gr.update(visible=False),
-                        gr.update(visible=False),
-                        gr.update(visible=False),
-                        gr.update(visible=False),
-                        loaded_state
-                    )
+                    history = add_error_message(history, f"Error loading data: {str(e)}")
+                    yield yield_state(history, loaded_state)
                     return
 
             # Step 1: Add user message
             history.append(ChatMessage(role="user", content=message))
-            yield (
-                history,
-                None,
-                None,
-                None,
-                None,
-                gr.update(visible=False),
-                gr.update(visible=False),
-                gr.update(visible=False),
-                gr.update(visible=False),
-                loaded_state
-            )
+            yield yield_state(history, loaded_state)
 
-            # Step 2: Classification tool usage
+            # Step 2: Classification
             try:
                 # Clear previous reasoning logs
                 reasoning_capture.clear()
@@ -505,76 +556,26 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
                 detected_intent = classify_result.get("intent", "unknown")
                 confidence = classify_result.get("confidence", 0)
                 
-                # Add classification tool usage message
+                # Add classification result
                 classification_content = f"""**Intent:** {detected_intent}  
 **Confidence:** {confidence:.0%}"""
                 
-                history.append(
-                    ChatMessage(
-                        role="assistant",
-                        content=classification_content,
-                        metadata={"title": "🎯 Query Classification"},
-                    )
-                )
-                yield (
+                history = add_assistant_message(
                     history,
-                    None,
-                    None,
-                    None,
-                    None,
-                    gr.update(visible=False),
-                    gr.update(visible=False),
-                    gr.update(visible=False),
-                    gr.update(visible=False),
-                    loaded_state
+                    classification_content,
+                    metadata={"title": "🎯 Query Classification"}
                 )
+                yield yield_state(history, loaded_state)
 
             except Exception as e:
                 traceback.print_exc()
                 logger.error(f"Classification error: {e}")
-                history.append(
-                    ChatMessage(
-                        role="assistant",
-                        content=f"❌ **Error during classification:** {str(e)}",
-                    )
-                )
-                yield (
-                    history,
-                    None,
-                    None,
-                    None,
-                    None,
-                    gr.update(visible=False),
-                    gr.update(visible=False),
-                    gr.update(visible=False),
-                    gr.update(visible=False),
-                    loaded_state
-                )
+                history = add_error_message(history, f"Error during classification: {str(e)}")
+                yield yield_state(history, loaded_state)
                 return
 
-            # Step 3: Query processing with tool usage display
+            # Step 3: Query processing with enhanced reasoning display
             try:
-                # Add LLM processing tool usage
-                history.append(
-                    ChatMessage(
-                        role="assistant",
-                        content=f"Processing query with intent: **{detected_intent}**",
-                        metadata={"title": "🧠 LLM Processing"},
-                    )
-                )
-                yield (
-                    history,
-                    None,
-                    None,
-                    None,
-                    None,
-                    gr.update(visible=False),
-                    gr.update(visible=False),
-                    gr.update(visible=False),
-                    gr.update(visible=False),
-                    loaded_state
-                )
-                
                 # Process the query
                 result = tools.analyze_query(message, detected_intent)
                 
@@ -586,166 +587,113 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
                 if response_obj is None:
                     raise Exception("No response object returned")
 
-                # Get captured reasoning logs
-                all_reasoning_logs = reasoning_capture.reasoning_logs
+                # Display processing steps dynamically
+                step_summary = reasoning_capture.get_step_summary()
                 
-                # Show handler execution tool usage
-                if all_reasoning_logs:
-                    handler_logs = [log for log in all_reasoning_logs 
-                                   if 'handling' in log['message'].lower() or 
-                                   'executing' in log['message'].lower()]
-                    
-                    if handler_logs:
-                        special_tokens = "Executing code: "
-                        for log in handler_logs:
-                            if special_tokens.lower() in log['message'].lower():
-                                code_log = log
-                                break
-                        
-                        if code_log:
-                            # Extract just the code part after "Executing code: "
-                            msg = code_log['message']
-                            code_start = msg.find(special_tokens)
-                            if code_start != -1:
-                                code_content = msg[code_start + len(special_tokens):]
-                                handler_text = f"```python\n{code_content}\n```"
-                            else:
-                                handler_text = f"```python\n{msg}\n```"
+                # Show code generation step with formatted code
+                if 'code_generation' in reasoning_capture.categorized_steps:
+                    code_logs = reasoning_capture.categorized_steps['code_generation']
+                    for log in code_logs:
+                        if 'code generated:' in log['message'].lower():
+                            code_start = log['message'].lower().find('code generated:') + len('code generated:')
+                            code_content = log['message'][code_start:].strip()
                             
-                            history.append(
-                                ChatMessage(
-                                    role="assistant",
-                                    content=handler_text,
-                                    metadata={"title": "⚙️ Generated Code"},
-                                )
-                            )
-                            yield (
+                            duration = log['elapsed_ms']
+                            history = add_assistant_message(
                                 history,
-                                None,
-                                None,
-                                None,
-                                None,
-                                gr.update(visible=False),
-                                gr.update(visible=False),
-                                gr.update(visible=False),
-                                gr.update(visible=False),
-                                loaded_state
+                                f"**Duration:** {duration}ms\n\n```python\n{code_content[:500]}\n```",
+                                metadata={"title": "⚙️ Code Generation"}
                             )
+                            yield yield_state(history, loaded_state)
+                            break
+                
+                # Show code execution step
+                if 'code_execution' in reasoning_capture.categorized_steps:
+                    exec_logs = reasoning_capture.categorized_steps['code_execution']
+                    if exec_logs:
+                        duration = exec_logs[-1]['elapsed_ms'] - exec_logs[0]['elapsed_ms']
+                        history = add_assistant_message(
+                            history,
+                            f"**Duration:** {duration}ms\n\nCode executed successfully ✓",
+                            metadata={"title": "🚀 Code Execution"}
+                        )
+                        yield yield_state(history, loaded_state)
+                
                 # Extract components for smart display
                 components = extract_response_components(response_obj)
                 
                 # Add text response
                 if components["text"]:
-                    history.append(
-                        ChatMessage(
-                            role="assistant",
-                            content=components["text"],
-                        )
-                    )
+                    history.append(ChatMessage(
+                        role="assistant",
+                        content=components["text"],
+                    ))
+                
+                # Add number inline
                 if components["data_type"] == "number" and components["number"] is not None:
                     try:
                         number = gr.Number(
                             interactive=True,
                             value=components["number"],
                             label="🔢 Numeric Result",
-                            # visible=True,
                             wrap=True,
-                            # elem_classes="number-display",
                         )
-                        history.append(
-                            ChatMessage(
-                                role="assistant",
-                                content=number,
-                            )
-                        )
+                        history.append(ChatMessage(
+                            role="assistant",
+                            content=number,
+                        ))
                         logger.info(f"Added gr.Number() as content of ChatMessage")
                     except Exception as e:
                         logger.warning(f"Failed to add gr.Number() inline: {e}")
-                        # Fallback: still show in separate component
-                        show_number = False
 
-                # Add DataFrame as a separate message immediately after text
+                # Add DataFrame inline
                 if components["data_type"] == "dataframe" and components["dataframe"] is not None:
                     try:
-                        # Format DataFrame as markdown table for inline display
                         df = components["dataframe"]
+                        df_display = gr.DataFrame(interactive=True, value=df, wrap=True)
                         
-                        # # Convert to markdown with better formatting
-                        # df_markdown = "### 📊 Results\n\n"
-                        # df_markdown += df.to_markdown(index=False)
-                        df_markdown = gr.DataFrame(interactive=True, value=df, wrap=True)
-                        
-                        history.append(
-                            ChatMessage(
-                                role="assistant",
-                                content=df_markdown,
-                            )
-                        )
-                        logger.info(f"Added DataFrame as markdown with {len(df)} rows")
+                        history.append(ChatMessage(
+                            role="assistant",
+                            content=df_display,
+                        ))
+                        logger.info(f"Added DataFrame inline with {len(df)} rows")
                     except Exception as df_err:
                         logger.warning(f"Failed to add DataFrame inline: {df_err}")
-                        # Fallback: still show in separate component
-                        show_dataframe = True
                 
                 # Add chart inline if present
                 if components["chart_path"] and os.path.exists(components["chart_path"]):
                     try:
-                        history.append(
-                            ChatMessage(
-                                role="assistant",
-                                content={"path": components["chart_path"], "mime_type": "image/png"},
-                            )
-                        )
+                        history.append(ChatMessage(
+                            role="assistant",
+                            content={"path": components["chart_path"], "mime_type": "image/png"},
+                        ))
                         logger.info(f"Added chart inline: {components['chart_path']}")
                     except Exception as chart_err:
                         logger.warning(f"Failed to add chart inline: {chart_err}")
 
                 # Determine component visibility for side panels
-                show_number = components["data_type"] == "number" and components["number"] is not None and 'number' not in locals()
-                show_dataframe = components["data_type"] == "dataframe" and components["dataframe"] is not None and 'df_markdown' not in locals()  # Only show if markdown failed
+                # Most components are now shown inline, only show side panels for metrics/stats
                 show_metrics = components["metrics"] is not None
                 show_stats = components["stats"] is not None
                 
                 # Clear tools reasoning
                 tools.clear_reasoning()
 
-                # Yield final state
-                yield (
-                    history,
-                    components["metrics"] if show_metrics else None,
-                    components["stats"] if show_stats else None,
-                    components["number"] if show_number else None,
-                    components["dataframe"] if show_dataframe else None,
-                    gr.update(visible=show_metrics),
-                    gr.update(visible=show_stats),
-                    gr.update(visible=show_number),
-                    gr.update(visible=show_dataframe),
-                    loaded_state
+                # Yield final state with side panel data
+                yield yield_state(
+                    history, 
+                    loaded_state,
+                    metrics=components["metrics"] if show_metrics else None,
+                    stats=components["stats"] if show_stats else None,
+                    show_metrics=show_metrics,
+                    show_stats=show_stats
                 )
 
             except Exception as e:
                 traceback.print_exc()
                 logger.exception(f"Query processing error: {e}")
-                error_msg = f"❌ **Error processing query:** {str(e)}"
-                
-                history.append(
-                    ChatMessage(
-                        role="assistant",
-                        content=error_msg,
-                    )
-                )
-                yield (
-                    history,
-                    None,
-                    None,
-                    None,
-                    None,
-                    gr.update(visible=False),
-                    gr.update(visible=False),
-                    gr.update(visible=False),
-                    gr.update(visible=False),
-                    loaded_state
-                )
+                history = add_error_message(history, f"Error processing query: {str(e)}")
+                yield yield_state(history, loaded_state)
 
         # Connect events
         outputs = [
