@@ -48,9 +48,6 @@ from .models import (
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
-pai.config.set({"llm": llm, "enable_cache": True})
-
-
 class HermesApp:
     """Main application class providing data loading, query processing and helpers."""
 
@@ -238,8 +235,8 @@ Based on historical patterns, you can expect moderate delays. Consider reviewing
                 metrics=metrics,
                 prediction=prediction,
                 metadata={
-                    "metrics": metrics.dict(),
-                    "prediction": prediction.dict()
+                    "metrics": metrics.model_dump(),
+                    "prediction": prediction.model_dump()
                 }
             )
             
@@ -289,7 +286,7 @@ Based on historical patterns, you can expect moderate delays. Consider reviewing
                 text=response_text,
                 intent="recommendation",
                 recommendations=recommendations,
-                metadata={"recommendations": [r.dict() for r in recommendations]}
+                metadata={"recommendations": [r.model_dump() for r in recommendations]}
             )
             
         except Exception as e:
@@ -364,21 +361,34 @@ Based on historical patterns, you can expect moderate delays. Consider reviewing
             # Validate stats
             stats = StatsSummary(**stats_dict) if stats_dict else None
             
-            # Format response
-            response_text = f"📊 **Statistics Summary**\n\n{str(response)}"
+            # Determine data type
+            data_type = "text"
+            if isinstance(response, DataFrameResponse):
+                data_type = "dataframe"
+            elif isinstance(response, NumberResponse):
+                data_type = "number"
+            elif isinstance(response, ChartResponse):
+                data_type = "chart"
+                
+            response_text = f"{str(response)}" if data_type == "text" else ""
             
-            if stats:
-                response_text += f"\n\n**Quick Stats:**\n"
-                response_text += f"- Total Shipments: {stats.total_shipments:,}\n"
-                response_text += f"- Delayed Shipments: {stats.delayed_shipments:,}\n"
-                response_text += f"- Average Delay: {stats.avg_delay_minutes:.2f} min\n"
-                response_text += f"- Delay Rate: {stats.delay_rate:.1%}\n"
+            # # Format response
+            # response_text = f"📊 **Statistics Summary**\n\n{str(response)}"
+            
+            # if stats:
+            #     response_text += f"\n\n**Quick Stats:**\n"
+            #     response_text += f"- Total Shipments: {stats.total_shipments:,}\n"
+            #     response_text += f"- Delayed Shipments: {stats.delayed_shipments:,}\n"
+            #     response_text += f"- Average Delay: {stats.avg_delay_minutes:.2f} min\n"
+            #     response_text += f"- Delay Rate: {stats.delay_rate:.1%}\n"
             
             return StatisticsResponse(
                 text=response_text,
                 intent="statistics",
+                data_type=data_type,
+                raw_result=response,
                 stats=stats,
-                metadata=stats.dict() if stats else {}
+                metadata=stats.model_dump() if stats else {}
             )
             
         except Exception as e:
@@ -410,9 +420,9 @@ Based on historical patterns, you can expect moderate delays. Consider reviewing
                 data_type = "number"
             elif isinstance(response, ChartResponse):
                 data_type = "chart"
-            
-            response_text = f"{str(response)}"
-            
+
+            response_text = f"{str(response)}" if data_type == "text" else ""
+
             return GeneralResponse(
                 text=response_text,
                 intent="general",
@@ -651,7 +661,7 @@ def main() -> None:
     
     # Launch
     logger.info("🌐 Launching on http://0.0.0.0:%d", args.port)
-    demo.launch(server_name="0.0.0.0", server_port=args.port, share=False, show_error=True)
+    demo.launch(server_name="0.0.0.0", server_port=args.port, share=False, show_error=True, pwa=True)
 
 
 if __name__ == "__main__":

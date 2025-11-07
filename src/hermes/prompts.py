@@ -6,8 +6,8 @@ PROMPT_TEMPLATES = {
         "You are an intent classifier for Hermes, a logistics analytics assistant.\n"
         "Given the user's question, return ONLY valid JSON with keys: intent and confidence.\n"
         "Allowed intents: prediction, recommendation, visualization, comparison, statistics, general\n"
-        "Example: {\"intent\": \"visualization\", \"confidence\": 0.92}\n\n"
-        "User query: \"{query}\"\n"
+        "Example: {{\"intent\": \"visualization\", \"confidence\": 0.92}}\n\n"
+        "User query: \"{query}\"\n /no_think"
     ),
 
     "visualization": (

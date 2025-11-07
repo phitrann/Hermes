@@ -6,8 +6,11 @@ import re
 import json
 import logging
 from typing import Dict, Any
-from .prompts import PROMPT_TEMPLATES
+import json_repair
 from pandasai import SmartDataframe
+
+from .llm import ask_llm
+from .prompts import PROMPT_TEMPLATES
 
 logger = logging.getLogger(__name__)
 
@@ -27,18 +30,11 @@ class QueryRouter:
         if smart_df is not None:
             try:
                 prompt = PROMPT_TEMPLATES['classification_intent'].format(query=query)
-                llm_response = smart_df.chat(prompt)
+                llm_response = ask_llm(prompt)
                 text = str(llm_response).strip()
-                json_str = None
-                if text.startswith('{'):
-                    json_str = text
-                else:
-                    start = text.find('{')
-                    end = text.rfind('}')
-                    if start != -1 and end != -1 and end > start:
-                        json_str = text[start:end+1]
+                json_str = text.replace("<think>\n\n</think>", "")
                 if json_str:
-                    parsed = json.loads(json_str)
+                    parsed = json_repair.loads(json_str)
                     intent = parsed.get('intent', 'general').lower()
                     confidence = parsed.get('confidence', None)
                     if intent in self.allowed_intents:
@@ -51,6 +47,8 @@ class QueryRouter:
                         return {'intent': intent, 'confidence': confidence, 'method': 'llm'}
                 logger.warning("LLM did not return a valid JSON intent; falling back to regex.")
             except Exception as e:
+                import traceback
+                traceback.print_exc()
                 logger.warning(f"LLM classification failed: {e}")
 
         # Fallback regex-based classification

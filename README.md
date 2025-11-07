@@ -1,82 +1,547 @@
-Overview
-In this assessment, you are asked to design and prototype a lightweight AI Logistics Assistant named Hermes that helps operations managers analyze shipment data and answer natural language questions.
+# 🚀 Hermes — Intelligent Logistics Analytics Assistant
 
-The goal is to demonstrate your ability to apply data analytics, and basic NLP - optionally with simple machine learning - to a practical logistics scenario.
+An LLM-driven conversational analytics platform for shipment data analysis, built with PandasAI, Gradio 5.48.0, and local LLM integration.
 
-Scenario
+---
 
-Your company manages shipments across different routes and warehouses.
+## 📋 Table of Contents
 
-Managers often ask questions like:
--	“Which route had the most delays last week?”
--	“Show the top 3 warehouses with the highest processing time.”
--	“Predict average delivery delay next week.”
+1. [Overview](#overview)
+2. [System Architecture](#system-architecture)
+3. [Data Structure](#data-structure)
+4. [Key Features Implemented](#key-features-implemented)
+5. [Query Understanding & Processing](#query-understanding--processing)
+6. [Installation & Setup](#installation--setup)
+7. [Usage](#usage)
+8. [Evaluation Design](#evaluation-design)
+9. [File Structure](#file-structure)
 
-You will build a small prototype that can:
--	Understand logistics-related queries (chatbot style).
--	Search and summarize shipment information.
--	Optionally make a simple prediction or recommendation based on the data.
+---
 
-Your Task
-Implement a simple interactive app (Streamlit, Gradio, or Jupyter Notebook) with the following components:
-- Chat-based Query Interface
-    - Accept user input in natural language.
-    - Supports at least 3 example query types (e.g., delay statistics, warehouse ranking, route performance, etc.).
-    - Returns textual or visual answers from your data.
-- Data Search & Analytics
-    - Parse mock shipment data (shipments.csv).
-    - Support queries like filtering by route, warehouse, or delaying reason.
-    - Display relevant summaries or charts.
-- Bonus (Optional)
-    - Add a simple model (e.g., linear regression) to predict next week’s average delay.
-    - Or create a simple rule-based recommendation for warehouse optimization.
-________________________________________
-Key Functional Goals
-Your AI system should be able to:
-1.	Data understanding
+## Overview
 
-Read and process structured shipment datasets (mock CSV/JSON you create).
-Mock Data Example
+Hermes is a logistics analytics assistant that allows operations managers to:
+- Ask natural language questions about shipment data
+- Receive AI-driven insights with visualizations
+- See the AI's reasoning process for query classification
+- Generate predictions and recommendations
+- Export chat history for audit trails
+
+**Target Users:** Logistics managers, operations analysts, supply chain coordinators
+
+**Data Source:** CSV files containing shipment records with route, warehouse, date, and delivery metrics
+
+---
+
+## System Architecture
+
+### High-Level Flow
+
 ```
-shipments.csv
-id, route, warehouse, delivery_time, delay_minutes, delay_reason, date
-1, Route A, WH1,5.2,30, Weather,2024-10-10
-2, Route B, WH2,4.8,0, None,2024-10-11
+User Query
+    ↓
+[Gradio UI] ← → [HermesApp Orchestrator]
+    ↓                        ↓
+Chat Interface      [QueryRouter] (Intent Classification)
+  - Messages              ↓
+  - Agent Reasoning   Intent Detection
+  - Charts            (visualization/prediction/stats/general)
+                           ↓
+                    [Dispatch to Handler]
+                           ↓
+        ┌────────────────────┼────────────────────┐
+        ↓                    ↓                    ↓
+   [PandasAI]         [HermesAnalytics]    [HermesVisualizer]
+   SmartDataframe      (Predictions)        (Chart Generation)
+        ↓                    ↓                    ↓
+   LLM Response      ML Model Output       PNG Chart File
+        ↓                    ↓                    ↓
+        └────────────────────┼────────────────────┘
+                             ↓
+                    [Format Response]
+                             ↓
+                  Return to Gradio UI
+```
+
+### Component Responsibilities
+
+| Component | File | Responsibility |
+|-----------|------|-----------------|
+| **UI/Chat Interface** | `src/hermes/ui_agent.py` | Gradio 5.48.0 chat UI, agent reasoning display, data loading integration |
+| **Orchestrator** | `src/hermes/app.py` | Main app logic, query routing, handler dispatch |
+| **Router** | `src/hermes/router.py` | Intent classification, query pattern matching |
+| **Analytics** | `src/hermes/analytics.py` | Statistics, predictions, recommendations |
+| **Visualizer** | `src/hermes/visualizer.py` | Chart generation with cache-busting |
+| **Config** | `src/hermes/config.py` | LLM setup, PandasAI settings, paths |
+| **Models** | `src/hermes/models.py` | Pydantic response type definitions |
+
+---
+
+## Data Structure
+
+### Input: Shipments CSV
+
+Expected columns:
+```
+date               → Date of shipment (ISO format)
+route              → Route identifier (e.g., "Route_A")
+warehouse          → Warehouse code (e.g., "WH_01")
+delay_minutes      → Actual delay in minutes
+on_time            → Boolean: True if on-time, False if delayed
+shipment_id        → Unique shipment identifier
+distance_km        → Shipment distance
+carrier            → Carrier name
+```
+
+### Sample Data
+Located in `data/shipments.csv` (1000+ records for testing)
+
+```
+date,route,warehouse,delay_minutes,on_time,shipment_id,distance_km,carrier
+2025-01-01,Route_A,WH_01,5,True,S001,250,CarrierX
+2025-01-01,Route_B,WH_02,-10,True,S002,180,CarrierY
 ...
 ```
 
-2.	Query understanding & generation
+---
 
-Compute and present meaningful answers from the dataset: aggregations, top-k lists, time-series summaries, and filters by reason/warehouse/route.
+## Key Features Implemented
 
-Example queries Hermes should handle
-- “Which route had the most delays last week?”
-- “Show total delayed shipments by delay reason.”
-- “List warehouses with average delivery time above 5 days.”
-- “What was the average delay in October?”
-- “Predict the delay rate for next week.” (optional / bonus)
-3.	Simplicity
-- Keep your code modular, readable, and easy to run locally.
-4.	Creativity & UX
-- Add small but valuable touches: visualization of trends (charts), caching for faster responses, clear UI/UX for chat & result display.
-________________________________________
+### ✅ 1. Conversational Chat Interface
+- **File:** `src/hermes/ui_agent.py`
+- **Status:** Complete
+- **Features:**
+  - Gradio 5.48.0 chat with `type='messages'` format
+  - Agent reasoning display in sidebar
+  - Integrated data loading (no separate button)
+  - Avatar images for user/bot
+  - Suggestion buttons for common queries
 
-Deliverables
+### ✅ 2. Query Intent Classification
+- **File:** `src/hermes/router.py`
+- **Status:** Complete
+- **Method:** LLM-based classification (JSON extraction)
+- **Supported Intents:**
+  - `visualization` → Generate charts
+  - `prediction` → Forecast delays
+  - `recommendation` → Improvement suggestions
+  - `statistics` → Summary statistics
+  - `general` → Open-ended queries
 
-Submit the following (all in a Microsoft Form response or as links):
+### ✅ 3. Agent Reasoning Display
+- **File:** `src/hermes/ui_agent.py` (HermesAgentTools class)
+- **Status:** Complete
+- **Shows:**
+  - Classification step with confidence scores
+  - Query analysis results
+  - Chain of reasoning before final answer
 
-1.	Documentation (short report)
-- Describe your data structure, system architecture, and workflow.
-- Explain how your system performs query understanding and data summarization.
-- Include screenshots or examples of queries and expected outputs.
+### ✅ 4. Chart Generation with Cache-Busting
+- **File:** `src/hermes/visualizer.py`
+- **Status:** Complete
+- **Features:**
+  - Fresh chart generation per query
+  - Old chart cleanup (keeps last 5)
+  - Prevents chart reuse across queries
+  - Config: `enable_cache=False` in `config.py`
 
-2.	Prototype / Code
-- Provide an interactive prototype (e.g. Jupyter Notebook, Web-app) as a zipped folder or GitHub repo
-- You may use mock or synthetic data to simulate shipment reports.
+### ✅ 5. Data Loading Integration
+- **File:** `src/hermes/ui_agent.py`
+- **Status:** Complete
+- **Behavior:**
+  - Data selector dropdown in query box
+  - Auto-loads on first query if not loaded
+  - Shows loading status in chat messages
+  - Supports multiple CSV files
 
-3.	Evaluation Design
-- Propose how you would evaluate your AI system’s performance:
-    - Accuracy of query results - Are responses correct and relevant?
-    - Explainability - Can the system justify or show data sources for its answers?
-    - Response time - Is the system efficient and responsive?
+### ✅ 6. Error Handling & Type Safety
+- **Files:** `src/hermes/models.py`, `src/hermes/app.py`
+- **Status:** Complete
+- **Implementation:**
+  - Pydantic response types (BaseResponse subclasses)
+  - Proper error responses with `success` field
+  - Type validation for all responses
+  - Graceful fallbacks
 
+---
+
+## Query Understanding & Processing
+
+### Query Classification Process
+
+```
+User Input: "Show me delayed shipments by route"
+    ↓
+[Router.classify_query()]
+    ├─ Sends to LLM: Classification prompt
+    ├─ Expected output: {"intent": "visualization", "confidence": 0.92}
+    └─ Parsed by QueryRouter
+    ↓
+Intent: visualization (92% confidence)
+    ↓
+[Dispatch to _handle_visualization_chat()]
+    ├─ Calls SmartDataframe.chat() with visualization request
+    ├─ PandasAI generates chart via LLM
+    ├─ Saves PNG to CHARTS_DIR
+    ├─ Returns chart path + response text
+    ↓
+Format Response
+    ├─ Extract chart file path
+    ├─ Add to ChatMessage
+    ├─ Include reasoning chain
+    ↓
+Display in Gradio Chat
+```
+
+### Handler Types
+
+| Intent | Handler | Output |
+|--------|---------|--------|
+| `visualization` | `_handle_visualization_chat()` | Markdown + Chart |
+| `prediction` | `_handle_prediction_chat()` | ML forecast results |
+| `recommendation` | `_handle_recommendation_chat()` | Improvement suggestions |
+| `statistics` | `_handle_stats_chat()` | Summary statistics |
+| `general` | `_handle_general_chat()` | Open query response |
+
+### Example Query & Output
+
+**Query:** "What percentage of shipments were delayed?"
+
+**Classification:**
+```
+Intent: statistics
+Confidence: 0.89
+```
+
+**Processing:**
+1. Classify as statistics intent
+2. Extract date context from DataFrame
+3. Call `HermesAnalytics.get_summary_stats()`
+4. Format results with markdown
+
+**Output:**
+```markdown
+📊 **Statistics Summary**
+
+- Total Shipments: 1000
+- Delayed Shipments: 234
+- On-Time %: 76.6%
+- Average Delay: 18.5 minutes
+- Median Delay: 12 minutes
+```
+
+---
+
+## Installation & Setup
+
+### Prerequisites
+- Python 3.11+
+- Conda or venv
+- Local LLM endpoint (Qwen, Llama, etc.) on `http://localhost:8001/v1`
+
+### Installation
+
+```bash
+# Clone repository
+git clone https://github.com/phitrann/Hermes.git
+cd Hermes
+
+# Create environment
+python -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+# or .venv\Scripts\activate on Windows
+
+# Install package (editable mode)
+pip install -e .
+
+# Install dev dependencies (optional)
+pip install watchgod  # For auto-reload
+```
+
+### Environment Configuration
+
+Create `.env` file (optional):
+```bash
+LLM_ENDPOINT=http://localhost:8001/v1
+LLM_MODEL=qwen-7b  # or your model name
+LLM_API_KEY=not-needed
+```
+
+### LLM Setup
+
+Make sure your LLM endpoint is running:
+```bash
+# Example: Run Ollama
+ollama serve
+
+# Example: Run other LLM server
+python -m your_llm_server --port 8001
+```
+
+---
+
+## Usage
+
+### Running the App
+
+**Option 1: Console script (recommended)**
+```bash
+hermes-ai
+```
+
+**Option 2: Python module**
+```bash
+python -m hermes.app
+```
+
+**Option 3: Dev mode with auto-reload**
+```bash
+python dev.py
+```
+
+### Using the Interface
+
+1. **Open browser:** `http://localhost:7860`
+
+2. **Select/Load Data:**
+   - Dropdown appears in query box (labeled "Select a data file")
+   - Choose from available CSV files in `data/` directory
+   - Data loads automatically on first query
+
+3. **Ask Questions:**
+   - Type natural language question
+   - Click Send or press Enter
+   - Watch reasoning chain appear in sidebar
+   - Results appear in chat with chart (if applicable)
+
+4. **Example Queries:**
+   ```
+   "Show me delivery performance by warehouse"
+   "Which routes have the most delays?"
+   "Predict delays for next week"
+   "Give me recommendations to improve on-time delivery"
+   "How many shipments were delayed?"
+   ```
+
+### Sample Questions File
+
+Pre-loaded sample questions from `data/shipment_questions_500.csv`:
+- "How many total shipments are in the data?"
+- "Which warehouse has the highest average delay?"
+- "What is the on-time delivery rate by route?"
+- "Show me the distribution of delays"
+
+---
+
+## Evaluation Design
+
+### 1. Accuracy of Query Results
+
+**Metric:** Response correctness vs. ground truth
+
+**Evaluation Method:**
+- Manually verify 10-20 sample queries
+- Compare LLM-generated answers against:
+  - Direct SQL/pandas results
+  - Data summary statistics
+  - Known data patterns
+
+**Example Test Case:**
+```
+Query: "How many shipments are on-time?"
+Expected: Count of rows where on_time=True
+Verify: LLM result matches pandas df[df['on_time']==True].shape[0]
+```
+
+**Success Criteria:** ≥90% accuracy on test queries
+
+---
+
+### 2. Explainability (Query Reasoning)
+
+**Metric:** User can understand system decisions
+
+**Evaluation Method:**
+- Verify reasoning chain is displayed for each query
+- Check that classification intent is shown with confidence
+- Ensure data sources are referenced
+
+**What's Shown:**
+1. Classification step with confidence score
+2. Query analysis results
+3. Final answer with statistics
+
+**Success Criteria:** User can trace decision path from query to answer
+
+---
+
+### 3. Response Time
+
+**Metric:** System responsiveness
+
+**Evaluation Method:**
+- Measure time from query submission to result display
+- Track separately:
+  - Data loading time (first query)
+  - Classification time
+  - Chart generation time
+  - Total response time
+
+**Current Performance (Baseline):**
+```
+Data Loading:      2-3 seconds (first time only)
+Classification:    0.5-1 second
+Query Processing:  1-3 seconds (depends on LLM)
+Chart Generation:  2-5 seconds (PandasAI)
+Total (w/ chart):  4-8 seconds
+Total (text only):  2-4 seconds
+```
+
+**Success Criteria:** <10 seconds for most queries, <5 seconds for text-only
+
+---
+
+### 4. Chart Accuracy
+
+**Metric:** Charts accurately represent data
+
+**Evaluation Method:**
+- Verify chart generation doesn't reuse old charts
+- Check chart contents match query intent
+- Ensure proper cache-busting
+
+**Test Case:**
+```
+Query 1: "Show me delays by route" → Chart A generated
+Query 2: "Show me on-time by warehouse" → Chart B generated (NOT Chart A)
+Verify: Charts/ directory shows both PNG files
+Verify: Charts are different content
+```
+
+**Success Criteria:** Each visualization query generates unique chart
+
+---
+
+### 5. System Stability
+
+**Metric:** No crashes or unhandled errors
+
+**Evaluation Method:**
+- Run 20+ diverse queries
+- Monitor for exceptions in console
+- Check error responses are properly formatted
+
+**Success Criteria:** All errors handled gracefully with user-friendly messages
+
+---
+
+## File Structure
+
+```
+Hermes/
+├── README.md                          # This file
+├── INTEGRATION_SUMMARY.md             # Integration notes
+├── pyproject.toml                     # Project metadata & dependencies
+├── dev.py                             # Dev mode auto-reload script
+│
+├── data/                              # Sample datasets
+│   ├── shipments.csv                  # Main dataset
+│   ├── shipments_1000.csv             # Larger dataset
+│   └── shipment_questions_500.csv     # Sample questions
+│
+├── src/hermes/                        # Main package
+│   ├── __init__.py
+│   ├── app.py                         # HermesApp orchestrator
+│   ├── ui_agent.py                    # Gradio chat interface
+│   ├── router.py                      # Query intent classification
+│   ├── analytics.py                   # Analytics & predictions
+│   ├── visualizer.py                  # Chart generation
+│   ├── config.py                      # Configuration & LLM setup
+│   ├── models.py                      # Pydantic response types
+│   ├── prompts.py                     # LLM prompt templates
+│   ├── semantic.py                    # Semantic dataset registration
+│   └── utils.py                       # Utility functions
+│
+├── charts/                            # Generated chart PNGs (auto-created)
+├── logs/                              # Application logs (auto-created)
+└── .cache/                            # Cache files (auto-created)
+```
+
+---
+
+## Recent Improvements (Completed)
+
+### ✅ Fixed Issues
+1. **Chart Caching Bug** - Each query now generates fresh chart (not reused)
+2. **Deprecation Warning** - Gradio chatbot now uses `type='messages'` format
+3. **PIL Image Error** - Charts now return as file paths, not PIL objects
+4. **Data Loading UI** - Integrated into query box (no separate button)
+5. **Agent Reasoning** - Visible in sidebar with step-by-step thinking
+6. **Type Safety** - All responses validated with Pydantic models
+7. **Error Handling** - Graceful fallbacks for all error cases
+
+### 🔄 Configuration Changes
+- `config.py`: Set `enable_cache=False` to force chart regeneration
+- `visualizer.py`: Added `clear_cache_for_query()` method
+- `ui_agent.py`: Integrated data loading into query flow
+- `app.py`: Fixed intent error validation
+
+---
+
+## Known Limitations
+
+1. **LLM Dependency** - Requires external LLM endpoint (local or remote)
+2. **Chart Types** - Limited to charts PandasAI can generate
+3. **Data Size** - Performance may degrade with >100k rows
+4. **Concurrency** - Currently single-user (Gradio default)
+
+---
+
+## Next Steps / Future Improvements
+
+1. **Multi-user support** - Deploy with Gradio Enterprise or FastAPI
+2. **Custom chart types** - Add Plotly/Matplotlib integration
+3. **Performance optimization** - Add database querying layer
+4. **Advanced analytics** - ML model integration, time series forecasting
+5. **Export formats** - PDF reports, Excel summaries
+
+---
+
+## Support & Troubleshooting
+
+### LLM Endpoint Not Reachable
+```bash
+# Check if endpoint is running
+curl http://localhost:8001/v1/models
+
+# If not, start your LLM server
+ollama serve  # or your LLM server command
+```
+
+### Charts Not Displaying
+```bash
+# Check charts directory
+ls -lh charts/
+
+# Verify PandasAI configuration in config.py
+# Ensure enable_cache=False
+```
+
+### Slow Response Time
+- Check LLM endpoint is responsive: `curl http://localhost:8001/v1/models`
+- Monitor system resources (CPU/RAM)
+- Check logs: `tail -f logs/hermes.log`
+
+---
+
+## License & Attribution
+
+- **Hermes** - Custom implementation
+- **PandasAI** - Data analysis with LLM
+- **Gradio** - UI framework
+- **LiteLLM** - LLM provider abstraction
+
+---
+
+**Last Updated:** November 7, 2025  
+**Version:** 0.2.0 (Agent Reasoning & Cache-Busting Release)

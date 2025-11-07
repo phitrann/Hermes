@@ -159,6 +159,8 @@ class BaseResponse(BaseModel):
     text: str = Field(..., description="Primary response text (markdown/HTML)")
     chart: Optional[ChartData] = Field(None, description="Generated chart data")
     intent: str = Field(..., description="Classified query intent")
+    data_type: Optional[str] = Field(None, description="Type of data returned (text/number/dataframe)")
+    raw_result: Optional[Any] = Field(None, description="Raw LLM response")
     metadata: Dict[str, Any] = Field(default_factory=dict, description="Additional context")
     timestamp: datetime = Field(default_factory=datetime.now, description="Response timestamp")
     success: bool = Field(default=True, description="Whether request succeeded")
@@ -215,8 +217,7 @@ class GeneralResponse(BaseResponse):
     """Response for general queries."""
     
     intent: Literal["general"] = "general"
-    data_type: Optional[str] = Field(None, description="Type of data returned (text/number/dataframe)")
-    raw_result: Optional[Any] = Field(None, description="Raw LLM response")
+    
 
 # ============================================================================
 # Response Factory & Helpers

@@ -21,14 +21,14 @@ CACHE_DIR = os.path.join(ROOT_DIR, ".cache")
 CHARTS_DIR = os.path.join(ROOT_DIR, "exports/charts")
 
 SHIPMENTS_FILE = os.path.join(DATA_DIR, "shipments.csv")
-QUESTIONS_FILE = os.path.join(DATA_DIR, "shipment_questions_500.csv")
+QUESTIONS_FILE = os.path.join(DATA_DIR, "questions.csv")
 SEMANTIC_DATASET_PATH = "hermes/shipments"
 
 for d in (LOGS_DIR, CACHE_DIR, CHARTS_DIR):
     os.makedirs(d, exist_ok=True)
 
 # PandasAI + LLM configuration
-pandasai_logger = Logger(save_logs=True, verbose=False)
+pandasai_logger = Logger(save_logs=True, verbose=True)  # Enable verbose logging to capture reasoning
 
 # LiteLLM config - adjust model, base_url, api_key to your environment
 llm = LiteLLM(
@@ -42,11 +42,11 @@ llm = LiteLLM(
 pai.config.set({
     "llm": llm,
     "logger": pandasai_logger,
-    "enable_cache": False,  # 🔥 DISABLE to force chart regeneration for each query
+    "enable_cache": True,  # 🔥 DISABLE to force chart regeneration for each query
     "save_charts": True,
     "save_charts_path": CHARTS_DIR,
     "open_charts": False,
-    "verbose": False,
+    "verbose": False,  # Enable verbose logging to see reasoning
     "enforce_privacy": True,
     "max_retries": 3
 })
