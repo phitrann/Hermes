@@ -5,10 +5,14 @@ src/hermes/analytics.py
 src/hermes/app.py
 src/hermes/autoviz.py
 src/hermes/config.py
+src/hermes/llm.py
+src/hermes/models.py
 src/hermes/prompts.py
 src/hermes/router.py
 src/hermes/semantic.py
 src/hermes/ui.py
+src/hermes/ui_agent.py
+src/hermes/utils.py
 src/hermes/visualizer.py
 src/hermes.egg-info/PKG-INFO
 src/hermes.egg-info/SOURCES.txt
