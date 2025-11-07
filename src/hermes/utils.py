@@ -280,6 +280,7 @@ class LLMReasoningCapture(logging.Handler):
     MAX_MESSAGE_LENGTH = 1000  # Maximum characters per log message
     MAX_OTHER_LOGS = 5  # Maximum 'other' logs to display in formatted output
     MAX_CODE_DISPLAY_LENGTH = 500  # Maximum code length for inline display
+    MAX_BRIEF_MESSAGE_LENGTH = 200  # Maximum length for brief message display
     
     # Step categorization patterns
     STEP_PATTERNS = {
@@ -344,6 +345,27 @@ class LLMReasoningCapture(logging.Handler):
         
         return 'other'
     
+    @staticmethod
+    def extract_code_from_message(message: str, marker: str) -> Optional[str]:
+        """
+        Extract code content from a log message after a marker.
+        
+        Args:
+            message: The log message
+            marker: The marker string (e.g., 'executing code:', 'code generated:')
+        
+        Returns:
+            Extracted code content or None if marker not found
+        """
+        msg_lower = message.lower()
+        marker_lower = marker.lower()
+        
+        if marker_lower not in msg_lower:
+            return None
+        
+        code_start = msg_lower.find(marker_lower) + len(marker_lower)
+        return message[code_start:].strip()
+    
     def get_step_summary(self) -> Dict[str, Any]:
         """Get a summary of all processing steps with timing."""
         summary = {
@@ -385,18 +407,19 @@ class LLMReasoningCapture(logging.Handler):
             msg = log['message']
             
             # Special formatting for code
-            if 'executing code:' in msg.lower():
-                code_start = msg.lower().find('executing code:') + len('executing code:')
-                code = msg[code_start:].strip()
+            code = self.extract_code_from_message(msg, 'executing code:')
+            if code is not None:
+                if len(code) > self.MAX_CODE_DISPLAY_LENGTH:
+                    code = code[:self.MAX_CODE_DISPLAY_LENGTH] + "\n# ... (truncated)"
                 lines.append(f"\n**{time_str}** - Executing generated code:\n```python\n{code}\n```")
-            elif 'code generated:' in msg.lower():
-                code_start = msg.lower().find('code generated:') + len('code generated:')
-                code = msg[code_start:].strip()
+            elif (code := self.extract_code_from_message(msg, 'code generated:')) is not None:
+                if len(code) > self.MAX_CODE_DISPLAY_LENGTH:
+                    code = code[:self.MAX_CODE_DISPLAY_LENGTH] + "\n# ... (truncated)"
                 lines.append(f"\n**{time_str}** - Generated code:\n```python\n{code}\n```")
             else:
-                # Truncate very long messages
-                if len(msg) > 200:
-                    msg = msg[:200] + "..."
+                # Truncate very long messages with indicator
+                if len(msg) > self.MAX_BRIEF_MESSAGE_LENGTH:
+                    msg = msg[:self.MAX_BRIEF_MESSAGE_LENGTH] + "..."
                 lines.append(f"- **{time_str}**: {msg}")
         
         return "\n".join(lines)

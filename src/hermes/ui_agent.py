@@ -594,16 +594,25 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
                 if 'code_generation' in reasoning_capture.categorized_steps:
                     code_logs = reasoning_capture.categorized_steps['code_generation']
                     for log in code_logs:
-                        if 'code generated:' in log['message'].lower():
-                            code_start = log['message'].lower().find('code generated:') + len('code generated:')
-                            code_content = log['message'][code_start:].strip()
-                            
+                        # Use the helper method to extract code
+                        code_content = reasoning_capture.extract_code_from_message(
+                            log['message'], 'code generated:'
+                        )
+                        
+                        if code_content:
                             # Use the constant from LLMReasoningCapture for consistency
                             max_code_len = reasoning_capture.MAX_CODE_DISPLAY_LENGTH
                             duration = log['elapsed_ms']
+                            
+                            # Add truncation indicator if needed
+                            if len(code_content) > max_code_len:
+                                display_code = code_content[:max_code_len] + "\n# ... (truncated)"
+                            else:
+                                display_code = code_content
+                            
                             history = add_assistant_message(
                                 history,
-                                f"**Duration:** {duration}ms\n\n```python\n{code_content[:max_code_len]}\n```",
+                                f"**Duration:** {duration}ms\n\n```python\n{display_code}\n```",
                                 metadata={"title": "⚙️ Code Generation"}
                             )
                             yield yield_state(history, loaded_state)
