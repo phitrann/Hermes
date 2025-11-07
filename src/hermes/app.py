@@ -347,6 +347,7 @@ Based on historical patterns, you can expect moderate delays. Consider reviewing
                 error=str(e)
             )
 
+
     def _handle_stats_chat(self, prompt: str) -> StatisticsResponse:
         """Handle statistics with validated response model."""
         logger.info("Handling statistics request (typed)")

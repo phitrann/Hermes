@@ -12,11 +12,9 @@ PROMPT_TEMPLATES = {
 
     "visualization": (
         "You are Hermes, a visualization helper. Use the dataset to create a clear, "
-        "concise chart addressing the user's request. Save the chart as a PNG in the charts "
-        "directory and return a short caption describing the chart and the main insight.\n\n"
+        "concise chart addressing the user's request.\n\n"
         "User request: \"{query}\"\n"
         "Time context: {time_context}\n"
-        "Save chart and return caption only."
     ),
 
     "statistics": (

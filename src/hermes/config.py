@@ -28,7 +28,7 @@ for d in (LOGS_DIR, CACHE_DIR, CHARTS_DIR):
     os.makedirs(d, exist_ok=True)
 
 # PandasAI + LLM configuration
-pandasai_logger = Logger(save_logs=True, verbose=True)  # Enable verbose logging to capture reasoning
+pandasai_logger = Logger(save_logs=True, verbose=False)  # Enable verbose logging to capture reasoning
 
 # LiteLLM config - adjust model, base_url, api_key to your environment
 llm = LiteLLM(

@@ -22,18 +22,13 @@ import pandas as pd
 
 # Import app types
 from .models import (
-    BaseResponse,
-    PredictionResponse,
-    RecommendationResponse,
-    VisualizationResponse,
-    StatisticsResponse,
-    GeneralResponse,
-    PYDANTIC_V2,
+    BaseResponse
 )
 
 from .utils import (
     load_questions_dataset,
     get_random_suggestions,
+    extract_response_components,
     LLMReasoningCapture
 )
 
@@ -168,118 +163,6 @@ class HermesAgentTools:
         self.reasoning_steps = []
 
 
-def extract_response_components(response: Union[BaseResponse, Dict[str, Any]]) -> Dict[str, Any]:
-    """
-    Extract and categorize all components from a response for smart display.
-    
-    Returns dict with:
-        - text: Main text content (markdown)
-        - dataframe: DataFrame data (if any)
-        - number: Single number value (if any)
-        - chart_path: Path to chart image (if any)
-        - metrics: Metrics data (if any)
-        - recommendations: List of recommendations (if any)
-        - stats: Statistics summary (if any)
-    """
-    components = {
-        "text": None,
-        "dataframe": None,
-        "number": None,
-        "chart_path": None,
-        "metrics": None,
-        "recommendations": None,
-        "stats": None,
-        "data_type": "text",
-    }
-    
-    try:
-        if isinstance(response, BaseResponse):
-            # Extract text
-            components["text"] = response.text or ""
-            
-            # Extract chart
-            if hasattr(response, 'chart') and response.chart:
-                try:
-                    if hasattr(response.chart, 'path') and response.chart.path:
-                        components["chart_path"] = response.chart.path
-                except Exception as e:
-                    logger.warning(f"Error extracting chart: {e}")
-            
-            # Handle specific response types
-            if isinstance(response, PredictionResponse):
-                components["data_type"] = "prediction"
-                if response.metrics:
-                    components["metrics"] = {
-                        "r2_score": response.metrics.r2_score,
-                        "rmse": response.metrics.rmse,
-                        "model_type": response.metrics.model_type,
-                    }
-            
-            elif isinstance(response, RecommendationResponse):
-                components["data_type"] = "recommendation"
-                if response.recommendations:
-                    components["recommendations"] = [
-                        {
-                            "category": r.category,
-                            "priority": r.priority,
-                            "finding": r.finding,
-                            "action": r.action,
-                        }
-                        for r in response.recommendations
-                    ]
-            
-            elif isinstance(response, StatisticsResponse):
-                components["data_type"] = "statistics"
-                if response.stats:
-                    components["stats"] = {
-                        "total_shipments": response.stats.total_shipments,
-                        "delayed_shipments": response.stats.delayed_shipments,
-                        "on_time_rate": response.stats.delay_rate,
-                        "avg_delay_minutes": response.stats.avg_delay_minutes,
-                    }
-            
-            elif isinstance(response, GeneralResponse):
-                # Handle DataFrame
-                if hasattr(response, 'data_type') and response.data_type == "dataframe":
-                    components["data_type"] = "dataframe"
-                    if hasattr(response, 'raw_result') and response.raw_result is not None:
-                        try:
-                            from pandasai.core.response import DataFrameResponse
-                            
-                            df = None
-                            if isinstance(response.raw_result, DataFrameResponse):
-                                df = response.raw_result.value
-                            elif isinstance(response.raw_result, pd.DataFrame):
-                                df = response.raw_result
-                            
-                            if df is not None and isinstance(df, pd.DataFrame):
-                                components["dataframe"] = df.head(50)  # Limit to 50 rows
-                        except Exception as e:
-                            logger.warning(f"Failed to extract dataframe: {e}")
-                
-                # Handle Number
-                elif hasattr(response, 'data_type') and response.data_type == "number":
-                    components["data_type"] = "number"
-                    try:
-                        from pandasai.core.response import NumberResponse
-                        if isinstance(response.raw_result, NumberResponse):
-                            components["number"] = float(response.raw_result.value)
-                    except Exception as e:
-                        logger.warning(f"Failed to extract number: {e}")
-        
-        else:
-            # Fallback for dict response
-            components["text"] = response.get("text", "")
-            components["chart_path"] = response.get("chart")
-    
-    except Exception as e:
-        traceback.print_exc()
-        logger.error(f"Error extracting components: {e}", exc_info=True)
-        components["text"] = f"Error extracting response components: {str(e)}"
-    
-    return components
-
-
 def create_agent_chat_interface(hermes_app) -> gr.Blocks:
     """
     Create Gradio interface with intelligent component routing and agent tool display.
@@ -388,7 +271,7 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
                     visible=False,
                     interactive=False,
                     elem_classes="number-display",
-                    scale=2,
+                    # scale=2,
                 )
                 
                 # DataFrame display (shown when DataFrame result)
@@ -759,6 +642,27 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
                             content=components["text"],
                         )
                     )
+                if components["data_type"] == "number" and components["number"] is not None:
+                    try:
+                        number = gr.Number(
+                            interactive=True,
+                            value=components["number"],
+                            label="🔢 Numeric Result",
+                            # visible=True,
+                            wrap=True,
+                            # elem_classes="number-display",
+                        )
+                        history.append(
+                            ChatMessage(
+                                role="assistant",
+                                content=number,
+                            )
+                        )
+                        logger.info(f"Added gr.Number() as content of ChatMessage")
+                    except Exception as e:
+                        logger.warning(f"Failed to add gr.Number() inline: {e}")
+                        # Fallback: still show in separate component
+                        show_number = False
 
                 # Add DataFrame as a separate message immediately after text
                 if components["data_type"] == "dataframe" and components["dataframe"] is not None:
@@ -797,7 +701,7 @@ def create_agent_chat_interface(hermes_app) -> gr.Blocks:
                         logger.warning(f"Failed to add chart inline: {chart_err}")
 
                 # Determine component visibility for side panels
-                show_number = components["data_type"] == "number" and components["number"] is not None
+                show_number = components["data_type"] == "number" and components["number"] is not None and 'number' not in locals()
                 show_dataframe = components["data_type"] == "dataframe" and components["dataframe"] is not None and 'df_markdown' not in locals()  # Only show if markdown failed
                 show_metrics = components["metrics"] is not None
                 show_stats = components["stats"] is not None
