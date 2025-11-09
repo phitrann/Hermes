@@ -48,3 +48,5 @@ pgdata/
 
 # # datasets
 # data/
+# test files
+test_reasoning_display.py

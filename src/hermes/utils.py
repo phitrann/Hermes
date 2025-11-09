@@ -265,29 +265,194 @@ def extract_response_components(response: Union[BaseResponse, Dict[str, Any]]) -
 # ============================================================================
 
 class LLMReasoningCapture(logging.Handler):
-    """Custom handler to capture LLM reasoning/inner thoughts from logs."""
+    """
+    Custom handler to capture and categorize LLM reasoning/inner thoughts from logs.
+    
+    Categorizes logs into processing steps:
+    - Query Understanding
+    - Code Generation
+    - Code Validation
+    - Code Execution
+    - Response Generation
+    """
+    
+    # Configuration constants
+    MAX_MESSAGE_LENGTH = 1000  # Maximum characters per log message
+    MAX_OTHER_LOGS = 5  # Maximum 'other' logs to display in formatted output
+    MAX_CODE_DISPLAY_LENGTH = 500  # Maximum code length for inline display
+    MAX_BRIEF_MESSAGE_LENGTH = 200  # Maximum length for brief message display
+    
+    # Step categorization patterns
+    STEP_PATTERNS = {
+        'query_understanding': ['question:', 'handling', 'request', 'query'],
+        'code_generation': ['generating', 'code generated', 'prompt:', 'using prompt'],
+        'code_validation': ['validating', 'validation', 'checking', 'verified'],
+        'code_execution': ['executing code:', 'running', 'execute'],
+        'response_generation': ['response generated', 'result', 'success'],
+    }
+    
+    STEP_LABELS = {
+        'query_understanding': '🎯 Query Understanding',
+        'code_generation': '⚙️ Code Generation',
+        'code_validation': '✅ Code Validation',
+        'code_execution': '🚀 Code Execution',
+        'response_generation': '📊 Response Generation',
+    }
     
     def __init__(self):
         super().__init__()
         self.reasoning_logs = []
+        self.categorized_steps = {}
+        self.start_time = None
         self.setLevel(logging.DEBUG)
     
     def emit(self, record):
         """Capture log records that contain reasoning/thinking."""
         try:
             msg = record.getMessage()
-            # Capture logs from pandasai, litellm, and hermes that contain meaningful content
-            # if any(keyword in msg.lower() for keyword in 
-            #        ['query', 'analysis', 'response', 'processing', 'detected', 'classified', 'thinking', 'result']):
-            self.reasoning_logs.append({
-                'timestamp': datetime.fromtimestamp(record.created).isoformat(),
+            timestamp = datetime.fromtimestamp(record.created)
+            
+            if self.start_time is None:
+                self.start_time = timestamp
+            
+            log_entry = {
+                'timestamp': timestamp.isoformat(),
+                'elapsed_ms': int((timestamp - self.start_time).total_seconds() * 1000),
                 'level': record.levelname,
-                'logger': record.name.split('.')[-1],  # Get last part of logger name
-                'message': msg[:500]  # Increased limit for better context
-            })
+                'logger': record.name.split('.')[-1],
+                'message': msg[:self.MAX_MESSAGE_LENGTH],
+                'step': self._categorize_step(msg)
+            }
+            
+            self.reasoning_logs.append(log_entry)
+            
+            # Group by step for easier display
+            step = log_entry['step']
+            if step not in self.categorized_steps:
+                self.categorized_steps[step] = []
+            self.categorized_steps[step].append(log_entry)
+            
         except Exception:
             pass
+    
+    def _categorize_step(self, message: str) -> str:
+        """Categorize log message into a processing step."""
+        msg_lower = message.lower()
+        
+        for step, patterns in self.STEP_PATTERNS.items():
+            if any(pattern in msg_lower for pattern in patterns):
+                return step
+        
+        return 'other'
+    
+    @staticmethod
+    def extract_code_from_message(message: str, marker: str) -> Optional[str]:
+        """
+        Extract code content from a log message after a marker.
+        
+        Args:
+            message: The log message
+            marker: The marker string (e.g., 'executing code:', 'code generated:')
+        
+        Returns:
+            Extracted code content or None if marker not found
+        """
+        msg_lower = message.lower()
+        marker_lower = marker.lower()
+        
+        if marker_lower not in msg_lower:
+            return None
+        
+        code_start = msg_lower.find(marker_lower) + len(marker_lower)
+        return message[code_start:].strip()
+    
+    def get_step_summary(self) -> Dict[str, Any]:
+        """Get a summary of all processing steps with timing."""
+        summary = {
+            'total_steps': len(self.categorized_steps),
+            'total_time_ms': self.reasoning_logs[-1]['elapsed_ms'] if self.reasoning_logs else 0,
+            'steps': []
+        }
+        
+        for step_key in ['query_understanding', 'code_generation', 'code_validation', 
+                         'code_execution', 'response_generation']:
+            if step_key in self.categorized_steps:
+                logs = self.categorized_steps[step_key]
+                summary['steps'].append({
+                    'name': self.STEP_LABELS.get(step_key, step_key),
+                    'count': len(logs),
+                    'start_ms': logs[0]['elapsed_ms'],
+                    'end_ms': logs[-1]['elapsed_ms'],
+                    'duration_ms': logs[-1]['elapsed_ms'] - logs[0]['elapsed_ms'],
+                })
+        
+        return summary
+    
+    def format_step_markdown(self, step_key: str) -> str:
+        """Format a specific step's logs as markdown."""
+        if step_key not in self.categorized_steps:
+            return ""
+        
+        logs = self.categorized_steps[step_key]
+        label = self.STEP_LABELS.get(step_key, step_key.replace('_', ' ').title())
+        
+        # Build markdown
+        lines = [f"### {label}"]
+        
+        for log in logs:
+            # Format timestamp
+            time_str = f"+{log['elapsed_ms']}ms"
+            
+            # Clean up message for display
+            msg = log['message']
+            
+            # Special formatting for code
+            code = self.extract_code_from_message(msg, 'executing code:')
+            if code is not None:
+                if len(code) > self.MAX_CODE_DISPLAY_LENGTH:
+                    code = code[:self.MAX_CODE_DISPLAY_LENGTH] + "\n# ... (truncated)"
+                lines.append(f"\n**{time_str}** - Executing generated code:\n```python\n{code}\n```")
+            elif (code := self.extract_code_from_message(msg, 'code generated:')) is not None:
+                if len(code) > self.MAX_CODE_DISPLAY_LENGTH:
+                    code = code[:self.MAX_CODE_DISPLAY_LENGTH] + "\n# ... (truncated)"
+                lines.append(f"\n**{time_str}** - Generated code:\n```python\n{code}\n```")
+            else:
+                # Truncate very long messages with indicator
+                if len(msg) > self.MAX_BRIEF_MESSAGE_LENGTH:
+                    msg = msg[:self.MAX_BRIEF_MESSAGE_LENGTH] + "..."
+                lines.append(f"- **{time_str}**: {msg}")
+        
+        return "\n".join(lines)
+    
+    def get_formatted_reasoning(self) -> str:
+        """Get all reasoning formatted as markdown with steps."""
+        if not self.reasoning_logs:
+            return "_No processing steps recorded_"
+        
+        sections = []
+        
+        # Add summary
+        summary = self.get_step_summary()
+        sections.append(f"**Total Processing Time:** {summary['total_time_ms']}ms")
+        sections.append("")
+        
+        # Add each step
+        for step_key in ['query_understanding', 'code_generation', 'code_validation', 
+                         'code_execution', 'response_generation']:
+            if step_key in self.categorized_steps:
+                sections.append(self.format_step_markdown(step_key))
+                sections.append("")
+        
+        # Add other logs if any
+        if 'other' in self.categorized_steps:
+            sections.append("### 📝 Other Logs")
+            for log in self.categorized_steps['other'][:self.MAX_OTHER_LOGS]:
+                sections.append(f"- **+{log['elapsed_ms']}ms**: {log['message'][:100]}")
+        
+        return "\n".join(sections)
     
     def clear(self):
         """Clear reasoning logs for next query."""
         self.reasoning_logs = []
+        self.categorized_steps = {}
+        self.start_time = None
