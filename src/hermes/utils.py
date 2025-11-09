@@ -206,7 +206,7 @@ def extract_response_components(response: Union[BaseResponse, Dict[str, Any]]) -
                                 df = response.raw_result
                             
                             if df is not None and isinstance(df, pd.DataFrame):
-                                components["dataframe"] = df.head(50)  # Limit to 50 rows
+                                components["dataframe"] = df
                         except Exception as e:
                             logger.warning(f"Failed to extract dataframe: {e}")
                 # Handle Number
@@ -234,7 +234,7 @@ def extract_response_components(response: Union[BaseResponse, Dict[str, Any]]) -
                                 df = response.raw_result
                             
                             if df is not None and isinstance(df, pd.DataFrame):
-                                components["dataframe"] = df.head(50)  # Limit to 50 rows
+                                components["dataframe"] = df
                         except Exception as e:
                             logger.warning(f"Failed to extract dataframe: {e}")
                 
@@ -277,17 +277,17 @@ class LLMReasoningCapture(logging.Handler):
     """
     
     # Configuration constants
-    MAX_MESSAGE_LENGTH = 1000  # Maximum characters per log message
+    MAX_MESSAGE_LENGTH = 4196  # Maximum characters per log message
     MAX_OTHER_LOGS = 5  # Maximum 'other' logs to display in formatted output
-    MAX_CODE_DISPLAY_LENGTH = 500  # Maximum code length for inline display
-    MAX_BRIEF_MESSAGE_LENGTH = 200  # Maximum length for brief message display
+    MAX_CODE_DISPLAY_LENGTH = 2048  # Maximum code length for inline display
+    MAX_BRIEF_MESSAGE_LENGTH = 1024  # Maximum length for brief message display
     
     # Step categorization patterns
     STEP_PATTERNS = {
         'query_understanding': ['question:', 'handling', 'request', 'query'],
         'code_generation': ['generating', 'code generated', 'prompt:', 'using prompt'],
         'code_validation': ['validating', 'validation', 'checking', 'verified'],
-        'code_execution': ['executing code:', 'running', 'execute'],
+        'code_execution': ['executing code:', 'execute'],
         'response_generation': ['response generated', 'result', 'success'],
     }
     
@@ -337,7 +337,7 @@ class LLMReasoningCapture(logging.Handler):
     
     def _categorize_step(self, message: str) -> str:
         """Categorize log message into a processing step."""
-        msg_lower = message.lower()
+        msg_lower = message.lower().splitlines()[0]  # Use first line for categorization
         
         for step, patterns in self.STEP_PATTERNS.items():
             if any(pattern in msg_lower for pattern in patterns):
