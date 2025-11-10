@@ -636,7 +636,6 @@ Low Impact  │ ██ (1) Routes     │ ██ (3) Carrier
 ```
 Hermes/
 ├── README.md                    # Main documentation
-├── DELIVERABLES.md             # This file
 ├── pyproject.toml              # Package metadata
 ├── dev.py                      # Auto-reload development script
 │
@@ -674,7 +673,7 @@ Hermes/
 ├── logs/                       # Application logs
 │   └── hermes.log              # Main log file
 │
-└── test_integration.py         # Integration smoke tests
+└── test.ipynb         # Experiment notebook
 ```
 
 ### 2.2 Installation Instructions
@@ -766,15 +765,24 @@ print(f"Stats: {stats}")
 
 ### 2.4 Mock/Synthetic Data
 
-The repository includes realistic synthetic shipment data:
+The repository includes realistic synthetic shipment data from ChatGPT ():
 
 **File:** `data/shipments.csv`
 
 **Generation Method:**
 - 1,000 synthetic shipment records
-- Date range: January 1, 2025 - October 31, 2025
-- 4 warehouses, 10 routes
-- Realistic delay distributions (normal distribution, μ=15, σ=25)
+- Date range: January 1, 2024 - December 30, 2024
+- 4 warehouses (['WH2', 'WH4', 'WH1', 'WH3']), 5 routes (['Route C', 'Route A', 'Route B', 'Route E', 'Route D'])
+- Realistic delay distributions: 
+```
+  delay_reason
+  Traffic             157
+  Driver Rest         145
+  Mechanical Issue    143
+  Weather             137
+  Minor Breakdown     133
+  Customs Delay       115
+```
 - Edge cases: early deliveries, extreme delays
 
 **Data Quality:**
