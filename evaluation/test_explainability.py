@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 import pandas as pd
 from hermes.app import HermesApp
+from hermes.models import BaseResponse
 from hermes.ui_agent import LLMReasoningCapture
 import logging
 
@@ -113,15 +114,32 @@ class ExplainabilityEvaluator:
         
         # Process query
         try:
-            response_html, chart_path, stats, preview_df, history = self.app.process_query_chat(query, [])
-            
+            response = self.app.process_query_chat(query)
+
+            # Normalize response fields for both typed and legacy formats
+            if isinstance(response, BaseResponse):
+                response_text = response.text
+                response_intent = response.intent
+                response_success = response.success
+            else:
+                response_text = response.get("text", "")
+                response_intent = response.get("intent")
+                response_success = response.get("success", True)
+
             # Get captured reasoning
-            reasoning = self.reasoning_capture.get_reasoning_markdown()
-            
+            reasoning = self.reasoning_capture.get_formatted_reasoning()
+
+            # Validate invocation produced explainability artifacts
+            assert response_success is not False, "Query processing failed; explainability cannot be evaluated."
+            assert response_intent, "Router intent classification missing from response."
+            if expected_intent:
+                assert response_intent == expected_intent, f"Expected intent '{expected_intent}', got '{response_intent}'"
+            assert reasoning.strip() and "No processing steps recorded" not in reasoning, "Reasoning capture is empty."
+
             # Evaluate reasoning
             has_reasoning = self.check_reasoning_visibility(reasoning)
-            has_attribution = self.check_data_attribution(reasoning, response_html)
-            justification_score = self.score_justification(reasoning, response_html)
+            has_attribution = self.check_data_attribution(reasoning, response_text)
+            justification_score = self.score_justification(reasoning, response_text)
             confidence = self.extract_confidence(reasoning)
             
             result = {
@@ -131,7 +149,8 @@ class ExplainabilityEvaluator:
                 "justification_score": justification_score,
                 "confidence_score": confidence,
                 "reasoning_text": reasoning[:300],  # First 300 chars
-                "response_text": response_html[:300],
+                "response_text": response_text[:300],
+                "response_intent": response_intent,
                 "expected_intent": expected_intent
             }
             
